@@ -4,7 +4,7 @@
 \name{gcap-package}
 \alias{gcap}
 \alias{gcap-package}
-\title{gcap: Gene-based Circular Amplicon Prediction}
+\title{gcap: Gene-level Circular Amplicon Prediction}
 \description{
 Provides XGBOOST model training kit and analysis pipelines
     for predicting tumor circular amplicons (also known as ecDNA) in gene

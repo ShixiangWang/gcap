@@ -1,6 +1,6 @@
 Type: Package
 Package: gcap
-Title: Gene-based Circular Amplicon Prediction
+Title: Gene-level Circular Amplicon Prediction
 Version: 0.1.0
 Authors@R: 
     person(given = "Shixiang",
@@ -16,20 +16,24 @@ URL: https://github.com/ShixiangWang/gcap
 BugReports: https://github.com/ShixiangWang/gcap/issues
 Imports: 
     cli,
+    data.table,
     glue,
     lgr,
     magrittr
 Suggests: 
-    testthat (>= 3.0.0),
-    sigminer (>= 2.0.4),
+    paradox,
+    BiocManager,
     mlr3,
-    xgboost,
     mlr3fselect,
-    mlr3tuning
+    mlr3learners,
+    mlr3tuning,
+    sigminer (>= 2.0.4),
+    testthat (>= 3.0.0),
+    xgboost
 biocViews:
+Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxytest::testthat_roclet"))
 RoxygenNote: 7.1.1
-Config/testthat/edition: 3
