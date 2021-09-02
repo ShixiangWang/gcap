@@ -21,7 +21,11 @@ Imports:
     magrittr
 Suggests: 
     testthat (>= 3.0.0),
-    sigminer (>= 2.0.4)
+    sigminer (>= 2.0.4),
+    mlr3,
+    xgboost,
+    mlr3fselect,
+    mlr3tuning
 biocViews:
 Encoding: UTF-8
 LazyData: true
