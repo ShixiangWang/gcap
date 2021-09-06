@@ -7,6 +7,10 @@
 
 #' Run ASCAT on tumor-normal pair WES data files
 #'
+#' A wrapper calling ASCAT on WES data on one or more tumor-normal pairs.
+#' Note, for multiple tumor-normal pairs, the first 5 arguments should
+#' be a vector with same length.
+#'
 #' @inheritParams ASCAT::ascat.prepareHTS
 #' @inheritParams ASCAT::ascat.aspcf
 #' @inheritParams ASCAT::ascat.GCcorrect
@@ -51,7 +55,11 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
   if (!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
 
   lg <- set_logger()
-  lg$info("=====> Run ASCAT for WES data <=====")
+  lg$info("> Run ASCAT for WES data <")
+  lg$info(">                        <")
+  lg$info("> Author: Shixiang Wang  <")
+  lg$info("> Contact: w_shixiang@163.com <")
+  lg$info()
   lg$info("Configs:")
   lg$info("  result path set to {outdir}")
   lg$info("  allelecounter_exe set to {allelecounter_exe}")
@@ -63,7 +71,7 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
   lg$info("  minCounts set to {minCounts}")
   lg$info("  BED_file set to {BED_file}")
   lg$info("  probloci_file set to {probloci_file}")
-  lg$info("  chrom_names set to {chrom_names}")
+  lg$info("  chrom_names set to <{paste(chrom_names, collapse = ' ')}>")
   lg$info("  min_base_qual set to {min_base_qual}")
   lg$info("  penalty set to {penalty}")
 
@@ -122,6 +130,6 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
     lg$info("job {id} done")
   }
 
-  lapply(seq_along(tumourseqfile), .f = run_one)
+  lapply(seq_along(jobname), run_one)
   lg$info("analysis done, check {outdir} for results")
 }

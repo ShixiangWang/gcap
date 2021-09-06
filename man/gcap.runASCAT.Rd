@@ -76,5 +76,7 @@ chromosomes.}
 Nothing. Check the \code{outdir} for results.
 }
 \description{
-Run ASCAT on tumor-normal pair WES data files
+A wrapper calling ASCAT on WES data on one or more tumor-normal pairs.
+Note, for multiple tumor-normal pairs, the first 5 arguments should
+be a vector with same length.
 }
