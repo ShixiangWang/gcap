@@ -10,5 +10,7 @@ ec <- data[idx, ]
 ec <- data.table::as.data.table(ec)
 ec$y_nonLinear <- NULL
 
-dir.create("inst/extdata", recursive = TRUE)
-save(ec, file = "inst/extdata/ec.RData")
+usethis::use_data(ec, overwrite = TRUE)
+
+# dir.create("inst/extdata", recursive = TRUE)
+# save(ec, file = "inst/extdata/ec.RData")
