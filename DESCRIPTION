@@ -21,12 +21,7 @@ Imports:
     lgr,
     magrittr
 Suggests: 
-    paradox,
     BiocManager,
-    mlr3,
-    mlr3fselect,
-    mlr3learners,
-    mlr3tuning,
     sigminer (>= 2.0.4),
     testthat (>= 3.0.0),
     xgboost
