@@ -13,7 +13,6 @@
 #' @export
 gcap.extractFeatures <- function(ascat_files,
                                  genome_build = c("hg38", "hg19")) {
-
   genome_build <- match.arg(genome_build)
 
   lg <- set_logger()
@@ -25,7 +24,6 @@ gcap.extractFeatures <- function(ascat_files,
 
   lg$info("reading ASCAT file list")
   rvlist <- read_copynumber_ascat(ascat_files)
-  #rvlist <- readRDS("../ecDNA/data/tcga_ascat_wes_tumor_cn.rds")
 
   lg$info("using unique IDs from file names for avoid the sample name repetition")
   lg$info("back up default sample column to old_sample")
@@ -59,7 +57,8 @@ gcap.extractFeatures <- function(ascat_files,
   lg$info("getting Aneuploidy score")
   # What if ploidy call in ASCAT fail?
   df_aneuploidy <- get_Aneuploidy_score(
-    cn, ploidy_df = purity_ploidy[, .(sample, ploidy)],
+    cn,
+    ploidy_df = purity_ploidy[, .(sample, ploidy)],
     rm_black_arms = TRUE
   )[, .(sample, AScore)]
 
@@ -76,20 +75,20 @@ gcap.extractFeatures <- function(ascat_files,
     t(cn_tally$all_matrices$CN_48),
     sig_db = "CNS_TCGA",
     sig_index = "ALL",
-    return_class = "data.table")
+    return_class = "data.table"
+  )
 
+  lg$info("merging data")
   fts_sample <- mergeDTs(list(
     purity_ploidy, df_aneuploidy,
     df_pLOH, df_cna,
     df_act
   ), by = "sample")
 
+  lg$info("feature extraction done")
+  lg$info("now you can modify the result and append 'age' and 'gender' columns to the 'fts_sample' element of result list")
   list(
     fts_sample = fts_sample,
     fts_region = rvlist$data
   )
 }
-
-
-
-

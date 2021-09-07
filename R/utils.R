@@ -13,7 +13,8 @@ mergeDTs <- function(dt_list, by = NULL, sort = FALSE) {
   Reduce(
     function(...) {
       merge(..., by = by, all = TRUE, sort = sort)
-    }, dt_list)
+    }, dt_list
+  )
 }
 
 # Global variables
