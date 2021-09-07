@@ -15,19 +15,19 @@ License: Apache License (>= 2)
 URL: https://github.com/ShixiangWang/gcap
 BugReports: https://github.com/ShixiangWang/gcap/issues
 Depends: 
+    data.table,
     R (>= 2.10)
 Imports:
     ASCAT (>= 3.0.0),
     cli,
-    data.table,
     glue,
     lgr,
-    magrittr
+    magrittr,
+    sigminer (>= 2.0.4),
+    xgboost
 Suggests: 
     BiocManager,
-    sigminer (>= 2.0.4),
-    testthat (>= 3.0.0),
-    xgboost
+    testthat (>= 3.0.0)
 Remotes: 
     github::ShixiangWang/ascat/ASCAT@v3.0
 biocViews:
