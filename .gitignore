@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+data-raw/hg38_gene_info.rds
+data-raw/hg19_gene_info.rds

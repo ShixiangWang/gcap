@@ -19,5 +19,8 @@ mergeDTs <- function(dt_list, by = NULL, sort = FALSE) {
 
 # Global variables
 utils::globalVariables(
-  c(".", "old_sample", "ploidy", "AScore", "cna_burden")
+  c(".", "old_sample", "ploidy", "AScore", "cna_burden",
+    "age", "chr", "freq_BFB", "freq_Circular", "freq_HR",
+    "freq_Linear", "gender", "gene_id", "i.end", "i.start",
+    "intersect_ratio", "intersect_size", "minor_cn", "total_cn")
 )

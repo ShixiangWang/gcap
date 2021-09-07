@@ -17,9 +17,6 @@ gcap.extractFeatures <- function(ascat_files,
 
   lg <- set_logger()
   lg$info("> Extract features from ASCAT results <")
-  lg$info(">                        <")
-  lg$info("> Author: Shixiang Wang  <")
-  lg$info("> Contact: w_shixiang@163.com <")
   lg$info()
 
   lg$info("reading ASCAT file list")

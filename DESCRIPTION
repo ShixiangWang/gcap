@@ -21,6 +21,7 @@ Imports:
     ASCAT (>= 3.0.0),
     cli,
     glue,
+    mltools,
     lgr,
     magrittr,
     sigminer (>= 2.0.4),

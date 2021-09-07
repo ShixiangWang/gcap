@@ -56,9 +56,6 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
 
   lg <- set_logger()
   lg$info("> Run ASCAT for WES data <")
-  lg$info(">                        <")
-  lg$info("> Author: Shixiang Wang  <")
-  lg$info("> Contact: w_shixiang@163.com <")
   lg$info()
   lg$info("Configs:")
   lg$info("  result path set to {outdir}")
