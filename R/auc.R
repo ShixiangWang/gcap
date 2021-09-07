@@ -10,12 +10,16 @@
 #' @export
 #'
 #' @examples
-#' set.seed(2021)
-#' auc <- get_auc(sample(1:10, 10), c(rep(0, 5), rep(1, 5)))
-#' auc
+#' if (require("PRROC")) {
+#'   set.seed(2021)
+#'   auc <- get_auc(sample(1:10, 10), c(rep(0, 5), rep(1, 5)))
+#'   auc
+#' }
 #' @testexamples
-#' expect_equal(length(auc), 3)
-#' expect_s3_class(auc, "PRROC")
+#' if (require("PRROC")) {
+#'   expect_equal(length(auc), 3)
+#'   expect_s3_class(auc, "PRROC")
+#' }
 get_auc <- function(y_pred, y, type = c("pr", "roc"), curve = FALSE) {
   .check_install("PRROC")
   type <- match.arg(type)

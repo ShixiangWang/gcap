@@ -2,12 +2,16 @@
 
 # File R/auc.R: @testexamples
 
-test_that("Function get_auc() @ L19", {
+test_that("Function get_auc() @ L23", {
   
-  set.seed(2021)
-  auc <- get_auc(sample(1:10, 10), c(rep(0, 5), rep(1, 5)))
-  auc
-  expect_equal(length(auc), 3)
-  expect_s3_class(auc, "PRROC")
+  if (require("PRROC")) {
+    set.seed(2021)
+    auc <- get_auc(sample(1:10, 10), c(rep(0, 5), rep(1, 5)))
+    auc
+  }
+  if (require("PRROC")) {
+    expect_equal(length(auc), 3)
+    expect_s3_class(auc, "PRROC")
+  }
 })
 

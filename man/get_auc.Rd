@@ -23,7 +23,9 @@ A object.
 Get AUC value
 }
 \examples{
-set.seed(2021)
-auc <- get_auc(sample(1:10, 10), c(rep(0, 5), rep(1, 5)))
-auc
+if (require("PRROC")) {
+  set.seed(2021)
+  auc <- get_auc(sample(1:10, 10), c(rep(0, 5), rep(1, 5)))
+  auc
+}
 }
