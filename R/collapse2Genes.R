@@ -24,7 +24,9 @@ gcap.collapse2Genes <- function(fts,
     is.data.frame(extra_info),
     if (include_type) {
       all.equal(colnames(extra_info), c("sample", "age", "gender", "type"))
-    } else all.equal(colnames(extra_info), c("sample", "age", "gender"))
+    } else {
+      all.equal(colnames(extra_info), c("sample", "age", "gender"))
+    }
   )
 
   genome_build <- match.arg(genome_build)
@@ -34,9 +36,11 @@ gcap.collapse2Genes <- function(fts,
   extra_info <- as.data.table(extra_info)
   if (include_type) {
     lg$info("one-hot encoding cancer type")
-    types <- c("BLCA", "BRCA", "CESC", "COAD", "ESCA", "GBM", "HNSC",
-               "KICH", "KIRP", "LGG", "LIHC", "LUAD", "LUSC",
-               "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM")
+    types <- c(
+      "BLCA", "BRCA", "CESC", "COAD", "ESCA", "GBM", "HNSC",
+      "KICH", "KIRP", "LGG", "LIHC", "LUAD", "LUSC",
+      "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM"
+    )
     lg$info("valid cancer types: {paste(types, collapse=',')}")
     extra_info$type <- factor(
       as.character(extra_info$type),
@@ -55,7 +59,8 @@ gcap.collapse2Genes <- function(fts,
     lg$warn("non numeric type found, valid value should be 1 for male and 1 for female, try transforming it by treating M/m started label as male")
     extra_info[, gender := ifelse(
       grepl("^m", gender, ignore.case = TRUE),
-      1L, 0L)]
+      1L, 0L
+    )]
   }
 
   lg$info("collapsing region-level features to gene-level")
@@ -71,7 +76,8 @@ gcap.collapse2Genes <- function(fts,
   amp_freq <- readRDS(
     system.file(
       "extdata", "amplicon_freq.rds",
-      package = "gcap", mustWork = TRUE)
+      package = "gcap", mustWork = TRUE
+    )
   )
   dt <- merge(dt, amp_freq, by = "gene_id", all.x = TRUE)
   dt[, `:=`(
@@ -98,7 +104,8 @@ collapse_to_genes <- function(x, genome_build = "hg38") {
   lg$info("reading reference file {ref_file}")
   ref_file <- system.file(
     "extdata", paste0(genome_build, "_target_genes.rds"),
-    package = "gcap", mustWork = TRUE)
+    package = "gcap", mustWork = TRUE
+  )
   y <- readRDS(ref_file)
   colnames(x)[1:3] <- colnames(y)[1:3] <- c("chr", "start", "end")
 
@@ -112,8 +119,12 @@ collapse_to_genes <- function(x, genome_build = "hg38") {
   out[, intersect_ratio := intersect_size / (abs(end - start) + 1)]
 
   lg$info("keeping records with >0.6 overlap ratio with a gene")
-  out <- out[intersect_ratio > 0.6,
-             .(sample, gene_id,
-               total_cn, minor_cn)]
+  out <- out[
+    intersect_ratio > 0.6,
+    .(
+      sample, gene_id,
+      total_cn, minor_cn
+    )
+  ]
   out
 }

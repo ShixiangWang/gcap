@@ -24,7 +24,7 @@ get_auc <- function(y_pred, y, type = c("pr", "roc"), curve = FALSE) {
   .check_install("PRROC")
   type <- match.arg(type)
 
-  f <- switch (type,
+  f <- switch(type,
     pr = PRROC::pr.curve,
     roc = PRROC::roc.curve
   )

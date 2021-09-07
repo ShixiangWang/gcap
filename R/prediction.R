@@ -29,21 +29,7 @@ gcap.runPrediction <- function(data,
   lg <- set_logger()
 
   lg$info("reading trained model based on input feature and target setting")
-  if (feature == "with_type" && target == "circle") {
-    model <- readRDS(
-      system.file(
-        "extdata", "toy_model.rds",
-        package = "gcap", mustWork = TRUE
-      )
-    )
-  } else if (feature == "without_type" && target == "circle") {
-    model <- readRDS(
-      system.file(
-        "extdata", "toy_model.rds",
-        package = "gcap", mustWork = TRUE
-      )
-    )
-  } else if (feature == "with_type" && target == "nonLinear") {
+  if (use_toy) {
     model <- readRDS(
       system.file(
         "extdata", "toy_model.rds",
@@ -51,12 +37,35 @@ gcap.runPrediction <- function(data,
       )
     )
   } else {
-    model <- readRDS(
-      system.file(
-        "extdata", "toy_model.rds",
-        package = "gcap", mustWork = TRUE
+    if (feature == "with_type" && target == "circle") {
+      model <- readRDS(
+        system.file(
+          "extdata", "toy_model.rds",
+          package = "gcap", mustWork = TRUE
+        )
       )
-    )
+    } else if (feature == "without_type" && target == "circle") {
+      model <- readRDS(
+        system.file(
+          "extdata", "toy_model.rds",
+          package = "gcap", mustWork = TRUE
+        )
+      )
+    } else if (feature == "with_type" && target == "nonLinear") {
+      model <- readRDS(
+        system.file(
+          "extdata", "toy_model.rds",
+          package = "gcap", mustWork = TRUE
+        )
+      )
+    } else {
+      model <- readRDS(
+        system.file(
+          "extdata", "toy_model.rds",
+          package = "gcap", mustWork = TRUE
+        )
+      )
+    }
   }
 
   lg$info("selecting necessary features from input data")
