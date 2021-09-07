@@ -27,6 +27,7 @@ Imports:
     sigminer (>= 2.0.4),
     xgboost
 Suggests: 
+    PRROC,
     BiocManager,
     testthat (>= 3.0.0)
 Remotes: 

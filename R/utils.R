@@ -4,8 +4,10 @@
   if (bioc) {
     .check_install("BiocManager")
   }
-  if (!requireNamespace(pkg)) install_func(pkg, ...)
-  lg$info("Required package ", pkg, " has been installed.")
+  if (!requireNamespace(pkg)) {
+    lg$info("installing required package {pkg}")
+    install_func(pkg, ...)
+  }
 }
 
 
