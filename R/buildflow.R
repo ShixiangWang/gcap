@@ -21,11 +21,14 @@ gcap.runBuildflow <- function(ascat_files,
   lg <- set_logger()
 
   lg$info("extracting sample-level and region-level features")
-  fts <- gcap.extractFeatures(ascat_files = ascat_files,
-                              genome_build = genome_build)
+  fts <- gcap.extractFeatures(
+    ascat_files = ascat_files,
+    genome_build = genome_build
+  )
 
   lg$info("collapsing all data into gene-level prediction input")
-  gcap.collapse2Genes(fts = fts, extra_info = extra_info,
-                      include_type = include_type, genome_build = genome_build)
-
+  gcap.collapse2Genes(
+    fts = fts, extra_info = extra_info,
+    include_type = include_type, genome_build = genome_build
+  )
 }

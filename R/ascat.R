@@ -14,6 +14,8 @@
 #' @inheritParams ASCAT::ascat.prepareHTS
 #' @inheritParams ASCAT::ascat.aspcf
 #' @inheritParams ASCAT::ascat.GCcorrect
+#' @param tumourseqfile Full path to the tumour BAM file.
+#' @param normalseqfile Full path to the normal BAM file.
 #' @param jobname job name, typically an unique name for a tumor-normal pair.
 #' @param outdir result output path.
 #' @param gender a vector of gender for each cases ("XX" or "XY").

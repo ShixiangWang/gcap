@@ -21,14 +21,15 @@ Imports:
     ASCAT (>= 3.0.0),
     cli,
     glue,
-    mltools,
     lgr,
     magrittr,
+    mltools,
     sigminer (>= 2.0.4),
+    uuid,
     xgboost
 Suggests: 
-    PRROC,
     BiocManager,
+    PRROC,
     testthat (>= 3.0.0)
 Remotes: 
     github::ShixiangWang/ascat/ASCAT@v3.0
