@@ -80,7 +80,8 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
     } else extra_info$gender,
     min_base_qual = min_base_qual,
     min_map_qual = min_map_qual,
-    penalty = penalty
+    penalty = penalty,
+    skip_finished_ASCAT
   )
 
   lg$info("checking ASCAT result files")

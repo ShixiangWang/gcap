@@ -17,14 +17,14 @@ BugReports: https://github.com/ShixiangWang/gcap/issues
 Depends: 
     ASCAT (>= 3.0.0),
     data.table,
-    R (>= 3.5)
+    R (>= 3.5),
+    sigminer (>= 2.0.5)
 Imports:
     cli,
     glue,
     lgr,
     magrittr,
     mltools,
-    sigminer (>= 2.0.5),
     uuid,
     xgboost
 Suggests: 

@@ -25,32 +25,14 @@ gcap::gcap.workflow(
   extra_info = data.frame(
     sample = id,
     age = c(59, 60),
-    gender = c(0, 1)
-  ), # this is not true data
-  include_type = FALSE,
-  feature = "without_type",
-  target = c("circle", "nonLinear"),
-  use_toy = TRUE, # use builtin toy model for prediction
-  outdir = "~/proj/gcap/test-workflow/result",
-  result_file = "test_gcap_workflow_on_two_cases_without_type.csv"
-)
-
-gcap::gcap.workflow(
-  tumourseqfile = tfile, 
-  normalseqfile = nfile,
-  tumourname = tn, 
-  normalname = nn, 
-  jobname = id,
-  extra_info = data.frame(
-    sample = id,
-    age = c(59, 60),
     gender = c(0, 1),
     type = "COAD"
   ), # this is not true data
   include_type = TRUE,
-  feature = c("with_type", "without_type"),
+  feature = "with_type",
   target = c("circle", "nonLinear"),
   use_toy = TRUE, # use builtin toy model for prediction
   outdir = "~/proj/gcap/test-workflow/result",
-  result_file = "test_gcap_workflow_on_two_cases_all.csv"
+  result_file = "test_gcap_workflow_on_two_cases_with_type.csv",
+  skip_finished_ASCAT = TRUE
 )

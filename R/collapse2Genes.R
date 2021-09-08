@@ -102,11 +102,11 @@ collapse_to_genes <- function(x, genome_build = "hg38") {
     x[[1]] <- paste0("chr", x[[1]])
   }
 
-  lg$info("reading reference file {ref_file}")
   ref_file <- system.file(
     "extdata", paste0(genome_build, "_target_genes.rds"),
     package = "gcap", mustWork = TRUE
   )
+  lg$info("reading reference file {ref_file}")
   y <- readRDS(ref_file)
   colnames(x)[1:3] <- colnames(y)[1:3] <- c("chr", "start", "end")
 
