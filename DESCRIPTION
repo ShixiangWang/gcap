@@ -24,7 +24,7 @@ Imports:
     lgr,
     magrittr,
     mltools,
-    sigminer (>= 2.0.4),
+    sigminer (>= 2.0.5),
     uuid,
     xgboost
 Suggests: 
