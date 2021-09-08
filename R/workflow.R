@@ -39,10 +39,10 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
                           BED_file = NA,
                           probloci_file = NA,
                           chrom_names = 1:22,
-                          gender = "XX",
                           min_base_qual = 20,
                           min_map_qual = 35,
-                          penalty = 70) {
+                          penalty = 70,
+                          skip_finished_ASCAT = FALSE) {
   genome_build <- match.arg(genome_build)
   # support loopping
   feature <- match.arg(feature, several.ok = TRUE)
@@ -75,7 +75,9 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
     BED_file = BED_file,
     probloci_file = probloci_file,
     chrom_names = chrom_names,
-    gender = gender,
+    gender = if (is.numeric(extra_info$gender)) {
+      ifelse(extra_info$gender == 1, "XY", "XX")
+    } else extra_info$gender,
     min_base_qual = min_base_qual,
     min_map_qual = min_map_qual,
     penalty = penalty

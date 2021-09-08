@@ -16,7 +16,8 @@ gcap.collapse2Genes(
 
 \item{extra_info}{a \code{data.frame} with 3 columns 'sample',
 'age' and 'gender', for including cancer type, check
-parameter \code{include_type}.}
+parameter \code{include_type}. For gender, should be 'XX' or 'XY',
+also could be \code{0} for 'XX' and \code{1} for 'XY'.}
 
 \item{include_type}{if \code{TRUE}, a fourth column named 'type'
 should be included in \code{extra_info}, the supported cancer

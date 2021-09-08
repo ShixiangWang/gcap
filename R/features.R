@@ -24,6 +24,7 @@ gcap.extractFeatures <- function(ascat_files,
 
   lg$info("using unique IDs from file names for avoid the sample name repetition")
   lg$info("back up default sample column to old_sample")
+  rvlist$data <- as.data.table(rvlist$data)
   rvlist$data[, old_sample := sample]
   rvlist$data[, sample := sub(".ASCAT.rds", "", source)]
   ids <- unique(rvlist$data$sample)

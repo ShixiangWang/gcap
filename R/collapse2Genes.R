@@ -5,7 +5,8 @@
 #' @param fts (modified) result from [gcap.extractFeatures()]
 #' @param extra_info a `data.frame` with 3 columns 'sample',
 #' 'age' and 'gender', for including cancer type, check
-#' parameter `include_type`.
+#' parameter `include_type`. For gender, should be 'XX' or 'XY',
+#' also could be `0` for 'XX' and `1` for 'XY'.
 #' @param include_type if `TRUE`, a fourth column named 'type'
 #' should be included in `extra_info`, the supported cancer
 #' type includes `c("BLCA", "BRCA", "CESC", "COAD", "ESCA", "GBM", "HNSC",
@@ -56,9 +57,9 @@ gcap.collapse2Genes <- function(fts,
   }
   lg$info("checking data type for gender column")
   if (!is.numeric(extra_info$gender)) {
-    lg$warn("non numeric type found, valid value should be 1 for male and 1 for female, try transforming it by treating M/m started label as male")
+    lg$warn("non numeric type found, transforming XY to 1, otherwise 0")
     extra_info[, gender := ifelse(
-      grepl("^m", gender, ignore.case = TRUE),
+      gender == "XY",
       1L, 0L
     )]
   }

@@ -21,6 +21,8 @@
 #' @param gender a vector of gender for each cases ("XX" or "XY").
 #' Default = all female ("XX"). Ignore this if you don't include sex
 #' chromosomes.
+#' @param skip_finished_ASCAT if `TRUE`, skipped finished ASCAT calls
+#' to save time.
 #'
 #' @importFrom ASCAT ascat.prepareHTS ascat.loadData ascat.GCcorrect
 #' ascat.plotRawData ascat.aspcf ascat.plotSegmentedData
@@ -50,14 +52,20 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
                           gender = "XX",
                           min_base_qual = 20,
                           min_map_qual = 35,
-                          penalty = 70) {
+                          penalty = 70,
+                          skip_finished_ASCAT = FALSE) {
+
+  stopifnot(all(gender %in% c("XX", "XY")))
   cwd <- getwd()
   setwd(outdir)
   on.exit(setwd(cwd))
   if (!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
+  if (length(gender) == 1 && length(tumourseqfile) > 1) {
+    gender <- rep(gender, length(tumourseqfile))
+  }
 
   lg <- set_logger()
-  lg$info("> Run ASCAT for WES data <")
+  lg$info("> Run ASCAT on WES data <")
   lg$info()
   lg$info("Configs:")
   lg$info("  result path set to {outdir}")
@@ -71,8 +79,11 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
   lg$info("  BED_file set to {BED_file}")
   lg$info("  probloci_file set to {probloci_file}")
   lg$info("  chrom_names set to <{paste(chrom_names, collapse = ' ')}>")
+  lg$info("  gender set to <{paste(gender, collapse = ' ')}>")
   lg$info("  min_base_qual set to {min_base_qual}")
+  lg$info("  min_map_qual set to {min_map_qual}")
   lg$info("  penalty set to {penalty}")
+  lg$info("  skip_finished_ASCAT set to {skip_finished_ASCAT}")
 
   stopifnot(
     file.exists(allelecounter_exe), file.exists(GCcontentfile),
@@ -87,6 +98,7 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
     tn <- tumourname[i]
     nn <- normalname[i]
     id <- jobname[i]
+    gd <- gender[i]
 
     lg$info("start submitting job {id}")
     lg$info("     tumor data file: {tfile}")
@@ -106,6 +118,7 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
       minCounts = minCounts,
       BED_file = BED_file,
       probloci_file = probloci_file,
+      gender = gd,
       chrom_names = chrom_names,
       min_base_qual = min_base_qual,
       min_map_qual = min_map_qual,
@@ -129,6 +142,12 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
     lg$info("job {id} done")
   }
 
-  lapply(seq_along(jobname), run_one)
+  if (skip_finished_ASCAT) {
+    drop_idx <- sapply(paste0(jobname, ".ASCAT.rds"), file.exists)
+    jobname <- jobname[!drop_idx]
+    lg$info("{sum(drop_idx)} ASCAT job(s) skipped.")
+  }
+
+  if (length(jobname) > 0) lapply(seq_along(jobname), run_one)
   lg$info("analysis done, check {outdir} for results")
 }

@@ -4,3 +4,6 @@
 .Ruserdata
 data-raw/hg38_gene_info.rds
 data-raw/hg19_gene_info.rds
+
+test-workflow/result/
+test-workflow/output*

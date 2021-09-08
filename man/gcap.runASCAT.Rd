@@ -26,7 +26,8 @@ gcap.runASCAT(
   gender = "XX",
   min_base_qual = 20,
   min_map_qual = 35,
-  penalty = 70
+  penalty = 70,
+  skip_finished_ASCAT = FALSE
 )
 }
 \arguments{
@@ -71,6 +72,9 @@ chromosomes.}
 \item{min_map_qual}{Minimum mapping quality required for a read to be counted (optional, default=35).}
 
 \item{penalty}{penalty of introducing an additional ASPCF breakpoint (expert parameter, don't adapt unless you know what you're doing)}
+
+\item{skip_finished_ASCAT}{if \code{TRUE}, skipped finished ASCAT calls
+to save time.}
 }
 \value{
 Nothing. Check the \code{outdir} for results.
