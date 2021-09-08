@@ -77,7 +77,9 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
     chrom_names = chrom_names,
     gender = if (is.numeric(extra_info$gender)) {
       ifelse(extra_info$gender == 1, "XY", "XX")
-    } else extra_info$gender,
+    } else {
+      extra_info$gender
+    },
     min_base_qual = min_base_qual,
     min_map_qual = min_map_qual,
     penalty = penalty,

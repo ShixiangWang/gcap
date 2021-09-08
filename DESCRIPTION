@@ -8,9 +8,9 @@ Authors@R:
            role = c("aut", "cre"),
            email = "w_shixiang@163.com",
            comment = c(ORCID = "0000-0001-9855-7357"))
-Description: Provides XGBOOST model training kit and analysis pipelines
-    for predicting tumor circular amplicons (also known as ecDNA) in gene
-    level.
+Description: Provides data processing pipeline feeding paired bam files
+    and XGBOOST model for predicting tumor circular amplicons (also known
+    as ecDNA) in gene level.
 License: Apache License (>= 2)
 URL: https://github.com/ShixiangWang/gcap
 BugReports: https://github.com/ShixiangWang/gcap/issues

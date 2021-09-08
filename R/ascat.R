@@ -54,7 +54,6 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
                           min_map_qual = 35,
                           penalty = 70,
                           skip_finished_ASCAT = FALSE) {
-
   stopifnot(all(gender %in% c("XX", "XY")))
   cwd <- getwd()
   setwd(outdir)
