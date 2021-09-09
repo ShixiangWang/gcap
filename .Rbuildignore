@@ -3,3 +3,10 @@
 ^LICENSE\.md$
 ^data-raw$
 ^test-workflow$
+^tests$
+
+Makefile
+
+# Python packages
+gcap.py
+.pytest_cache
