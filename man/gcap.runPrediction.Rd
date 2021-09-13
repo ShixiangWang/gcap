@@ -8,7 +8,8 @@ gcap.runPrediction(
   data,
   feature = c("with_type", "without_type"),
   target = c("circle", "nonLinear"),
-  use_toy = FALSE
+  use_toy = FALSE,
+  custom_model = NULL
 )
 }
 \arguments{
@@ -23,6 +24,8 @@ if predict circle amplicon or non-linear amplicon.}
 
 \item{use_toy}{if \code{TRUE}, use a toy model for showing example,
 not for practical use.}
+
+\item{custom_model}{a outer custom xgboost model for prediction.}
 }
 \value{
 a numeric vector representing prob.

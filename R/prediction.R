@@ -8,6 +8,7 @@
 #' if predict circle amplicon or non-linear amplicon.
 #' @param use_toy if `TRUE`, use a toy model for showing example,
 #' not for practical use.
+#' @param custom_model a outer custom xgboost model for prediction.
 #'
 #' @return a numeric vector representing prob.
 #' @importFrom stats predict
@@ -22,7 +23,8 @@
 gcap.runPrediction <- function(data,
                                feature = c("with_type", "without_type"),
                                target = c("circle", "nonLinear"),
-                               use_toy = FALSE) {
+                               use_toy = FALSE,
+                               custom_model = NULL) {
   feature <- match.arg(feature)
   target <- match.arg(target)
 
@@ -37,34 +39,39 @@ gcap.runPrediction <- function(data,
       )
     )
   } else {
-    if (feature == "with_type" && target == "circle") {
-      model <- readRDS(
-        system.file(
-          "extdata", "toy_model.rds",
-          package = "gcap", mustWork = TRUE
-        )
-      )
-    } else if (feature == "without_type" && target == "circle") {
-      model <- readRDS(
-        system.file(
-          "extdata", "toy_model.rds",
-          package = "gcap", mustWork = TRUE
-        )
-      )
-    } else if (feature == "with_type" && target == "nonLinear") {
-      model <- readRDS(
-        system.file(
-          "extdata", "toy_model.rds",
-          package = "gcap", mustWork = TRUE
-        )
-      )
+    if (!is.null(custom_model)) {
+      lg$info("a custom model is selected from user input")
+      model <- custom_model
     } else {
-      model <- readRDS(
-        system.file(
-          "extdata", "toy_model.rds",
-          package = "gcap", mustWork = TRUE
+      if (feature == "with_type" && target == "circle") {
+        model <- readRDS(
+          system.file(
+            "extdata", "toy_model.rds",
+            package = "gcap", mustWork = TRUE
+          )
         )
-      )
+      } else if (feature == "without_type" && target == "circle") {
+        model <- readRDS(
+          system.file(
+            "extdata", "toy_model.rds",
+            package = "gcap", mustWork = TRUE
+          )
+        )
+      } else if (feature == "with_type" && target == "nonLinear") {
+        model <- readRDS(
+          system.file(
+            "extdata", "toy_model.rds",
+            package = "gcap", mustWork = TRUE
+          )
+        )
+      } else {
+        model <- readRDS(
+          system.file(
+            "extdata", "toy_model.rds",
+            package = "gcap", mustWork = TRUE
+          )
+        )
+      }
     }
   }
 
