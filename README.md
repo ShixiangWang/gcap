@@ -48,8 +48,8 @@ remotes::install_github("ShixiangWang/gcap")
 
 ### Pipeline
 
-- for one tumor-normal pair, you can refer to [one-pair.R](test-workflow/one-pair.R).
-- for multiple tumor-normal pairs, you can refer to [two-pair.R](test-workflow/two-pair.R).
+- for one tumor-normal pair, you can refer to [one-pair.R](https://github.com/ShixiangWang/gcap/blob/master/test-workflow/one-pair.R).
+- for multiple tumor-normal pairs, you can refer to [two-pair.R](https://github.com/ShixiangWang/gcap/blob/master/test-workflow/two-pairs.R).
 
 ### Functions
 
