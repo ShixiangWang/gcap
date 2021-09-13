@@ -10,3 +10,6 @@ Makefile
 # Python packages
 gcap.py
 .pytest_cache
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

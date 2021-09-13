@@ -1,0 +1,29 @@
+template:
+  params:
+    bootswatch: united
+destination: docs
+
+authors:
+  Shixiang Wang:
+    href: https://orcid.org/0000-0001-9855-7357
+reference:
+  - title: Workflow
+    desc: Pipeline for implementing end-to-end analysis
+    contents:
+    - gcap.workflow
+  - title: Analysis Wrapper
+    desc: Core build block for constructing pipeline
+    contents:
+    - gcap.runASCAT
+    - gcap.runBuildflow
+    - gcap.runPrediction
+  - title: Individual Analysis Modules
+    desc: Individual data processing and analysis functions
+    contents:
+    - gcap.extractFeatures
+    - gcap.collapse2Genes
+    - get_auc
+  - title: Datasets
+    desc: Builtin datasets
+    contents:
+    - ec

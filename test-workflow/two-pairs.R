@@ -17,10 +17,10 @@ id <- data$pair_id_uniq
 library(gcap)
 
 gcap::gcap.workflow(
-  tumourseqfile = tfile, 
+  tumourseqfile = tfile,
   normalseqfile = nfile,
-  tumourname = tn, 
-  normalname = nn, 
+  tumourname = tn,
+  normalname = nn,
   jobname = id,
   extra_info = data.frame(
     sample = id,
@@ -34,5 +34,16 @@ gcap::gcap.workflow(
   use_toy = TRUE, # use builtin toy model for prediction
   outdir = "~/proj/gcap/test-workflow/result",
   result_file = "test_gcap_workflow_on_two_cases_with_type.csv",
+  allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
+  g1000allelesprefix = file.path(
+    "~/data/snp/1000G_loci_hg38",
+    "1kg.phase3.v5a_GRCh38nounref_allele_index_chr"
+  ),
+  g1000lociprefix = file.path(
+    "~/data/snp/1000G_loci_hg38",
+    "1kg.phase3.v5a_GRCh38nounref_loci_chrstring_chr"
+  ),
+  GCcontentfile = "~/data/snp/GC_correction_hg38.txt",
+  replictimingfile = "~/data/snp/RT_correction_hg38.txt",
   skip_finished_ASCAT = TRUE
 )

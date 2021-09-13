@@ -65,6 +65,11 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   if (is.character(extra_info) && file.exists(extra_info)) {
     extra_info <- data.table::fread(extra_info, header = TRUE)
   }
+  totalT <- parallel::detectCores()
+  if (nthreads > totalT) {
+    lg$info("{nthreads} threads are set but only {totalT} cores are available, reset it to {totalT}")
+    nthreads <- totalT
+  }
 
   gcap.runASCAT(
     tumourseqfile,
