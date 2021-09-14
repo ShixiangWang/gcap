@@ -18,7 +18,7 @@ from <https://github.com/shixiangwang/ascat/tree/v3.0>.
 
 We recommend all users directly download the reference files from the links below:
 
-- [for hg38 genome build](https://ora.ox.ac.uk/objects/uuid:08e24957-7e76-438a-bd38-66c48008cf52) - [**Zenodo mirror**](https://zenodo.org/record/5488942) (**the files are used and tested in our study**)
+- [for hg38 genome build](https://ora.ox.ac.uk/objects/uuid:08e24957-7e76-438a-bd38-66c48008cf52) - [<**Zenodo mirror**>](https://zenodo.org/record/5488942) (**the files are used and tested in our study**)
 - [for hg19 genome build](https://ora.ox.ac.uk/objects/uuid:2c1fec09-a504-49ab-9ce9-3f17bac531bc)
 
 ### Install softwares
