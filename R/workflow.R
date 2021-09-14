@@ -138,10 +138,7 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   for (f in feature) {
     for (t in target) {
       model_input[[paste0("pred_", t, "_", f)]] <- gcap.runPrediction(
-        model_input,
-        feature,
-        target,
-        use_toy = TRUE
+        model_input, f, t, use_toy = use_toy
       )
     }
   }
