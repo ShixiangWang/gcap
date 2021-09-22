@@ -10,6 +10,10 @@ ec <- data[idx, ]
 ec <- data.table::as.data.table(ec)
 ec$y_nonLinear <- NULL
 
+hg38 <- readRDS("inst/extdata/hg38_target_genes.rds")
+set.seed(2021)
+ec$gene_id <- sample(hg38$gene_id, 2020)
+
 usethis::use_data(ec, overwrite = TRUE)
 
 # dir.create("inst/extdata", recursive = TRUE)
