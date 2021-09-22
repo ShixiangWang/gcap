@@ -50,15 +50,50 @@ gcap.runScoring <- function(data, cutoff = 0.9,
   # Calculate burden (per Mb)
   scs_burden <- paste0(scs, "_burden")
   dt_burden <- data[, lapply(scs2, function(x) {
-    print(x)
-    calc_burden(.SD[, c(x, "gene_id"), with = FALSE])
-    sum(rnorm(nrow(.SD)))
+    calc_burden(.SD[, c(x, "gene_id"), with = FALSE], genome_build)
   }), by = "sample"]
+  colnames(dt_burden)[-1] <- scs_burden
 
-  # Calculate agglomeration index
-  scs_agglomeration <- paste0(scs, "_agglomeration")
+  # Calculate clusters
+  scs_clusters <- paste0(scs, "_clusters")
+  dt_clusters <- data[, lapply(scs2, function(x) {
+    calc_clusters(.SD[, c(x, "gene_id"), with = FALSE], genome_build)
+  }), by = "sample"]
+  colnames(dt_clusters)[-1] <- scs_clusters
+
+  mergeDTs(list(dt_load, dt_burden, dt_clusters), by = "sample")
 }
 
-calc_burden <- function(dt) {
+calc_burden <- function(dt, genome_build) {
+  dt <- dt[dt[[1]] == 1L]
+  if (nrow(dt) > 0) {
+    ref_file <- system.file(
+      "extdata", paste0(genome_build, "_target_genes.rds"),
+      package = "gcap", mustWork = TRUE
+    )
+    y <- readRDS(ref_file)
+    colnames(y)[1:3] <- c("chr", "start", "end")
+    y <- merge(dt, y, by = "gene_id", all.x = TRUE)
+    y[, len := end - start + 1L]
+    sum(y$len / 1e6)
+  } else {
+    0
+  }
+}
 
+calc_clusters <- function(dt, genome_build) {
+  dt <- dt[dt[[1]] == 1L]
+  if (nrow(dt) > 0) {
+    ref_file <- system.file(
+      "extdata", paste0(genome_build, "_target_genes.rds"),
+      package = "gcap", mustWork = TRUE
+    )
+    y <- readRDS(ref_file)
+    colnames(y)[1:3] <- c("chr", "start", "end")
+    y <- merge(dt, y, by = "gene_id", all.x = TRUE)
+    # calculate the distance
+
+  } else {
+    0
+  }
 }
