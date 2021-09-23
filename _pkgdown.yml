@@ -17,6 +17,7 @@ reference:
     - gcap.runASCAT
     - gcap.runBuildflow
     - gcap.runPrediction
+    - gcap.runScoring
   - title: Individual Analysis Modules
     desc: Individual data processing and analysis functions
     contents:

@@ -21,10 +21,12 @@ Depends:
     sigminer (>= 2.0.5)
 Imports:
     cli,
+    Rcpp,
     glue,
     lgr,
     magrittr,
     mltools,
+    stats,
     uuid,
     xgboost
 Suggests: 
@@ -40,3 +42,5 @@ LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxytest::testthat_roclet"))
 RoxygenNote: 7.1.1
+LinkingTo: 
+    Rcpp

@@ -1,23 +1,28 @@
 #' Quantify sample-level ecDNA measueres
 #'
+#' @inheritParams gcap.collapse2Genes
 #' @param data a `data.table` containing result from [gcap.runPrediction].
 #' The column storing prediction result must start with `pred`.
 #' @param cutoff a cutoff for converting prob into `0/1` value.
-#'
-#' @return a `data.frame`
+#' @return a `data.table`.
+#' - `*_load` for number of gene affected.
+#' - `*_burden` for size of genome (per Mb) affected.
+#' - `*_clusters` for number of region affected by clustering
+#' distance with hard cutoff `1e6` (i.e., 1Mb). For genes from different
+#' chromosomes, the distance set to `1e7` (i.e., 10Mb).
 #' @export
 #'
 #' @examples
 #' data("ec")
 #' ec2 <- ec
 #' ec2$pred <- gcap.runPrediction(ec)
+#' score <- gcap.runScoring(ec2)
+#' score
 #' @testexamples
-#'
+#' expect_equal(nrow(score), 1L)
 gcap.runScoring <- function(data, cutoff = 0.9,
-                            measures = c("load", "burden", "agglomeration"),
                             genome_build = c("hg38", "hg19")) {
   stopifnot(is.data.frame(data))
-  measures <- match.arg(measures, several.ok = TRUE)
   genome_build <- match.arg(genome_build)
   lg <- set_logger()
 
@@ -43,24 +48,25 @@ gcap.runScoring <- function(data, cutoff = 0.9,
     data[[scs2[i]]] <- ifelse(data[[scs[i]]] > cutoff, 1L, 0L)
   }
 
-  # Calculate load
+  lg$info("calculating load")
   dt_load <- data[,  lapply(.SD, sum), .SDcols = scs2, by = "sample"]
   colnames(dt_load) <- sub("binary", "load", colnames(dt_load))
 
-  # Calculate burden (per Mb)
+  lg$info("calculating burden")
   scs_burden <- paste0(scs, "_burden")
   dt_burden <- data[, lapply(scs2, function(x) {
     calc_burden(.SD[, c(x, "gene_id"), with = FALSE], genome_build)
   }), by = "sample"]
   colnames(dt_burden)[-1] <- scs_burden
 
-  # Calculate clusters
+  lg$info("calculating clusters based on distance from gene center with cutoff 1e6-1e5")
   scs_clusters <- paste0(scs, "_clusters")
   dt_clusters <- data[, lapply(scs2, function(x) {
     calc_clusters(.SD[, c(x, "gene_id"), with = FALSE], genome_build)
   }), by = "sample"]
   colnames(dt_clusters)[-1] <- scs_clusters
 
+  lg$info("merging and outputing final data")
   mergeDTs(list(dt_load, dt_burden, dt_clusters), by = "sample")
 }
 
@@ -92,8 +98,20 @@ calc_clusters <- function(dt, genome_build) {
     colnames(y)[1:3] <- c("chr", "start", "end")
     y <- merge(dt, y, by = "gene_id", all.x = TRUE)
     # calculate the distance
-
+    y$chr <- gsub("X", "23", y$chr, ignore.case = TRUE)
+    y$chr <- gsub("Y", "24", y$chr, ignore.case = TRUE)
+    y$chr <- as.integer(gsub("chr", "", y$chr))
+    y$center <- round((y$end - y$start) / 2)
+    y <- na.omit(as.matrix(y[, .(chr, center)]))
+    if (nrow(y) < 2) {
+      nrow(y)
+    } else {
+      dst <- calc_dist(y)
+      length(table(stats::cutree(stats::hclust(stats::as.dist(dst), method = "average"), h = 1e6)))
+    }
   } else {
     0
   }
 }
+
+
