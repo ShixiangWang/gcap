@@ -21,11 +21,11 @@ Depends:
     sigminer (>= 2.0.5)
 Imports:
     cli,
-    Rcpp,
     glue,
     lgr,
     magrittr,
     mltools,
+    Rcpp,
     stats,
     uuid,
     xgboost
@@ -33,8 +33,10 @@ Suggests:
     BiocManager,
     PRROC,
     testthat (>= 3.0.0)
+LinkingTo: 
+    Rcpp
 Remotes: 
-    github::ShixiangWang/ascat/ASCAT@v3.0
+    github::ShixiangWang/ascat/ASCAT@v3-for-gcap-v1
 biocViews:
 Config/testthat/edition: 3
 Encoding: UTF-8
@@ -42,5 +44,3 @@ LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxytest::testthat_roclet"))
 RoxygenNote: 7.1.1
-LinkingTo: 
-    Rcpp
