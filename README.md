@@ -24,18 +24,21 @@ We recommend all users directly download the reference files from the links belo
 ### Install softwares
 
 [**alleleCount**](https://github.com/cancerit/alleleCount) is required to run **ASCAT** on WES bam data,
-if you haven't installed [**conda**] or [**miniconda**], please install firstly,
+if you haven't installed [**conda**](https://docs.conda.io/en/latest/) or [**miniconda**](https://docs.conda.io/en/latest/miniconda.html), please install firstly,
 then install the **alleleCount** in terminal with:
 
 ```bash
 conda create -n cancerit -c bioconda cancerit-allelecount
 ```
 
-Install **ASCAT** v3.0 in R console from GitHub with:
+> NOTE: **gcap** set the default **alleleCount** as the `~/miniconda3/envs/cancerit/bin/alleleCounter`,
+if you use **conda** or other approaches, please set the path when you use corresponding functions.
+
+Install **ASCAT** v3.0 (modified and adapted for GCAP workflow in HPC) in R console from GitHub with:
 
 ```r
 # this is a fork version ASCAT
-remotes::install_github("ShixiangWang/ascat@v3.0", subdir = "ASCAT")
+remotes::install_github("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT")
 ```
 
 Install **gcap** in R console from GitHub with:
