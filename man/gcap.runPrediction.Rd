@@ -6,7 +6,7 @@
 \usage{
 gcap.runPrediction(
   data,
-  feature = c("with_type", "without_type"),
+  feature = c("without_type", "with_type"),
   target = c("circle", "nonLinear"),
   use_toy = FALSE,
   custom_model = NULL
@@ -35,6 +35,6 @@ Run gene-level amplicon prediction
 }
 \examples{
 data("ec")
-y_pred <- gcap.runPrediction(ec, use_toy = TRUE)
+y_pred <- gcap.runPrediction(ec)
 y_pred
 }

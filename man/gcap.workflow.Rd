@@ -13,7 +13,7 @@ gcap.workflow(
   extra_info,
   include_type = FALSE,
   genome_build = c("hg38", "hg19"),
-  feature = c("with_type", "without_type"),
+  feature = c("without_type", "with_type"),
   target = c("circle", "nonLinear"),
   use_toy = FALSE,
   outdir = getwd(),

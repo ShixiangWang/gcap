@@ -5,7 +5,7 @@
 test_that("Function gcap.runPrediction() @ L23", {
   
   data("ec")
-  y_pred <- gcap.runPrediction(ec, use_toy = TRUE)
+  y_pred <- gcap.runPrediction(ec)
   y_pred
   expect_equal(length(y_pred), 2020L)
 })
