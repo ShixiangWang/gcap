@@ -4,7 +4,7 @@
 \alias{gcap.runScoring}
 \title{Quantify sample-level ecDNA measueres}
 \usage{
-gcap.runScoring(data, cutoff = 0.9, genome_build = c("hg38", "hg19"))
+gcap.runScoring(data, cutoff = 0.5, genome_build = c("hg38", "hg19"))
 }
 \arguments{
 \item{data}{a \code{data.table} containing result from \link{gcap.runPrediction}.
