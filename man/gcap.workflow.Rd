@@ -15,7 +15,7 @@ gcap.workflow(
   genome_build = c("hg38", "hg19"),
   feature = "without_type",
   target = c("circle", "nonLinear"),
-  prob_cutoff = 0.9,
+  prob_cutoff = 0.5,
   use_toy = FALSE,
   outdir = getwd(),
   result_file = paste0("gcap_prediction_", uuid::UUIDgenerate(TRUE), ".csv"),
