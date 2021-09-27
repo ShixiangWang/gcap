@@ -49,7 +49,7 @@ gcap.runScoring <- function(data, cutoff = 0.5,
   }
 
   lg$info("calculating load")
-  dt_load <- data[,  lapply(.SD, sum), .SDcols = scs2, by = "sample"]
+  dt_load <- data[, lapply(.SD, sum), .SDcols = scs2, by = "sample"]
   colnames(dt_load) <- sub("binary", "load", colnames(dt_load))
 
   lg$info("calculating burden")
@@ -113,5 +113,3 @@ calc_clusters <- function(dt, genome_build) {
     0
   }
 }
-
-

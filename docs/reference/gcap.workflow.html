@@ -129,7 +129,6 @@
   feature <span class='op'>=</span> <span class='st'>"without_type"</span>,
   target <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"circle"</span>, <span class='st'>"nonLinear"</span><span class='op'>)</span>,
   prob_cutoff <span class='op'>=</span> <span class='fl'>0.5</span>,
-  use_toy <span class='op'>=</span> <span class='cn'>FALSE</span>,
   outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>,
   result_file_prefix <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"gcap_"</span>, <span class='fu'>uuid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/uuid/man/UUIDgenerate.html'>UUIDgenerate</a></span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>,
   allelecounter_exe <span class='op'>=</span> <span class='st'>"~/miniconda3/envs/cancerit/bin/alleleCounter"</span>,
@@ -205,11 +204,6 @@ amplicon or non-linear amplicon. <strong>Can be one or both</strong>.</p></td>
       <th>prob_cutoff</th>
       <td><p>a value in <code>[0-1]</code> to determine the cutoff for labeling
 response.</p></td>
-    </tr>
-    <tr>
-      <th>use_toy</th>
-      <td><p>if <code>TRUE</code>, use a toy model for showing example,
-not for practical use.</p></td>
     </tr>
     <tr>
       <th>outdir</th>

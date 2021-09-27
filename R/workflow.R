@@ -27,7 +27,6 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
                           feature = "without_type",
                           target = c("circle", "nonLinear"),
                           prob_cutoff = 0.5,
-                          use_toy = FALSE,
                           outdir = getwd(),
                           result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE)),
                           allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
@@ -141,8 +140,7 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   for (f in feature) {
     for (t in target) {
       model_input[[paste0("pred_", t, "_", f)]] <- gcap.runPrediction(
-        model_input, f, t,
-        use_toy = use_toy
+        model_input, f, t
       )
     }
   }
@@ -163,8 +161,8 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   lg$info(" Done! Thanks for using GCAP workflow")
   lg$info("=======================================")
 
-  list(
+  invisible(list(
     by_gene = model_input,
     by_case = out
-  )
+  ))
 }
