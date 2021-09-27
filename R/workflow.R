@@ -17,7 +17,7 @@
 #' 'age' and 'gender', for including cancer type, check
 #' parameter `include_type`. For gender, should be 'XX' or 'XY',
 #' also could be `0` for 'XX' and `1` for 'XY'.
-#' @return a `data.table` and a file saved to local machine.
+#' @return a list of `data.table` and corresponding files saved to local machine.
 #' @export
 gcap.workflow <- function(tumourseqfile, normalseqfile,
                           tumourname, normalname, jobname = tumourname,
@@ -163,5 +163,8 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   lg$info(" Done! Thanks for using GCAP workflow")
   lg$info("=======================================")
 
-  out
+  list(
+    by_gene = model_input,
+    by_case = out
+  )
 }

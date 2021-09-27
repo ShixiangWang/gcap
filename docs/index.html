@@ -92,15 +92,18 @@
 <div id="install-softwares" class="section level3">
 <h3 class="hasAnchor">
 <a href="#install-softwares" class="anchor"></a>Install softwares</h3>
-<p><a href="https://github.com/cancerit/alleleCount"><strong>alleleCount</strong></a> is required to run <strong>ASCAT</strong> on WES bam data, if you haven’t installed [<strong>conda</strong>] or [<strong>miniconda</strong>], please install firstly, then install the <strong>alleleCount</strong> in terminal with:</p>
+<p><a href="https://github.com/cancerit/alleleCount"><strong>alleleCount</strong></a> is required to run <strong>ASCAT</strong> on WES bam data, if you haven’t installed <a href="https://docs.conda.io/en/latest/"><strong>conda</strong></a> or <a href="https://docs.conda.io/en/latest/miniconda.html"><strong>miniconda</strong></a>, please install firstly, then install the <strong>alleleCount</strong> in terminal with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> cancerit <span class="at">-c</span> bioconda cancerit-allelecount</span></code></pre></div>
-<p>Install <strong>ASCAT</strong> v3.0 in R console from GitHub with:</p>
+<blockquote>
+<p>NOTE: <strong>gcap</strong> set the default <strong>alleleCount</strong> as the <code>~/miniconda3/envs/cancerit/bin/alleleCounter</code>, if you use <strong>conda</strong> or other approaches, please set the path when you use corresponding functions.</p>
+</blockquote>
+<p>Install <strong>ASCAT</strong> v3.0 (modified and adapted for GCAP workflow in HPC) in R console from GitHub with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># this is a fork version ASCAT</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/ascat@v3.0"</span>, subdir <span class="op">=</span> <span class="st">"ASCAT"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/ascat@v3-for-gcap-v1"</span>, subdir <span class="op">=</span> <span class="st">"ASCAT"</span><span class="op">)</span></code></pre></div>
 <p>Install <strong>gcap</strong> in R console from GitHub with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/gcap"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/gcap"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="example" class="section level2">
