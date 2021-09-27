@@ -13,8 +13,9 @@ gcap.workflow(
   extra_info,
   include_type = FALSE,
   genome_build = c("hg38", "hg19"),
-  feature = c("without_type", "with_type"),
+  feature = "without_type",
   target = c("circle", "nonLinear"),
+  prob_cutoff = 0.9,
   use_toy = FALSE,
   outdir = getwd(),
   result_file = paste0("gcap_prediction_", uuid::UUIDgenerate(TRUE), ".csv"),
@@ -64,6 +65,9 @@ includes cancer type or not. \strong{Can be one or both}.}
 
 \item{target}{'circle' and 'nonLinear' to select model if predict circle
 amplicon or non-linear amplicon. \strong{Can be one or both}.}
+
+\item{prob_cutoff}{a value in \verb{[0-1]} to determine the cutoff for labeling
+response.}
 
 \item{use_toy}{if \code{TRUE}, use a toy model for showing example,
 not for practical use.}
