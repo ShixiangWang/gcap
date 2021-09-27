@@ -52,8 +52,8 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
                           skip_finished_ASCAT = FALSE) {
   genome_build <- match.arg(genome_build)
   # support loopping
-  feature <- match.arg(feature, several.ok = TRUE)
-  target <- match.arg(target, several.ok = TRUE)
+  feature <- match.arg(feature, choices = c("with_type", "without_type"), several.ok = TRUE)
+  target <- match.arg(target, choices = c("circle", "nonLinear"), several.ok = TRUE)
 
   lg <- set_logger()
   lg$info("=====================")

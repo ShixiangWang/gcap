@@ -1,9 +1,16 @@
 #!/usr/bin/env Rscript
 # Test GCAP workflow on one tumor-normal pair
 
-data <- na.omit(readr::read_csv("~/proj/ecDNA/data/tcga_wes_pair_info.csv"))
-
-data <- head(data, 1)
+data <- structure(list(
+  case = "TCGA-VD-A8K9", pair_id_uniq = "TCGA-VD-A8K9-01",
+  tumor = "TCGA-VD-A8K9-01", file_name_tumor = "C1760.TCGA-VD-A8K9-01A-11D-A39W-08.1_gdc_realn.bam",
+  normal = "TCGA-VD-A8K9-10", file_name_normal = "C1760.TCGA-VD-A8K9-10A-01D-A39Z-08.2_gdc_realn.bam",
+  type = "Primary Tumor", project = "TCGA-UVM", center = "C1760",
+  file_id_tumor = "964b182c-c84c-45c8-8af6-d81c5327a46c", file_id_normal = "307c987b-87e6-4bc1-9756-2af84b992101"
+), row.names = c(
+  NA,
+  -1L
+), class = c("tbl_df", "tbl", "data.frame"), na.action = structure(c(`2` = 2L), class = "omit"))
 
 raw_data_dir <- "~/data/gdc/wes"
 tfile <- file.path(raw_data_dir, data$file_name_tumor)
@@ -26,11 +33,10 @@ gcap::gcap.workflow(
     age = 60,
     gender = 1, # 1 for XY, 0 for XX. You can also use 'XY' and 'XX'
     type = "COAD"
-  ), # this is not true data
+  ),
   include_type = TRUE,
-  feature = "with_type",
+  feature = c("without_type", "with_type"),
   target = c("circle", "nonLinear"),
-  use_toy = TRUE, # use builtin toy model for prediction
   chrom_names = c(1:22, "X"),
   outdir = "~/proj/gcap/test-workflow/result",
   result_file = "test_gcap_workflow_on_one_case_with_type.csv",
