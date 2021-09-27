@@ -110,6 +110,6 @@ calc_clusters <- function(dt, genome_build) {
       length(table(stats::cutree(stats::hclust(stats::as.dist(dst), method = "average"), h = 1e6)))
     }
   } else {
-    0
+    0L
   }
 }
