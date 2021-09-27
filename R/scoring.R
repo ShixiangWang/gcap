@@ -59,7 +59,7 @@ gcap.runScoring <- function(data, cutoff = 0.5,
   }), by = "sample"]
   colnames(dt_burden)[-1] <- scs_burden
 
-  lg$info("calculating clusters based on distance from gene center with cutoff 1e6-1e5")
+  lg$info("calculating clusters based on distance from gene center with cutoff 1e6")
   scs_clusters <- paste0(scs, "_clusters")
   dt_clusters <- data[, lapply(scs2, function(x) {
     calc_clusters(.SD[, c(x, "gene_id"), with = FALSE], genome_build)

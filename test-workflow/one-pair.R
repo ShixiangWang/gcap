@@ -39,7 +39,7 @@ gcap::gcap.workflow(
   target = c("circle", "nonLinear"),
   chrom_names = c(1:22, "X"),
   outdir = "~/proj/gcap/test-workflow/result",
-  result_file = "test_gcap_workflow_on_one_case_with_type.csv",
+  result_file_prefix = "test_one_case",
   allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
   g1000allelesprefix = file.path(
     "~/data/snp/1000G_loci_hg38",
