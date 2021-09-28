@@ -18,8 +18,10 @@ from <https://github.com/shixiangwang/ascat/tree/v3.0>.
 
 We recommend all users directly download the reference files from the links below:
 
-- [for hg38 genome build](https://ora.ox.ac.uk/objects/uuid:08e24957-7e76-438a-bd38-66c48008cf52) - [<**Zenodo mirror**>](https://zenodo.org/record/5488942) (**the files are used and tested in our study**)
-- [for hg19 genome build](https://ora.ox.ac.uk/objects/uuid:2c1fec09-a504-49ab-9ce9-3f17bac531bc)
+- [Curated reference files for GCAP (WES)](https://zenodo.org/record/5533065)
+
+> The prediction model is built with data on the top of hg38 genome build, so
+hg38 based bam files as input is more recommended.
 
 ### Install softwares
 
@@ -53,6 +55,15 @@ remotes::install_github("ShixiangWang/gcap")
 
 - for one tumor-normal pair, you can refer to [one-pair.R](https://github.com/ShixiangWang/gcap/blob/master/test-workflow/one-pair.R).
 - for multiple tumor-normal pairs, you can refer to [two-pair.R](https://github.com/ShixiangWang/gcap/blob/master/test-workflow/two-pairs.R).
+
+To run **gcap** from bam files, a machine with **at least 80GB RAM** is required for
+the `allelecount` process. If you set multiple threads, please note the parallel
+computation is used in part of the workflow. You should balance the `nthread` setting
+and the computing power your machine provides by yourself.
+
+In our practice, when we want to process multiple cases, set `nthread = 22` and
+directly let **gcap** handle multiple cases (instead of writing a loop yourself) is
+good enough.
 
 ### Functions
 
