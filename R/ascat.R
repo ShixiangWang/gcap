@@ -55,10 +55,10 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
                           penalty = 70,
                           skip_finished_ASCAT = FALSE) {
   stopifnot(all(gender %in% c("XX", "XY")))
+  if (!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
   cwd <- getwd()
   setwd(outdir)
   on.exit(setwd(cwd))
-  if (!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
   if (length(gender) == 1 && length(tumourseqfile) > 1) {
     gender <- rep(gender, length(tumourseqfile))
   }
