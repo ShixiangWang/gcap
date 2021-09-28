@@ -25,6 +25,7 @@ gcap.runPrediction <- function(data,
                                target = c("circle", "nonLinear"),
                                use_toy = FALSE,
                                custom_model = NULL) {
+  stopifnot(data.table::is.data.table(data))
   feature <- match.arg(feature)
   target <- match.arg(target)
 
@@ -44,35 +45,36 @@ gcap.runPrediction <- function(data,
       lg$info("a custom model is selected from user input")
       model <- custom_model
     } else {
-      if (feature == "with_type" && target == "circle") {
-        model <- readRDS(
-          system.file(
-            "extdata", "toy_model.rds",
-            package = "gcap", mustWork = TRUE
-          )
-        )
-      } else if (feature == "without_type" && target == "circle") {
-        model <- readRDS(
-          system.file(
-            "extdata", "final_xgb_model_circle_without_type.rds",
-            package = "gcap", mustWork = TRUE
-          )
-        )
-      } else if (feature == "with_type" && target == "nonLinear") {
-        model <- readRDS(
-          system.file(
-            "extdata", "toy_model.rds",
-            package = "gcap", mustWork = TRUE
-          )
+      if (all(c("age", "gender") %in% colnames(data))) {
+        fl <- c(
+          "final_xgb_model_circle_without_type.rds",
+          "final_xgb_model_circle_with_type.rds",
+          "final_xgb_model_nonLinear_without_type.rds",
+          "final_xgb_model_nonLinear_with_type.rds"
         )
       } else {
-        model <- readRDS(
-          system.file(
-            "extdata", "final_xgb_model_nonLinear_without_type.rds",
-            package = "gcap", mustWork = TRUE
-          )
+        lg$info("without 'age' and 'gender' detected, an alternative model will be used")
+        fl <- c(
+          "final_xgb_model_circle_without_type_rm_cli.rds",
+          "final_xgb_model_circle_with_type_rm_cli.rds",
+          "final_xgb_model_nonLinear_without_type_rm_cli.rds",
+          "final_xgb_model_nonLinear_with_type_rm_cli.rds"
         )
       }
+      names(fl) <- c(
+        "circle-without_type", "circle-with_type",
+        "nonLinear-without_type", "nonLinear-with_type"
+      )
+
+      modfile <- as.character(fl[paste(target, feature, sep = "-")])
+      lg$info("using model file {modfile}")
+
+      model <- readRDS(
+        system.file(
+          "extdata", modfile,
+          package = "gcap", mustWork = TRUE
+        )
+      )
     }
   }
 

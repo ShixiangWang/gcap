@@ -119,7 +119,7 @@
 
     <pre class="usage"><span class='fu'>gcap.collapse2Genes</span><span class='op'>(</span>
   <span class='va'>fts</span>,
-  <span class='va'>extra_info</span>,
+  extra_info <span class='op'>=</span> <span class='cn'>NULL</span>,
   include_type <span class='op'>=</span> <span class='cn'>FALSE</span>,
   genome_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"hg38"</span>, <span class='st'>"hg19"</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
@@ -133,7 +133,7 @@
     </tr>
     <tr>
       <th>extra_info</th>
-      <td><p>a <code>data.frame</code> with 3 columns 'sample',
+      <td><p>(optional) a <code>data.frame</code> with 3 columns 'sample',
 'age' and 'gender', for including cancer type, check
 parameter <code>include_type</code>. For gender, should be 'XX' or 'XY',
 also could be <code>0</code> for 'XX' and <code>1</code> for 'XY'.</p></td>

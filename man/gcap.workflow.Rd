@@ -10,7 +10,7 @@ gcap.workflow(
   tumourname,
   normalname,
   jobname = tumourname,
-  extra_info,
+  extra_info = NULL,
   include_type = FALSE,
   genome_build = c("hg38", "hg19"),
   feature = "without_type",
@@ -47,7 +47,7 @@ gcap.workflow(
 
 \item{jobname}{job name, typically an unique name for a tumor-normal pair.}
 
-\item{extra_info}{a (file containing) \code{data.frame} with 3 columns 'sample',
+\item{extra_info}{(optional) a (file containing) \code{data.frame} with 3 columns 'sample',
 'age' and 'gender', for including cancer type, check
 parameter \code{include_type}. For gender, should be 'XX' or 'XY',
 also could be \code{0} for 'XX' and \code{1} for 'XY'.}

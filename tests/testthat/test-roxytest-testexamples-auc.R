@@ -3,7 +3,6 @@
 # File R/auc.R: @testexamples
 
 test_that("Function get_auc() @ L23", {
-  
   if (require("PRROC")) {
     set.seed(2021)
     auc <- get_auc(sample(1:10, 10), c(rep(0, 5), rep(1, 5)))
@@ -14,4 +13,3 @@ test_that("Function get_auc() @ L23", {
     expect_s3_class(auc, "PRROC")
   }
 })
-

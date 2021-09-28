@@ -3,7 +3,7 @@
 #' @importFrom sigminer get_intersect_size
 #' @inheritParams gcap.extractFeatures
 #' @param fts (modified) result from [gcap.extractFeatures()]
-#' @param extra_info a `data.frame` with 3 columns 'sample',
+#' @param extra_info (optional) a `data.frame` with 3 columns 'sample',
 #' 'age' and 'gender', for including cancer type, check
 #' parameter `include_type`. For gender, should be 'XX' or 'XY',
 #' also could be `0` for 'XX' and `1` for 'XY'.
@@ -16,52 +16,57 @@
 #' @return a `data.table`.
 #' @export
 gcap.collapse2Genes <- function(fts,
-                                extra_info,
+                                extra_info = NULL,
                                 include_type = FALSE,
                                 genome_build = c("hg38", "hg19")) {
   stopifnot(
     is.list(fts),
-    all.equal(names(fts), c("fts_sample", "fts_region")),
-    is.data.frame(extra_info),
-    if (include_type) {
-      all.equal(colnames(extra_info), c("sample", "age", "gender", "type"))
-    } else {
-      all.equal(colnames(extra_info), c("sample", "age", "gender"))
-    }
+    all.equal(names(fts), c("fts_sample", "fts_region"))
   )
 
   genome_build <- match.arg(genome_build)
   lg <- set_logger()
   lg$info("please make sure the first 3 columns of `fts$fts_region` are for chr, start, end.")
 
-  extra_info <- as.data.table(extra_info)
-  if (include_type) {
-    lg$info("one-hot encoding cancer type")
-    types <- c(
-      "BLCA", "BRCA", "CESC", "COAD", "ESCA", "GBM", "HNSC",
-      "KICH", "KIRP", "LGG", "LIHC", "LUAD", "LUSC",
-      "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM"
+  if (!is.null(extra_info)) {
+    stopifnot(
+      is.data.frame(extra_info),
+      if (include_type) {
+        all.equal(colnames(extra_info), c("sample", "age", "gender", "type"))
+      } else {
+        all.equal(colnames(extra_info), c("sample", "age", "gender"))
+      }
     )
-    lg$info("valid cancer types: {paste(types, collapse=',')}")
-    extra_info$type <- factor(
-      as.character(extra_info$type),
-      levels = types
-    )
-    extra_info <- mltools::one_hot(extra_info, cols = "type")
-  }
 
-  lg$info("checking data type for age column")
-  if (!is.numeric(extra_info$age)) {
-    lg$warn("non numeric type found, transforming it")
-    extra_info[, age := as.numeric(age)]
-  }
-  lg$info("checking data type for gender column")
-  if (!is.numeric(extra_info$gender)) {
-    lg$warn("non numeric type found, transforming XY to 1, otherwise 0")
-    extra_info[, gender := ifelse(
-      gender == "XY",
-      1L, 0L
-    )]
+    extra_info <- as.data.table(extra_info)
+    if (include_type) {
+      lg$info("one-hot encoding cancer type")
+      types <- c(
+        "BLCA", "BRCA", "CESC", "COAD", "ESCA", "GBM", "HNSC",
+        "KICH", "KIRP", "LGG", "LIHC", "LUAD", "LUSC",
+        "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM"
+      )
+      lg$info("valid cancer types: {paste(types, collapse=',')}")
+      extra_info$type <- factor(
+        as.character(extra_info$type),
+        levels = types
+      )
+      extra_info <- mltools::one_hot(extra_info, cols = "type")
+    }
+
+    lg$info("checking data type for age column")
+    if (!is.numeric(extra_info$age)) {
+      lg$warn("non numeric type found, transforming it")
+      extra_info[, age := as.numeric(age)]
+    }
+    lg$info("checking data type for gender column")
+    if (!is.numeric(extra_info$gender)) {
+      lg$warn("non numeric type found, transforming XY to 1, otherwise 0")
+      extra_info[, gender := ifelse(
+        gender == "XY",
+        1L, 0L
+      )]
+    }
   }
 
   lg$info("collapsing region-level features to gene-level")
@@ -70,8 +75,10 @@ gcap.collapse2Genes <- function(fts,
   lg$info("merging gene-level and sample-level data")
   dt <- merge(dt, fts$fts_sample, by = "sample", all.x = TRUE)
 
-  lg$info("merging data and extra info")
-  dt <- merge(dt, extra_info, by = "sample", all.x = TRUE)
+  if (!is.null(extra_info)) {
+    lg$info("merging data and extra info")
+    dt <- merge(dt, extra_info, by = "sample", all.x = TRUE)
+  }
 
   lg$info("merging data and prior amplicon frequency data")
   amp_freq <- readRDS(
@@ -91,7 +98,6 @@ gcap.collapse2Genes <- function(fts,
   lg$info("done")
   dt
 }
-
 
 collapse_to_genes <- function(x, genome_build = "hg38") {
   lg <- set_logger()

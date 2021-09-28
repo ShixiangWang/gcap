@@ -15,7 +15,7 @@ gcap.runBuildflow(
 \item{ascat_files}{a list of file path.
 Typically the result of \code{\link[=gcap.runASCAT]{gcap.runASCAT()}}}
 
-\item{extra_info}{a \code{data.frame} with 3 columns 'sample',
+\item{extra_info}{(optional) a \code{data.frame} with 3 columns 'sample',
 'age' and 'gender', for including cancer type, check
 parameter \code{include_type}. For gender, should be 'XX' or 'XY',
 also could be \code{0} for 'XX' and \code{1} for 'XY'.}

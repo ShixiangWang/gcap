@@ -6,7 +6,7 @@
 \usage{
 gcap.collapse2Genes(
   fts,
-  extra_info,
+  extra_info = NULL,
   include_type = FALSE,
   genome_build = c("hg38", "hg19")
 )
@@ -14,7 +14,7 @@ gcap.collapse2Genes(
 \arguments{
 \item{fts}{(modified) result from \code{\link[=gcap.extractFeatures]{gcap.extractFeatures()}}}
 
-\item{extra_info}{a \code{data.frame} with 3 columns 'sample',
+\item{extra_info}{(optional) a \code{data.frame} with 3 columns 'sample',
 'age' and 'gender', for including cancer type, check
 parameter \code{include_type}. For gender, should be 'XX' or 'XY',
 also could be \code{0} for 'XX' and \code{1} for 'XY'.}
