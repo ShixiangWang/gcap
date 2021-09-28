@@ -118,6 +118,7 @@
 <li>for multiple tumor-normal pairs, you can refer to <a href="https://github.com/ShixiangWang/gcap/blob/master/test-workflow/two-pairs.R">two-pair.R</a>.</li>
 </ul>
 <p>To run <strong>gcap</strong> from bam files, a machine with <strong>at least 80GB RAM</strong> is required for the <code>allelecount</code> process. If you set multiple threads, please note the parallel computation is used in part of the workflow. You should balance the <code>nthread</code> setting and the computing power your machine provides by yourself.</p>
+<p>It generally takes <code>~0.5h</code> to finish one case (tumor-normal pair).</p>
 <p>In our practice, when we want to process multiple cases, set <code>nthread = 22</code> and directly let <strong>gcap</strong> handle multiple cases (instead of writing a loop yourself) is good enough.</p>
 </div>
 <div id="functions" class="section level3">

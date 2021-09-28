@@ -61,6 +61,8 @@ the `allelecount` process. If you set multiple threads, please note the parallel
 computation is used in part of the workflow. You should balance the `nthread` setting
 and the computing power your machine provides by yourself.
 
+It generally takes `~0.5h` to finish one case (tumor-normal pair).
+
 In our practice, when we want to process multiple cases, set `nthread = 22` and
 directly let **gcap** handle multiple cases (instead of writing a loop yourself) is
 good enough.
