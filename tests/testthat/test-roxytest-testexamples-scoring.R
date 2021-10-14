@@ -3,6 +3,7 @@
 # File R/scoring.R: @testexamples
 
 test_that("Function gcap.runScoring() @ L23", {
+  
   data("ec")
   ec2 <- ec
   ec2$pred <- gcap.runPrediction(ec)
@@ -10,3 +11,4 @@ test_that("Function gcap.runScoring() @ L23", {
   score
   expect_equal(nrow(score), 1L)
 })
+

@@ -20,7 +20,7 @@
 #' score
 #' @testexamples
 #' expect_equal(nrow(score), 1L)
-gcap.runScoring <- function(data, cutoff = 0.5,
+gcap.runScoring <- function(data, cutoff = 0.9,
                             genome_build = c("hg38", "hg19")) {
   stopifnot(is.data.frame(data))
   genome_build <- match.arg(genome_build)
