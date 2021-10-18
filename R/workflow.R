@@ -122,25 +122,18 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
     stop()
   }
 
-  lg$info("========================")
-  lg$info("Step 2: Extract features")
-  lg$info("========================")
+  lg$info("============================================================")
+  lg$info("Step 2: Extract features and collapse features to gene level")
+  lg$info("============================================================")
 
-  fts <- gcap.extractFeatures(
+  model_input <- gcap.runBuildflow(
     ascat_files,
-    genome_build = genome_build
-  )
-
-  lg$info("=======================================")
-  lg$info("Step 3: Collapse features to gene level")
-  lg$info("=======================================")
-  model_input <- gcap.collapse2Genes(
-    fts, extra_info,
-    include_type, genome_build
-  )
+    extra_info,
+    include_type,
+    genome_build)
 
   lg$info("=======================")
-  lg$info("Step 4: Run prediction")
+  lg$info("Step 3: Run prediction")
   lg$info("=======================")
   for (f in feature) {
     for (t in target) {
@@ -154,7 +147,7 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   data.table::fwrite(model_input, file = save_file)
 
   lg$info("=======================")
-  lg$info("Step 5: Run scoring")
+  lg$info("Step 4: Run scoring")
   lg$info("=======================")
   out <- gcap.runScoring(model_input, prob_cutoff, genome_build)
 
