@@ -13,7 +13,6 @@ gcap.workflow(
   extra_info = NULL,
   include_type = FALSE,
   genome_build = c("hg38", "hg19"),
-  feature = "without_type",
   target = c("circle", "nonLinear"),
   prob_cutoff = 0.9,
   outdir = getwd(),
@@ -58,9 +57,6 @@ type includes \code{c("BLCA", "BRCA", "CESC", "COAD", "ESCA", "GBM", "HNSC", "KI
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
-
-\item{feature}{'with_type' and 'without_type' to select model whether
-includes cancer type or not. \strong{Can be one or both}.}
 
 \item{target}{'circle' and 'nonLinear' to select model if predict circle
 amplicon or non-linear amplicon. \strong{Can be one or both}.}

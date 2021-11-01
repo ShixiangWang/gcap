@@ -6,7 +6,6 @@
 \usage{
 gcap.runPrediction(
   data,
-  feature = c("without_type", "with_type"),
   target = c("circle", "nonLinear"),
   use_toy = FALSE,
   custom_model = NULL
@@ -15,9 +14,6 @@ gcap.runPrediction(
 \arguments{
 \item{data}{data to predict (\code{data.frame}/\code{matrix} format), from
 \code{\link[=gcap.collapse2Genes]{gcap.collapse2Genes()}} in general.}
-
-\item{feature}{one of 'with_type' and 'without_type' to select
-model whether includes cancer type or not.}
 
 \item{target}{one of 'circle' and 'nonLinear' to select model
 if predict circle amplicon or non-linear amplicon.}

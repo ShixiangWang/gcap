@@ -119,7 +119,6 @@
 
     <pre class="usage"><span class='fu'>gcap.runPrediction</span><span class='op'>(</span>
   <span class='va'>data</span>,
-  feature <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"without_type"</span>, <span class='st'>"with_type"</span><span class='op'>)</span>,
   target <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"circle"</span>, <span class='st'>"nonLinear"</span><span class='op'>)</span>,
   use_toy <span class='op'>=</span> <span class='cn'>FALSE</span>,
   custom_model <span class='op'>=</span> <span class='cn'>NULL</span>
@@ -132,11 +131,6 @@
       <th>data</th>
       <td><p>data to predict (<code>data.frame</code>/<code>matrix</code> format), from
 <code><a href='gcap.collapse2Genes.html'>gcap.collapse2Genes()</a></code> in general.</p></td>
-    </tr>
-    <tr>
-      <th>feature</th>
-      <td><p>one of 'with_type' and 'without_type' to select
-model whether includes cancer type or not.</p></td>
     </tr>
     <tr>
       <th>target</th>

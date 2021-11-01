@@ -126,7 +126,6 @@
   extra_info <span class='op'>=</span> <span class='cn'>NULL</span>,
   include_type <span class='op'>=</span> <span class='cn'>FALSE</span>,
   genome_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"hg38"</span>, <span class='st'>"hg19"</span><span class='op'>)</span>,
-  feature <span class='op'>=</span> <span class='st'>"without_type"</span>,
   target <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"circle"</span>, <span class='st'>"nonLinear"</span><span class='op'>)</span>,
   prob_cutoff <span class='op'>=</span> <span class='fl'>0.9</span>,
   outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>,
@@ -189,11 +188,6 @@ type includes <code><a href='https://rdrr.io/r/base/c.html'>c("BLCA", "BRCA", "C
       <th>genome_build</th>
       <td><p>genome build version, should be
 one of 'hg38', 'hg19'.</p></td>
-    </tr>
-    <tr>
-      <th>feature</th>
-      <td><p>'with_type' and 'without_type' to select model whether
-includes cancer type or not. <strong>Can be one or both</strong>.</p></td>
     </tr>
     <tr>
       <th>target</th>

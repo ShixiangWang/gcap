@@ -4,8 +4,6 @@
 #' @inheritParams gcap.extractFeatures
 #' @inheritParams gcap.collapse2Genes
 #' @inheritParams gcap.runPrediction
-#' @param feature 'with_type' and 'without_type' to select model whether
-#' includes cancer type or not. **Can be one or both**.
 #' @param target 'circle' and 'nonLinear' to select model if predict circle
 #' amplicon or non-linear amplicon. **Can be one or both**.
 #' @param prob_cutoff a value in `[0-1]` to determine the cutoff for labeling
@@ -25,7 +23,6 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
                           extra_info = NULL,
                           include_type = FALSE,
                           genome_build = c("hg38", "hg19"),
-                          feature = "without_type",
                           target = c("circle", "nonLinear"),
                           prob_cutoff = 0.9,
                           outdir = getwd(),
@@ -51,8 +48,6 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
                           penalty = 70,
                           skip_finished_ASCAT = FALSE) {
   genome_build <- match.arg(genome_build)
-  # support loopping
-  feature <- match.arg(feature, choices = c("with_type", "without_type"), several.ok = TRUE)
   target <- match.arg(target, choices = c("circle", "nonLinear"), several.ok = TRUE)
 
   lg <- set_logger()
@@ -135,12 +130,10 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   lg$info("=======================")
   lg$info("Step 3: Run prediction")
   lg$info("=======================")
-  for (f in feature) {
-    for (t in target) {
-      model_input[[paste0("pred_", t, "_", f)]] <- gcap.runPrediction(
-        model_input, f, t
-      )
-    }
+  for (t in target) {
+    model_input[[paste0("pred_", t)]] <- gcap.runPrediction(
+      model_input, target = t
+    )
   }
   save_file <- file.path(outdir, paste0(result_file_prefix, "_by_gene.csv"))
   lg$info("Saving result to {save_file}")
