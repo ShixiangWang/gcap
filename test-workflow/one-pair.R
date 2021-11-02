@@ -31,11 +31,8 @@ gcap::gcap.workflow(
   extra_info = data.frame(
     sample = id,
     age = 60,
-    gender = 1, # 1 for XY, 0 for XX. You can also use 'XY' and 'XX'
-    type = "COAD"
+    gender = 1 # 1 for XY, 0 for XX. You can also use 'XY' and 'XX'
   ),
-  include_type = TRUE,
-  feature = c("without_type", "with_type"),
   target = c("circle", "nonLinear"),
   chrom_names = c(1:22, "X"),
   outdir = "~/proj/gcap/test-workflow/result",

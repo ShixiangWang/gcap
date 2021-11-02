@@ -47,11 +47,8 @@ gcap::gcap.workflow(
   extra_info = data.frame(
     sample = id,
     age = c(59, 60),
-    gender = c(0, 1),
-    type = "COAD"
+    gender = c(0, 1)
   ),
-  include_type = TRUE,
-  feature = c("without_type", "with_type"),
   target = c("circle", "nonLinear"),
   outdir = "~/proj/gcap/test-workflow/result",
   result_file_prefix = "test_two_cases",
