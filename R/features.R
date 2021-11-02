@@ -4,44 +4,58 @@
 #' Typically the result of [gcap.runASCAT()]
 #' @param genome_build genome build version, should be
 #' one of 'hg38', 'hg19'.
+#' @param ascn_data if `ascat_files` is missing, an alternative
+#' `data.frame` can be provided for ASCN data along with
+#' purity and ploidy (optional).
 #' @import data.table
 #' @importFrom sigminer read_copynumber_ascat
-#' read_copynumber get_Aneuploidy_score
+#' read_copynumber get_Aneuploidy_score get_cn_ploidy
 #' get_pLOH_score sig_tally sig_fit
 #'
 #' @return a `list`.
 #' @export
 gcap.extractFeatures <- function(ascat_files,
-                                 genome_build = c("hg38", "hg19")) {
+                                 genome_build = c("hg38", "hg19"),
+                                 ascn_data = NULL) {
   genome_build <- match.arg(genome_build)
 
   lg <- set_logger()
-  lg$info("> Extract features from ASCAT results <")
-  lg$info()
 
-  lg$info("reading ASCAT file list")
-  rvlist <- read_copynumber_ascat(ascat_files)
+  if (missing(ascat_files)) {
+    lg$info("> Extract features from input ascn_data<")
+    rvlist <- list()
+    ascn_data <- as.data.table(ascn_data)
+    rvlist$data <- ascn_data[, c("chromosome", "start", "end", "total_cn", "minor_cn", "sample")]
+    if (!"purity" %in% colnames(ascn_data)) ascn_data$purity <- 1
+    if (!"ploidy" %in% colnames(ascn_data)) ascn_data$ploidy <- NA_real_
+    purity_ploidy <- unique(ascn_data[, c("sample", "purity", "ploidy")])
+  } else {
+    lg$info("> Extract features from ASCAT results <")
+    lg$info()
 
-  lg$info("using unique IDs from file names for avoid the sample name repetition")
-  lg$info("back up default sample column to old_sample")
-  rvlist$data <- as.data.table(rvlist$data)
-  rvlist$data[, old_sample := sample]
-  rvlist$data[, sample := sub(".ASCAT.rds", "", source)]
-  ids <- unique(rvlist$data$sample)
-  names(rvlist$purity) <- names(rvlist$ploidy) <- ids
-  rvlist$data$source <- NULL
+    lg$info("reading ASCAT file list")
+    rvlist <- read_copynumber_ascat(ascat_files)
 
-  lg$info("combining purity and ploidy info as data.frame")
-  purity_ploidy <- data.table(
-    sample = ids,
-    purity = as.numeric(rvlist$purity),
-    ploidy = as.numeric(rvlist$ploidy)
-  )
+    lg$info("using unique IDs from file names for avoid the sample name repetition")
+    lg$info("back up default sample column to old_sample")
+    rvlist$data <- as.data.table(rvlist$data)
+    rvlist$data[, old_sample := sample]
+    rvlist$data[, sample := sub(".ASCAT.rds", "", source)]
+    ids <- unique(rvlist$data$sample)
+    names(rvlist$purity) <- names(rvlist$ploidy) <- ids
+    rvlist$data$source <- NULL
 
+    lg$info("combining purity and ploidy info as data.frame")
+    purity_ploidy <- data.table(
+      sample = ids,
+      purity = as.numeric(rvlist$purity),
+      ploidy = as.numeric(rvlist$ploidy)
+    )
+  }
 
   lg$info("generating CopyNumber object in sigminer package")
   cn <- data.table::copy(rvlist$data)
-  cn$old_sample <- NULL
+  if ("old_sample" %in% colnames(cn)) cn$old_sample <- NULL
   cn <- read_copynumber(
     cn,
     seg_cols = colnames(cn)[1:4],
@@ -51,6 +65,14 @@ gcap.extractFeatures <- function(ascat_files,
     add_loh = TRUE,
     loh_min_len = 1e3
   )
+
+  lg$info("estimating ploidy from copy number data")
+  df_ploidy <- get_cn_ploidy(cn)
+  colnames(df_ploidy)[2] <- "ploidy2"
+  lg$info("checking if input data contains ploidy and if there are NAs should be overwritten")
+  purity_ploidy <- merge(purity_ploidy, df_ploidy, by = "sample", all.x = TRUE)
+  purity_ploidy[, ploidy := ifelse(is.na(ploidy), ploidy2, ploidy)]
+  purity_ploidy$ploidy2 <- NULL
 
   lg$info("getting Aneuploidy score")
   # What if ploidy call in ASCAT fail?

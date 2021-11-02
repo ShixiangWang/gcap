@@ -11,6 +11,7 @@ reference:
     desc: Pipeline for implementing end-to-end analysis
     contents:
     - gcap.workflow
+    - gcap.ASCNworkflow
   - title: Analysis Wrapper
     desc: Core build block for constructing pipeline
     contents:
@@ -28,3 +29,4 @@ reference:
     desc: Builtin datasets
     contents:
     - ec
+    - ascn

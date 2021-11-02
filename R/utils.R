@@ -26,6 +26,6 @@ utils::globalVariables(
     "age", "chr", "freq_BFB", "freq_Circular", "freq_HR",
     "freq_Linear", "gender", "gene_id", "i.end", "i.start",
     "intersect_ratio", "intersect_size", "minor_cn", "total_cn",
-    "len", "center"
+    "len", "center", "ploidy2"
   )
 )

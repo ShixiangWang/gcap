@@ -4,7 +4,11 @@
 \alias{gcap.extractFeatures}
 \title{Extract sample and region level features}
 \usage{
-gcap.extractFeatures(ascat_files, genome_build = c("hg38", "hg19"))
+gcap.extractFeatures(
+  ascat_files,
+  genome_build = c("hg38", "hg19"),
+  ascn_data = NULL
+)
 }
 \arguments{
 \item{ascat_files}{a list of file path.
@@ -12,6 +16,10 @@ Typically the result of \code{\link[=gcap.runASCAT]{gcap.runASCAT()}}}
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
+
+\item{ascn_data}{if \code{ascat_files} is missing, an alternative
+\code{data.frame} can be provided for ASCN data along with
+purity and ploidy (optional).}
 }
 \value{
 a \code{list}.

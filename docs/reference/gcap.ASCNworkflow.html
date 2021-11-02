@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GCAP workflow for gene-level amplicon prediction — gcap.workflow • gcap</title>
+<title>GCAP workflow for gene-level amplicon prediction from ASCN input — gcap.ASCNworkflow • gcap</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="GCAP workflow for gene-level amplicon prediction — gcap.workflow" />
-<meta property="og:description" content="GCAP workflow for gene-level amplicon prediction" />
+<meta property="og:title" content="GCAP workflow for gene-level amplicon prediction from ASCN input — gcap.ASCNworkflow" />
+<meta property="og:description" content="Unlike gcap.workflow, this function directly uses the allele-specific
+copy number data along with some extra sample information to infer
+ecDNA genes." />
 
 
 
@@ -111,73 +113,44 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>GCAP workflow for gene-level amplicon prediction</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/gcap/blob/master/R/workflow.R'><code>R/workflow.R</code></a></small>
-    <div class="hidden name"><code>gcap.workflow.Rd</code></div>
+    <h1>GCAP workflow for gene-level amplicon prediction from ASCN input</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/gcap/blob/master/R/ASCNworkflow.R'><code>R/ASCNworkflow.R</code></a></small>
+    <div class="hidden name"><code>gcap.ASCNworkflow.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>GCAP workflow for gene-level amplicon prediction</p>
+    <p>Unlike <a href='gcap.workflow.html'>gcap.workflow</a>, this function directly uses the allele-specific
+copy number data along with some extra sample information to infer
+ecDNA genes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gcap.workflow</span><span class='op'>(</span>
-  <span class='va'>tumourseqfile</span>,
-  <span class='va'>normalseqfile</span>,
-  <span class='va'>tumourname</span>,
-  <span class='va'>normalname</span>,
-  jobname <span class='op'>=</span> <span class='va'>tumourname</span>,
-  extra_info <span class='op'>=</span> <span class='cn'>NULL</span>,
+    <pre class="usage"><span class='fu'>gcap.ASCNworkflow</span><span class='op'>(</span>
+  <span class='va'>data</span>,
   genome_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"hg38"</span>, <span class='st'>"hg19"</span><span class='op'>)</span>,
   target <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"circle"</span>, <span class='st'>"nonLinear"</span><span class='op'>)</span>,
   prob_cutoff <span class='op'>=</span> <span class='fl'>0.9</span>,
   outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>,
-  result_file_prefix <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"gcap_"</span>, <span class='fu'>uuid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/uuid/man/UUIDgenerate.html'>UUIDgenerate</a></span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>,
-  allelecounter_exe <span class='op'>=</span> <span class='st'>"~/miniconda3/envs/cancerit/bin/alleleCounter"</span>,
-  g1000allelesprefix <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='st'>"~/data/snp/1000G_loci_hg38"</span>,
-    <span class='st'>"1kg.phase3.v5a_GRCh38nounref_allele_index_chr"</span><span class='op'>)</span>,
-  g1000lociprefix <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='st'>"~/data/snp/1000G_loci_hg38"</span>,
-    <span class='st'>"1kg.phase3.v5a_GRCh38nounref_loci_chrstring_chr"</span><span class='op'>)</span>,
-  GCcontentfile <span class='op'>=</span> <span class='st'>"~/data/snp/GC_correction_hg38.txt"</span>,
-  replictimingfile <span class='op'>=</span> <span class='st'>"~/data/snp/RT_correction_hg38.txt"</span>,
-  nthreads <span class='op'>=</span> <span class='fl'>22</span>,
-  minCounts <span class='op'>=</span> <span class='fl'>10</span>,
-  BED_file <span class='op'>=</span> <span class='cn'>NA</span>,
-  probloci_file <span class='op'>=</span> <span class='cn'>NA</span>,
-  chrom_names <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>22</span>,
-  min_base_qual <span class='op'>=</span> <span class='fl'>20</span>,
-  min_map_qual <span class='op'>=</span> <span class='fl'>35</span>,
-  penalty <span class='op'>=</span> <span class='fl'>70</span>,
-  skip_finished_ASCAT <span class='op'>=</span> <span class='cn'>TRUE</span>
+  result_file_prefix <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"gcap_"</span>, <span class='fu'>uuid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/uuid/man/UUIDgenerate.html'>UUIDgenerate</a></span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>tumourseqfile</th>
-      <td><p>Full path to the tumour BAM file.</p></td>
-    </tr>
-    <tr>
-      <th>normalseqfile</th>
-      <td><p>Full path to the normal BAM file.</p></td>
-    </tr>
-    <tr>
-      <th>tumourname</th>
-      <td><p>Identifier to be used for tumour output files.</p></td>
-    </tr>
-    <tr>
-      <th>normalname</th>
-      <td><p>Identifier to be used for normal output files.</p></td>
-    </tr>
-    <tr>
-      <th>jobname</th>
-      <td><p>job name, typically an unique name for a tumor-normal pair.</p></td>
-    </tr>
-    <tr>
-      <th>extra_info</th>
-      <td><p>(optional) a (file containing) <code>data.frame</code> with 3 columns 'sample',
-'age' and 'gender'. For gender, should be 'XX' or 'XY',
-also could be <code>0</code> for 'XX' and <code>1</code> for 'XY'.</p></td>
+      <th>data</th>
+      <td><p>a <code>data.frame</code> with following rows. The key columns can be obtained
+from common allele specific CNV calling software, e.g., ASCAT, Sequenza, FACETS.</p><ul>
+<li><p>chromosome: chromosome names starts with 'chr'.</p></li>
+<li><p>start: start position of the segment.</p></li>
+<li><p>end: end position of the segment.</p></li>
+<li><p>total_cn: total integer copy number of the segment.</p></li>
+<li><p>minor_cn: minor allele integer copy number of the segment.</p></li>
+<li><p>sample: sample identifier.</p></li>
+<li><p>purity: tumor purity of the sample. Set to <code>1</code> if you don't know.</p></li>
+<li><p>ploidy (optinal): ploidy value of the sample tumor genome.</p></li>
+<li><p>age (optional): age of the case, use along with <code>gender</code>.</p></li>
+<li><p>gender (optional): gender of the case, use along with <code>age</code>.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>genome_build</th>
@@ -205,69 +178,22 @@ load accuracy.</p></td>
 final model prediction file in CSV format.
 Default a unique file name is generated by UUID approach.</p></td>
     </tr>
-    <tr>
-      <th>allelecounter_exe</th>
-      <td><p>Path to the allele counter executable.</p></td>
-    </tr>
-    <tr>
-      <th>g1000allelesprefix</th>
-      <td><p>Prefix path to the 1000 Genomes alleles reference files.</p></td>
-    </tr>
-    <tr>
-      <th>g1000lociprefix</th>
-      <td><p>Prefix path to the 1000 Genomes SNP reference files.</p></td>
-    </tr>
-    <tr>
-      <th>GCcontentfile</th>
-      <td><p>File containing the GC content around every SNP for increasing window sizes</p></td>
-    </tr>
-    <tr>
-      <th>replictimingfile</th>
-      <td><p>File containing replication timing at every SNP for various cell lines (optional)</p></td>
-    </tr>
-    <tr>
-      <th>nthreads</th>
-      <td><p>The number of parallel processes for getting allele counts (optional, default=1).</p></td>
-    </tr>
-    <tr>
-      <th>minCounts</th>
-      <td><p>Minimum depth required in the normal for a SNP to be considered (optional, default=10).</p></td>
-    </tr>
-    <tr>
-      <th>BED_file</th>
-      <td><p>A BED file for only looking at SNPs within specific intervals (optional, default=NA).</p></td>
-    </tr>
-    <tr>
-      <th>probloci_file</th>
-      <td><p>A file (chromosome &lt;tab&gt; position; no header) containing specific loci to ignore (optional, default=NA).</p></td>
-    </tr>
-    <tr>
-      <th>chrom_names</th>
-      <td><p>A vector containing the names of chromosomes to be considered (optional, default=c(1:22,'X')).</p></td>
-    </tr>
-    <tr>
-      <th>min_base_qual</th>
-      <td><p>Minimum base quality required for a read to be counted (optional, default=20).</p></td>
-    </tr>
-    <tr>
-      <th>min_map_qual</th>
-      <td><p>Minimum mapping quality required for a read to be counted (optional, default=35).</p></td>
-    </tr>
-    <tr>
-      <th>penalty</th>
-      <td><p>penalty of introducing an additional ASPCF breakpoint (expert parameter, don't adapt unless you know what you're doing)</p></td>
-    </tr>
-    <tr>
-      <th>skip_finished_ASCAT</th>
-      <td><p>if <code>TRUE</code>, skipped finished ASCAT calls
-to save time.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a list of invisible <code>data.table</code> and corresponding files saved to local machine.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ascn"</span><span class='op'>)</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>ascn</span>
+<span class='va'>rv</span> <span class='op'>&lt;-</span> <span class='fu'>gcap.ASCNworkflow</span><span class='op'>(</span><span class='va'>data</span>, outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>data</span><span class='op'>$</span><span class='va'>purity</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
+<span class='va'>rv2</span> <span class='op'>&lt;-</span> <span class='fu'>gcap.ASCNworkflow</span><span class='op'>(</span><span class='va'>data</span>, outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>data</span><span class='op'>$</span><span class='va'>age</span> <span class='op'>&lt;-</span> <span class='fl'>60</span>
+<span class='va'>data</span><span class='op'>$</span><span class='va'>gender</span> <span class='op'>&lt;-</span> <span class='st'>"XY"</span>
+<span class='va'>rv3</span> <span class='op'>&lt;-</span> <span class='fu'>gcap.ASCNworkflow</span><span class='op'>(</span><span class='va'>data</span>, outdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

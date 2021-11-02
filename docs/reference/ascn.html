@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build data for prediction from ASCAT results — gcap.runBuildflow • gcap</title>
+<title>Example allele specific copy number (ASCN) data — ascn • gcap</title>
 
 
 <!-- jquery -->
@@ -39,13 +39,8 @@
 
 
 
-<meta property="og:title" content="Build data for prediction from ASCAT results — gcap.runBuildflow" />
-<meta property="og:description" content="This is is a wrapper of gcap.extractFeatures()
-and gcap.collapse2Genes() to combine the feature extraction
-and predict input generate procedure.
-If you want to modify the result of gcap.extractFeatures(),
-you should always use the two functions instead of this
-wrapper." />
+<meta property="og:title" content="Example allele specific copy number (ASCN) data — ascn" />
+<meta property="og:description" content="Example allele specific copy number (ASCN) data" />
 
 
 
@@ -116,59 +111,28 @@ wrapper." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build data for prediction from ASCAT results</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/gcap/blob/master/R/buildflow.R'><code>R/buildflow.R</code></a></small>
-    <div class="hidden name"><code>gcap.runBuildflow.Rd</code></div>
+    <h1>Example allele specific copy number (ASCN) data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/gcap/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>ascn.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is is a wrapper of <code><a href='gcap.extractFeatures.html'>gcap.extractFeatures()</a></code>
-and <code><a href='gcap.collapse2Genes.html'>gcap.collapse2Genes()</a></code> to combine the feature extraction
-and predict input generate procedure.
-If you want to modify the result of <code><a href='gcap.extractFeatures.html'>gcap.extractFeatures()</a></code>,
-you should always use the two functions instead of this
-wrapper.</p>
+    <p>Example allele specific copy number (ASCN) data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gcap.runBuildflow</span><span class='op'>(</span>
-  <span class='va'>ascat_files</span>,
-  <span class='va'>extra_info</span>,
-  include_type <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  genome_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"hg38"</span>, <span class='st'>"hg19"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>ascat_files</th>
-      <td><p>a list of file path.
-Typically the result of <code><a href='gcap.runASCAT.html'>gcap.runASCAT()</a></code></p></td>
-    </tr>
-    <tr>
-      <th>extra_info</th>
-      <td><p>(optional) a <code>data.frame</code> with 3 columns 'sample',
-'age' and 'gender', for including cancer type, check
-parameter <code>include_type</code>. For gender, should be 'XX' or 'XY',
-also could be <code>0</code> for 'XX' and <code>1</code> for 'XY'.</p></td>
-    </tr>
-    <tr>
-      <th>include_type</th>
-      <td><p>if <code>TRUE</code>, a fourth column named 'type'
-should be included in <code>extra_info</code>, the supported cancer
-type includes <code><a href='https://rdrr.io/r/base/c.html'>c("BLCA", "BRCA", "CESC", "COAD", "ESCA", "GBM", "HNSC", "KICH", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM")</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>genome_build</th>
-      <td><p>genome build version, should be
-one of 'hg38', 'hg19'.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>a <code>data.table</code>.</p>
+    <p>A <code>data.frame</code></p>
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
+    <p>Generate from <code>data-raw/</code>, raw source from our study by
+calling ASCAT v3.0 alpha on corresponding WES sequencing data.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"ascn"</span><span class='op'>)</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

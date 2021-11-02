@@ -122,14 +122,16 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   model_input <- gcap.runBuildflow(
     ascat_files,
     extra_info,
-    genome_build = genome_build)
+    genome_build = genome_build
+  )
 
   lg$info("=======================")
   lg$info("Step 3: Run prediction")
   lg$info("=======================")
   for (t in target) {
     model_input[[paste0("pred_", t)]] <- gcap.runPrediction(
-      model_input, target = t
+      model_input,
+      target = t
     )
   }
   save_file <- file.path(outdir, paste0(result_file_prefix, "_by_gene.csv"))
