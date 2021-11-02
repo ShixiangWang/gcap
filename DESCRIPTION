@@ -28,7 +28,8 @@ Imports:
     Rcpp,
     stats,
     uuid,
-    xgboost
+    xgboost,
+    quadprog
 Suggests: 
     BiocManager,
     PRROC,
