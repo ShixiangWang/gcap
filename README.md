@@ -1,4 +1,4 @@
-# gcap: Gene-level Circular Amplicon Prediction
+# GCAP: Gene-level Circular Amplicon Prediction
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -6,8 +6,8 @@
 The goal of **gcap** is to provide a end-to-end pipeline for predicting
 circular amplicon (ecDNA) in gene level on WES data.
 
-The input of **gcap** is bam files and output is a data table with features and
-prediction result.
+The input of **gcap** is bam files or allele specific copy number data and
+output is a data table with features and prediction result.
 
 ## Installation
 
@@ -75,4 +75,6 @@ organized function list at [*package site*](https://shixiangwang.github.io/gcap/
 
 ## LICENSE
 
-Apache License (>= 2)
+This software and associated documentation files (the “Software”) are protected by copyright. This Software is provided “as is” (at your own risk) for internal non-commercial academic research purposes only. Please read the [Non-Commercial Academic License](LICENSE) in detail before downloading a copy. By installing or using this Software, you agree to be bound by the terms and conditions of the Non-Commercial Academic License.
+
+All commercial use of the Software or any modification, manipulation or derivative of the Software, including but not limited to transfer, sale or licence to a commercial third party or use on behalf of a commercial third party (including but not limited to use as part of a service supplied to any third party for financial reward) is strictly prohibited and requires a commercial use licence. For further information please email <wangsx1@sysucc.org.cn> or <zhaoqi@sysucc.org.cn>.

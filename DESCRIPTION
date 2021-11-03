@@ -11,7 +11,7 @@ Authors@R:
 Description: Provides data processing pipeline feeding paired bam files
     and XGBOOST model for predicting tumor circular amplicons (also known
     as ecDNA) in gene level.
-License: Apache License (>= 2)
+License: Non-Commercial Academic License + file LICENSE
 URL: https://github.com/ShixiangWang/gcap
 BugReports: https://github.com/ShixiangWang/gcap/issues
 Depends: 
@@ -25,11 +25,11 @@ Imports:
     lgr,
     magrittr,
     mltools,
+    quadprog,
     Rcpp,
     stats,
     uuid,
-    xgboost,
-    quadprog
+    xgboost
 Suggests: 
     BiocManager,
     PRROC,
