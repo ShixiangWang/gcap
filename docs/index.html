@@ -21,6 +21,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -33,18 +35,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -54,7 +50,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ShixiangWang/gcap/">
+  <a href="https://github.com/ShixiangWang/gcap/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -71,32 +67,32 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="gcap-gene-level-circular-amplicon-prediction" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#gcap-gene-level-circular-amplicon-prediction" class="anchor"></a>gcap: Gene-level Circular Amplicon Prediction</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="gcap-gene-level-circular-amplicon-prediction">GCAP: Gene-level Circular Amplicon Prediction<a class="anchor" aria-label="anchor" href="#gcap-gene-level-circular-amplicon-prediction"></a>
+</h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
 <p>The goal of <strong>gcap</strong> is to provide a end-to-end pipeline for predicting circular amplicon (ecDNA) in gene level on WES data.</p>
-<p>The input of <strong>gcap</strong> is bam files and output is a data table with features and prediction result.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<div id="download-reference-files" class="section level3">
-<h3 class="hasAnchor">
-<a href="#download-reference-files" class="anchor"></a>Download reference files</h3>
-<p>For advanced users, you can prepare the reference files by following the instructions from <a href="https://github.com/shixiangwang/ascat/tree/v3.0" class="uri">https://github.com/shixiangwang/ascat/tree/v3.0</a>.</p>
+<p>The input of <strong>gcap</strong> is bam files or allele specific copy number data and output is a data table with features and prediction result.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="section level3">
+<h3 id="download-reference-files">Download reference files<a class="anchor" aria-label="anchor" href="#download-reference-files"></a>
+</h3>
+<p>For advanced users, you can prepare the reference files by following the instructions from <a href="https://github.com/shixiangwang/ascat/tree/v3.0" class="external-link uri">https://github.com/shixiangwang/ascat/tree/v3.0</a>.</p>
 <p>We recommend all users directly download the reference files from the links below:</p>
 <ul>
-<li><a href="https://zenodo.org/record/5533065">Curated reference files for GCAP (WES)</a></li>
+<li><a href="https://zenodo.org/record/5533065" class="external-link">Curated reference files for GCAP (WES)</a></li>
 </ul>
 <blockquote>
 <p>The prediction model is built with data on the top of hg38 genome build, so hg38 based bam files as input is more recommended.</p>
 </blockquote>
 </div>
-<div id="install-softwares" class="section level3">
-<h3 class="hasAnchor">
-<a href="#install-softwares" class="anchor"></a>Install softwares</h3>
-<p><a href="https://github.com/cancerit/alleleCount"><strong>alleleCount</strong></a> is required to run <strong>ASCAT</strong> on WES bam data, if you haven’t installed <a href="https://docs.conda.io/en/latest/"><strong>conda</strong></a> or <a href="https://docs.conda.io/en/latest/miniconda.html"><strong>miniconda</strong></a>, please install firstly, then install the <strong>alleleCount</strong> in terminal with:</p>
+<div class="section level3">
+<h3 id="install-softwares">Install softwares<a class="anchor" aria-label="anchor" href="#install-softwares"></a>
+</h3>
+<p><a href="https://github.com/cancerit/alleleCount" class="external-link"><strong>alleleCount</strong></a> is required to run <strong>ASCAT</strong> on WES bam data, if you haven’t installed <a href="https://docs.conda.io/en/latest/" class="external-link"><strong>conda</strong></a> or <a href="https://docs.conda.io/en/latest/miniconda.html" class="external-link"><strong>miniconda</strong></a>, please install firstly, then install the <strong>alleleCount</strong> in terminal with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> cancerit <span class="at">-c</span> bioconda cancerit-allelecount</span></code></pre></div>
 <blockquote>
 <p>NOTE: <strong>gcap</strong> set the default <strong>alleleCount</strong> as the <code>~/miniconda3/envs/cancerit/bin/alleleCounter</code>, if you use <strong>conda</strong> or other approaches, please set the path when you use corresponding functions.</p>
@@ -104,75 +100,81 @@
 <p>Install <strong>ASCAT</strong> v3.0 (modified and adapted for GCAP workflow in HPC) in R console from GitHub with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># this is a fork version ASCAT</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/ascat@v3-for-gcap-v1"</span>, subdir <span class="op">=</span> <span class="st">"ASCAT"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/ascat@v3-for-gcap-v1"</span>, subdir <span class="op">=</span> <span class="st">"ASCAT"</span><span class="op">)</span></code></pre></div>
 <p>Install <strong>gcap</strong> in R console from GitHub with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/gcap"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/gcap"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<div id="pipeline" class="section level3">
-<h3 class="hasAnchor">
-<a href="#pipeline" class="anchor"></a>Pipeline</h3>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<div class="section level3">
+<h3 id="pipeline">Pipeline<a class="anchor" aria-label="anchor" href="#pipeline"></a>
+</h3>
 <ul>
-<li>for one tumor-normal pair, you can refer to <a href="https://github.com/ShixiangWang/gcap/blob/master/test-workflow/one-pair.R">one-pair.R</a>.</li>
-<li>for multiple tumor-normal pairs, you can refer to <a href="https://github.com/ShixiangWang/gcap/blob/master/test-workflow/two-pairs.R">two-pair.R</a>.</li>
+<li>for one tumor-normal pair, you can refer to <a href="https://github.com/ShixiangWang/gcap/blob/master/test-workflow/one-pair.R" class="external-link">one-pair.R</a>.</li>
+<li>for multiple tumor-normal pairs, you can refer to <a href="https://github.com/ShixiangWang/gcap/blob/master/test-workflow/two-pairs.R" class="external-link">two-pair.R</a>.</li>
 </ul>
 <p>To run <strong>gcap</strong> from bam files, a machine with <strong>at least 80GB RAM</strong> is required for the <code>allelecount</code> process. If you set multiple threads, please note the parallel computation is used in part of the workflow. You should balance the <code>nthread</code> setting and the computing power your machine provides by yourself.</p>
 <p>It generally takes <code>~0.5h</code> to finish one case (tumor-normal pair).</p>
 <p>In our practice, when we want to process multiple cases, set <code>nthread = 22</code> and directly let <strong>gcap</strong> handle multiple cases (instead of writing a loop yourself) is good enough.</p>
 </div>
-<div id="functions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#functions" class="anchor"></a>Functions</h3>
-<p>For more custom and advanced control of the analysis, you can read the well organized function list at <a href="https://shixiangwang.github.io/gcap/reference/index.html"><em>package site</em></a>.</p>
+<div class="section level3">
+<h3 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
+</h3>
+<p>For more custom and advanced control of the analysis, you can read the well organized function list at <a href="https://shixiangwang.github.io/gcap/reference/index.html" class="external-link"><em>package site</em></a>.</p>
 </div>
 </div>
-<div id="license" class="section level2">
-<h2 class="hasAnchor">
-<a href="#license" class="anchor"></a>LICENSE</h2>
-<p>Apache License (&gt;= 2)</p>
+<div class="section level2">
+<h2 id="license">LICENSE<a class="anchor" aria-label="anchor" href="#license"></a>
+</h2>
+<p>This software and associated documentation files (the “Software”) are protected by copyright. This Software is provided “as is” (at your own risk) for internal non-commercial academic research purposes only. Please read the <a href="LICENSE">Non-Commercial Academic License</a> in detail before downloading a copy. By installing or using this Software, you agree to be bound by the terms and conditions of the Non-Commercial Academic License.</p>
+<p>All commercial use of the Software or any modification, manipulation or derivative of the Software, including but not limited to transfer, sale or licence to a commercial third party or use on behalf of a commercial third party (including but not limited to use as part of a service supplied to any third party for financial reward) is strictly prohibited and requires a commercial use licence. For further information please email <a href="mailto:wangsx1@sysucc.org.cn" class="email">wangsx1@sysucc.org.cn</a> or <a href="mailto:zhaoqi@sysucc.org.cn" class="email">zhaoqi@sysucc.org.cn</a>.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/ShixiangWang/gcap/">https://​github.com/​ShixiangWang/​gcap/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/ShixiangWang/gcap/issues">https://​github.com/​ShixiangWang/​gcap/​issues</a>
-</li>
+<li><a href="https://github.com/ShixiangWang/gcap/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/ShixiangWang/gcap/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small>Apache License (&gt;= 2)</small></li>
+<li>Non-Commercial Academic License + file <a href="LICENSE-text.html">LICENSE</a>
+</li>
 </ul>
 </div>
+
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://orcid.org/0000-0001-9855-7357">Shixiang Wang</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-9855-7357" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-9855-7357" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://orcid.org/0000-0001-9855-7357">Shixiang Wang</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>
@@ -180,6 +182,8 @@
 
   
 
+
+  
 
   </body>
 </html>

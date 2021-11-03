@@ -4,13 +4,11 @@
 \alias{gcap.runScoring}
 \title{Quantify sample-level ecDNA measueres}
 \usage{
-gcap.runScoring(data, cutoff = 0.9, genome_build = c("hg38", "hg19"))
+gcap.runScoring(data, genome_build = c("hg38", "hg19"))
 }
 \arguments{
 \item{data}{a \code{data.table} containing result from \link{gcap.runPrediction}.
 The column storing prediction result must start with \code{pred}.}
-
-\item{cutoff}{a cutoff for converting prob into \code{0/1} value.}
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}

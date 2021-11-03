@@ -13,7 +13,6 @@ gcap.workflow(
   extra_info = NULL,
   genome_build = c("hg38", "hg19"),
   target = c("circle", "nonLinear"),
-  prob_cutoff = 0.9,
   outdir = getwd(),
   result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE)),
   allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
@@ -54,10 +53,6 @@ one of 'hg38', 'hg19'.}
 
 \item{target}{'circle' and 'nonLinear' to select model if predict circle
 amplicon or non-linear amplicon. \strong{Can be one or both}.}
-
-\item{prob_cutoff}{a value in \verb{[0-1]} to determine the cutoff for labeling
-response. The default cutoff \code{0.9} is a balance between F1 score and amplicon
-load accuracy.}
 
 \item{outdir}{result output path.}
 

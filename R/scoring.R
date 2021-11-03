@@ -3,7 +3,6 @@
 #' @inheritParams gcap.collapse2Genes
 #' @param data a `data.table` containing result from [gcap.runPrediction].
 #' The column storing prediction result must start with `pred`.
-#' @param cutoff a cutoff for converting prob into `0/1` value.
 #' @return a `data.table`.
 #' - `*_load` for number of gene affected.
 #' - `*_burden` for size of genome (per Mb) affected.
@@ -20,8 +19,9 @@
 #' score
 #' @testexamples
 #' expect_equal(nrow(score), 1L)
-gcap.runScoring <- function(data, cutoff = 0.9,
+gcap.runScoring <- function(data,
                             genome_build = c("hg38", "hg19")) {
+
   stopifnot(is.data.frame(data))
   genome_build <- match.arg(genome_build)
   lg <- set_logger()
@@ -42,24 +42,25 @@ gcap.runScoring <- function(data, cutoff = 0.9,
     data$sample <- "sample"
   }
 
-  lg$info("converting prob")
-  scs2 <- paste0(scs, "_binary")
+  lg$info("using 0.1, 0.5 and 0.9 as cutoffs for low, medium and high-level quality amplicon genes")
+  scs2 <- paste0(scs, "_quality")
   for (i in seq_along(scs)) {
-    data[[scs2[i]]] <- ifelse(data[[scs[i]]] > cutoff, 1L, 0L)
+    data[[scs2[i]]] <- cut(data[[scs[i]]], breaks = c(0.1, 0.5, 0.9, 1), labels = c("low", "medium", "high"))
   }
 
-  lg$info("calculating load")
-  dt_load <- data[, lapply(.SD, sum), .SDcols = scs2, by = "sample"]
-  colnames(dt_load) <- sub("binary", "load", colnames(dt_load))
+  lg$info("calculating load with high quality amplicon")
+  dt_load <- data[, lapply(.SD, function(x) sum(x == "high", na.rm = TRUE)),
+                  .SDcols = scs2, by = "sample"]
+  colnames(dt_load) <- sub("quality", "load", colnames(dt_load))
 
-  lg$info("calculating burden")
+  lg$info("calculating burden with high quality amplicon")
   scs_burden <- paste0(scs, "_burden")
   dt_burden <- data[, lapply(scs2, function(x) {
     calc_burden(.SD[, c(x, "gene_id"), with = FALSE], genome_build)
   }), by = "sample"]
   colnames(dt_burden)[-1] <- scs_burden
 
-  lg$info("calculating clusters based on distance from gene center with cutoff 1e6")
+  lg$info("detecting clusters (<1e6 bp from center) with high quality amplicon")
   scs_clusters <- paste0(scs, "_clusters")
   dt_clusters <- data[, lapply(scs2, function(x) {
     calc_clusters(.SD[, c(x, "gene_id"), with = FALSE], genome_build)
@@ -71,7 +72,7 @@ gcap.runScoring <- function(data, cutoff = 0.9,
 }
 
 calc_burden <- function(dt, genome_build) {
-  dt <- dt[dt[[1]] == 1L]
+  dt <- dt[dt[[1]] == "high"]
   if (nrow(dt) > 0) {
     ref_file <- system.file(
       "extdata", paste0(genome_build, "_target_genes.rds"),
@@ -88,7 +89,7 @@ calc_burden <- function(dt, genome_build) {
 }
 
 calc_clusters <- function(dt, genome_build) {
-  dt <- dt[dt[[1]] == 1L]
+  dt <- dt[dt[[1]] == "high"]
   if (nrow(dt) > 0) {
     ref_file <- system.file(
       "extdata", paste0(genome_build, "_target_genes.rds"),
