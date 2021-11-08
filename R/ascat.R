@@ -155,7 +155,7 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
 
       lg$info("{sum(drop_idx)} ASCAT job(s) skipped, {sum(!drop_idx)} to run.")
     } else {
-      lg$info("{No ASCAT job to skip.")
+      lg$info("No ASCAT job to skip.")
     }
   }
 
