@@ -1,3 +1,8 @@
+# gcap 0.3.1
+
+* Fixed the issue about rendering wrong data files when skipping existing ASCAT
+calling.
+
 # gcap 0.3.0
 
 * Updated models for prediction.

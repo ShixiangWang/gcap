@@ -86,7 +86,8 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
 
   stopifnot(
     file.exists(allelecounter_exe), file.exists(GCcontentfile),
-    file.exists(replictimingfile)
+    file.exists(replictimingfile),
+    length(gender) == length(tumourseqfile)
   )
 
   lg$info("{length(jobname)} jobs detected")
@@ -143,10 +144,21 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
 
   if (skip_finished_ASCAT) {
     drop_idx <- sapply(paste0(jobname, ".ASCAT.rds"), file.exists)
-    jobname <- jobname[!drop_idx]
-    lg$info("{sum(drop_idx)} ASCAT job(s) skipped.")
+    if (sum(drop_idx) > 0) {
+      # ALL input parameter vectors need to be update!!
+      tumourseqfile <- tumourseqfile[!drop_idx]
+      normalseqfile <- normalseqfile[!drop_idx]
+      jobname <- jobname[!drop_idx]
+      tumourname <- tumourname[!drop_idx]
+      normalname <- normalname[!drop_idx]
+      gender <- gender[!drop_idx]
+
+      lg$info("{sum(drop_idx)} ASCAT job(s) skipped, {sum(!drop_idx)} to run.")
+    } else {
+      lg$info("{No ASCAT job to skip.")
+    }
   }
 
   if (length(jobname) > 0) lapply(seq_along(jobname), run_one)
-  lg$info("analysis done, check {outdir} for results")
+  lg$info("ASCAT analysis done, check {outdir} for results")
 }

@@ -44,7 +44,8 @@ gcap.workflow(
 
 \item{jobname}{job name, typically an unique name for a tumor-normal pair.}
 
-\item{extra_info}{(optional) a (file containing) \code{data.frame} with 3 columns 'sample',
+\item{extra_info}{(optional) a (file containing) \code{data.frame} with 3 columns 'sample'
+(must identical to the setting of parameter \code{jobname}),
 'age' and 'gender'. For gender, should be 'XX' or 'XY',
 also could be \code{0} for 'XX' and \code{1} for 'XY'.}
 

@@ -21,7 +21,6 @@
 #' expect_equal(nrow(score), 1L)
 gcap.runScoring <- function(data,
                             genome_build = c("hg38", "hg19")) {
-
   stopifnot(is.data.frame(data))
   genome_build <- match.arg(genome_build)
   lg <- set_logger()
@@ -50,7 +49,8 @@ gcap.runScoring <- function(data,
 
   lg$info("calculating load with high quality amplicon")
   dt_load <- data[, lapply(.SD, function(x) sum(x == "high", na.rm = TRUE)),
-                  .SDcols = scs2, by = "sample"]
+    .SDcols = scs2, by = "sample"
+  ]
   colnames(dt_load) <- sub("quality", "load", colnames(dt_load))
 
   lg$info("calculating burden with high quality amplicon")
