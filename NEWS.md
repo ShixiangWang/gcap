@@ -1,3 +1,7 @@
+# gcap 0.3.0
+
+* Updated models for prediction.
+
 # gcap 0.2.1
 
 * Removed `prob_cutoff` setting in workflows. Directly use prob
