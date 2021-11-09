@@ -62,9 +62,10 @@ gcap.collapse2Genes <- function(fts,
     lg$info("checking data type for gender column")
     if (!is.numeric(extra_info$gender)) {
       lg$warn("non numeric type found, transforming XY to 1, otherwise 0")
-      extra_info[, gender := ifelse(
+      extra_info[, gender := data.table::fifelse(
         gender == "XY",
-        1L, 0L
+        1L, 0L,
+        na = 0L
       )]
     }
   }

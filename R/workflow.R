@@ -58,6 +58,40 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   if (is.character(extra_info) && file.exists(extra_info)) {
     extra_info <- data.table::fread(extra_info, header = TRUE)
   }
+  if (!is.null(extra_info)) {
+    lg$info("Check extra_info values")
+    if (!all(jobname %in% extra_info$sample)) {
+      lg$warn("Cannot find all 'jobname' identifiers in 'sample' column of extra_info")
+      lg$info("Try subsetting")
+      extra_info <- extra_info[extra_info$sample %in% jobname, ]
+      if (nrow(extra_info) == 0L) {
+        lg$fatal("'sample' column is consistent with 'jobname', if no extra data, set it to NULL!")
+        stop("Bad input")
+      } else {
+        if (nrow(extra_info) != length(jobname)) {
+          lg$warn("Non-consistent sample records detected, try filling with default values")
+          extra_info <- merge(
+            data.table::data.table(sample = jobname),
+            extra_info,
+            by = "sample", all.x = TRUE
+          )
+          if (is.character(extra_info$gender)) {
+            extra_info$gender <- data.table::fifelse(is.na(extra_info$gender), "XX", extra_info$gender, na = "XX")
+          } else if (is.numeric(extra_info$gender)) {
+            extra_info$gender <- data.table::fifelse(is.na(extra_info$gender), 0, extra_info$gender, na = 0)
+          }
+        }
+      }
+    }
+
+    lg$info("Check sample order consistence in jobname and extra_info$sample")
+    if (!all(jobname == extra_info$sample)) {
+      lg$info("Sample order not consistent, try reordering")
+      extra_info$sample <- factor(extra_info$sample, levels = jobname)
+      extra_info <- extra_info[order(extra_info$sample), ]
+      extra_info$sample <- as.character(extra_info$sample)
+    }
+  }
   totalT <- parallel::detectCores()
   if (nthreads > totalT) {
     lg$info("{nthreads} threads are set but only {totalT} cores are available, reset it to {totalT}")
@@ -83,7 +117,7 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
     chrom_names = chrom_names,
     gender = if (!is.null(extra_info)) {
       if (is.numeric(extra_info$gender)) {
-        ifelse(extra_info$gender == 1, "XY", "XX")
+        data.table::fifelse(extra_info$gender == 1, "XY", "XX", na = "XX")
       } else {
         extra_info$gender
       }

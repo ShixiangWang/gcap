@@ -1,3 +1,7 @@
+# gcap 0.3.2
+
+* Fixed input `extra_info` sample (order) issues.
+
 # gcap 0.3.1
 
 * Fixed the issue about rendering wrong data files when skipping existing ASCAT
