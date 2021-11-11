@@ -1,3 +1,7 @@
+# gcap 0.3.3
+
+* Wrapped ASCAT workflow in `tryCatch()` to avoid abnormal failure.
+
 # gcap 0.3.2
 
 * Fixed input `extra_info` sample (order) issues.

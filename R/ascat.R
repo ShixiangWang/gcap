@@ -106,40 +106,47 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
     lg$info("   tumor sample name: {tn}")
     lg$info("  normal sample name: {nn}")
 
-    ascat.prepareHTS(
-      tumourseqfile = tfile,
-      normalseqfile = nfile,
-      tumourname = tn,
-      normalname = nn,
-      allelecounter_exe = allelecounter_exe,
-      g1000allelesprefix = g1000allelesprefix,
-      g1000lociprefix = g1000lociprefix,
-      nthreads = nthreads,
-      minCounts = minCounts,
-      BED_file = BED_file,
-      probloci_file = probloci_file,
-      gender = gd,
-      chrom_names = chrom_names,
-      min_base_qual = min_base_qual,
-      min_map_qual = min_map_qual,
-      skip_allele_counting_tumour = FALSE,
-      skip_allele_counting_normal = FALSE
-    )
+    # In some special cases, ASCAT failed after alleleCounter.
+    # Maybe we should handle the ASCAT source code to fix corresponding issues
+    tryCatch({
+      ascat.prepareHTS(
+        tumourseqfile = tfile,
+        normalseqfile = nfile,
+        tumourname = tn,
+        normalname = nn,
+        allelecounter_exe = allelecounter_exe,
+        g1000allelesprefix = g1000allelesprefix,
+        g1000lociprefix = g1000lociprefix,
+        nthreads = nthreads,
+        minCounts = minCounts,
+        BED_file = BED_file,
+        probloci_file = probloci_file,
+        gender = gd,
+        chrom_names = chrom_names,
+        min_base_qual = min_base_qual,
+        min_map_qual = min_map_qual,
+        skip_allele_counting_tumour = FALSE,
+        skip_allele_counting_normal = FALSE
+      )
 
-    ascat.bc <- ascat.loadData(
-      paste0(tn, "_tumourLogR.txt"), paste0(tn, "_tumourBAF.txt"),
-      paste0(tn, "_normalLogR.txt"), paste0(tn, "_normalBAF.txt"),
-      chrs = chrom_names,
-      gender = gender
-    )
-    ascat.bc <- ascat.GCcorrect(ascat.bc, GCcontentfile, replictimingfile)
-    ascat.plotRawData(ascat.bc)
-    ascat.bc <- ascat.aspcf(ascat.bc, penalty = penalty)
-    ascat.plotSegmentedData(ascat.bc)
-    ascat.output <- ascat.runAscat(ascat.bc, gamma = 1L, pdfPlot = TRUE)
-    saveRDS(ascat.output, file = paste0(id, ".ASCAT.rds"))
+      ascat.bc <- ascat.loadData(
+        paste0(tn, "_tumourLogR.txt"), paste0(tn, "_tumourBAF.txt"),
+        paste0(tn, "_normalLogR.txt"), paste0(tn, "_normalBAF.txt"),
+        chrs = chrom_names,
+        gender = gender
+      )
+      ascat.bc <- ascat.GCcorrect(ascat.bc, GCcontentfile, replictimingfile)
+      ascat.plotRawData(ascat.bc)
+      ascat.bc <- ascat.aspcf(ascat.bc, penalty = penalty)
+      ascat.plotSegmentedData(ascat.bc)
+      ascat.output <- ascat.runAscat(ascat.bc, gamma = 1L, pdfPlot = TRUE)
+      saveRDS(ascat.output, file = paste0(id, ".ASCAT.rds"))
 
-    lg$info("job {id} done")
+      lg$info("job {id} done")
+    }, error = function(e) {
+      lg$fatal("job {id} failed in ASCAT due to following error")
+      message(e$message)
+    })
   }
 
   if (skip_finished_ASCAT) {
