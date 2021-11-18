@@ -82,6 +82,9 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
           }
         }
       }
+    } else {
+      # Make sure the useful rows kept
+      extra_info <- extra_info[extra_info$sample %in% jobname, ]
     }
 
     lg$info("Check sample order consistence in jobname and extra_info$sample")
