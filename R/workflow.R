@@ -133,7 +133,12 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   lg$info("checking ASCAT result files")
   ascat_files <- file.path(outdir, paste0(jobname, ".ASCAT.rds"))
   keep_idx <- sapply(ascat_files, function(x) {
-    keep <- file.info(x)$size > 2000
+    keep <- if (file.exists(x)) {
+      file.info(x)$size > 2000
+    } else {
+      lg$warn("result file {x} does not exist, the corresponding ASCAT calling has error occurred ")
+      FALSE
+    }
     if (!keep) {
       lg$warn("{x} contains a failed ASCAT job, will discard it before next step")
     }
