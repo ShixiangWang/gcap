@@ -41,38 +41,61 @@ gcap.runScoring <- function(data,
     data$sample <- "sample"
   }
 
-  lg$info("using 0.1, 0.5 and 0.9 as cutoffs for low, medium and high-level quality amplicon genes")
-  scs2 <- paste0(scs, "_quality")
+  lg$info("using 0.1, 0.5 and 0.9 as cutoffs for low, medium and high-level thresholded amplicon genes")
+  scs2 <- paste0(scs, "_levels")
   for (i in seq_along(scs)) {
     data[[scs2[i]]] <- cut(data[[scs[i]]], breaks = c(0.1, 0.5, 0.9, 1), labels = c("low", "medium", "high"))
   }
 
-  lg$info("calculating load with high quality amplicon")
-  dt_load <- data[, lapply(.SD, function(x) sum(x == "high", na.rm = TRUE)),
+  lg$info("calculating load with different thresholds")
+  th_levels = c("low", "medium", "high")
+
+  dt_load = list()
+  for (i in th_levels) {
+    dt_load[[i]] <- data[, lapply(.SD, function(x) {
+      if (i == "low") lvls = c("low", "medium", "high")
+      if (i == "medium") lvls = c("medium", "high")
+      if (i == "high") lvls = "high"
+      sum(x %in% lvls, na.rm = TRUE)
+    }),
     .SDcols = scs2, by = "sample"
-  ]
-  colnames(dt_load) <- sub("quality", "load", colnames(dt_load))
+    ]
+    colnames(dt_load[[i]]) <- sub("levels", paste0("load_", i, "_thresholded"), colnames(dt_load[[i]]))
+  }
+  dt_load = Reduce(merge, dt_load)
 
-  lg$info("calculating burden with high quality amplicon")
-  scs_burden <- paste0(scs, "_burden")
-  dt_burden <- data[, lapply(scs2, function(x) {
-    calc_burden(.SD[, c(x, "gene_id"), with = FALSE], genome_build)
-  }), by = "sample"]
-  colnames(dt_burden)[-1] <- scs_burden
+  lg$info("calculating burden with different thresholds")
+  dt_burden = list()
+  for (i in th_levels) {
+    dt_burden[[i]] <- data[, lapply(scs2, function(x) {
+      calc_burden(.SD[, c(x, "gene_id"), with = FALSE], genome_build, th = i)
+    }), by = "sample"]
+    scs_burden <- paste0(scs, paste0("_burden_", i, "_thresholded"))
+    colnames(dt_burden[[i]])[-1] <- scs_burden
+  }
+  dt_burden = Reduce(merge, dt_burden)
 
-  lg$info("detecting clusters (<1e6 bp from center) with high quality amplicon")
-  scs_clusters <- paste0(scs, "_clusters")
-  dt_clusters <- data[, lapply(scs2, function(x) {
-    calc_clusters(.SD[, c(x, "gene_id"), with = FALSE], genome_build)
-  }), by = "sample"]
-  colnames(dt_clusters)[-1] <- scs_clusters
+
+  lg$info("detecting clusters (<1e6 bp from center) with different thresholds")
+  dt_clusters = list()
+  for (i in th_levels) {
+    dt_clusters[[i]] <- data[, lapply(scs2, function(x) {
+      calc_clusters(.SD[, c(x, "gene_id"), with = FALSE], genome_build, th = i)
+    }), by = "sample"]
+    scs_clusters <- paste0(scs, paste0("_clusters_", i, "_thresholded"))
+    colnames(dt_clusters[[i]])[-1] <- scs_clusters
+  }
+  dt_clusters = Reduce(merge, dt_clusters)
 
   lg$info("merging and outputing final data")
   mergeDTs(list(dt_load, dt_burden, dt_clusters), by = "sample")
 }
 
-calc_burden <- function(dt, genome_build) {
-  dt <- dt[dt[[1]] == "high"]
+calc_burden <- function(dt, genome_build, th = "low") {
+  if (th == "low") lvls = c("low", "medium", "high")
+  if (th == "medium") lvls = c("medium", "high")
+  if (th == "high") lvls = "high"
+  dt <- dt[dt[[1]] %in% lvls]
   if (nrow(dt) > 0) {
     ref_file <- system.file(
       "extdata", paste0(genome_build, "_target_genes.rds"),
@@ -88,8 +111,11 @@ calc_burden <- function(dt, genome_build) {
   }
 }
 
-calc_clusters <- function(dt, genome_build) {
-  dt <- dt[dt[[1]] == "high"]
+calc_clusters <- function(dt, genome_build, th = "low") {
+  if (th == "low") lvls = c("low", "medium", "high")
+  if (th == "medium") lvls = c("medium", "high")
+  if (th == "high") lvls = "high"
+  dt <- dt[dt[[1]] %in% lvls]
   if (nrow(dt) > 0) {
     ref_file <- system.file(
       "extdata", paste0(genome_build, "_target_genes.rds"),

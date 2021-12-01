@@ -1,5 +1,6 @@
 # gcap 0.3.3
 
+* Updated scoring for supporting different thresholds.
 * Wrapped ASCAT workflow in `tryCatch()` to avoid abnormal failure.
 
 # gcap 0.3.2
