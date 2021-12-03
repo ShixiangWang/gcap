@@ -56,6 +56,8 @@ gcap.ASCNworkflow <- function(data,
   check_model(model)
   if (!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
 
+  if (data.table::is.data.table(data)) data.table::setkey(data, NULL)
+
   lg <- set_logger()
   lg$info("=========================")
   lg$info("   GCAP ASCN WORKFLOW    ")
