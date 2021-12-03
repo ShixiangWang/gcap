@@ -9,8 +9,7 @@ allele specific copy number data (e.g., results from [ASCAT](https://github.com/
 absolute integer copy number data (e.g., results from [ABSOLUTE](https://software.broadinstitute.org/cancer/cga/absolute)). The former two data
 sources are more suitable.
 
-The input of **gcap** is bam files or allele specific copy number data and
-output is a data table with features and prediction result.
+**gcap** outputs two data tables storing sample features and model prediction result.
 
 ## Installation
 
