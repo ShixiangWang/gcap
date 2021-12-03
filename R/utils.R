@@ -12,6 +12,7 @@
 
 
 mergeDTs <- function(dt_list, by = NULL, sort = FALSE) {
+  dt_list <- dt_list[lengths(dt_list) != 0]
   Reduce(
     function(...) {
       merge(..., by = by, all = TRUE, sort = sort)

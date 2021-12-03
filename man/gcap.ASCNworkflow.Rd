@@ -21,7 +21,8 @@ from common allele specific CNV calling software, e.g., ASCAT, Sequenza, FACETS.
 \item start: start position of the segment.
 \item end: end position of the segment.
 \item total_cn: total integer copy number of the segment.
-\item minor_cn: minor allele integer copy number of the segment.
+\item minor_cn: minor allele integer copy number of the segment. Set it
+to \code{NA} if you don't have this data.
 \item sample: sample identifier.
 \item purity: tumor purity of the sample. Set to \code{1} if you don't know.
 \item ploidy (optinal): ploidy value of the sample tumor genome.
@@ -56,10 +57,13 @@ ecDNA genes.
 \examples{
 data("ascn")
 data <- ascn
-rv <- gcap.ASCNworkflow(data, outdir = tempdir())
+rv <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
 data$purity <- 1
-rv2 <- gcap.ASCNworkflow(data, outdir = tempdir())
+rv2 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
 data$age <- 60
 data$gender <- "XY"
-rv3 <- gcap.ASCNworkflow(data, outdir = tempdir())
+rv3 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB32")
+# If you only have total integer copy number
+data$minor_cn <- NA
+rv4 = gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
 }

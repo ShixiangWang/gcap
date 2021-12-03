@@ -1,5 +1,7 @@
 # gcap 0.4.0
 
+- `gcap.ASCNworkflow()` now supports input with only total integer copy number,
+like the result from ABSOLUTE software (also [DoAbsolute](https://github.com/ShixiangWang/DoAbsolute)).
 - Added stepwised model for circle target.
 - Changed the way how to select model and run prediction.
 - `custom_model` in `gcap.runPrediction()` has been changed to `model`. This is

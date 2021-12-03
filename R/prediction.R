@@ -40,8 +40,8 @@ gcap.runPrediction <- function(data,
       if (target == "circle") {
         modfile <- switch(model,
           XGB11 = "xgb_stepwise_model_NF11.rds", # NEED UPDATE
-          XGB32 = "xgb_stepwise_model_NF11.rds",
-          XGB54 = "xgb_stepwise_model_NF11.rds",
+          XGB32 = "xgb_stepwise_model_NF32.rds",
+          XGB54 = "xgb_stepwise_model_NF54.rds",
           XGB11_stepwise = "xgb_stepwise_model_NF11.rds",
           XGB32_stepwise = "xgb_stepwise_model_NF32.rds",
           XGB54_stepwise = "xgb_stepwise_model_NF54.rds",
@@ -65,7 +65,14 @@ gcap.runPrediction <- function(data,
   }
 
   lg$info("selecting necessary features from input data")
-  data <- as.matrix(data[, model$feature_names, with = FALSE])
+  if (is.null(data$pLOH)) data$pLOH <- NA
+  data <- tryCatch(
+    as.matrix(data[, model$feature_names, with = FALSE]),
+    error = function(e) {
+      lg$fatal(e$message)
+      stop("Please try a model with less features if you don't get so many features!")
+    }
+  )
 
   lg$info("running prediction")
   if ("best_ntreelimit" %in% names(model)) {

@@ -2,17 +2,22 @@
 
 # File R/ASCNworkflow.R: @testexamples
 
-test_that("Function gcap.ASCNworkflow() @ L42", {
+test_that("Function gcap.ASCNworkflow() @ L48", {
   
   data("ascn")
   data <- ascn
-  rv <- gcap.ASCNworkflow(data, outdir = tempdir())
+  rv <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
   data$purity <- 1
-  rv2 <- gcap.ASCNworkflow(data, outdir = tempdir())
+  rv2 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
   data$age <- 60
   data$gender <- "XY"
-  rv3 <- gcap.ASCNworkflow(data, outdir = tempdir())
+  rv3 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB32")
+  # If you only have total integer copy number
+  data$minor_cn <- NA
+  rv4 = gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
   expect_equal(rv, rv2)
   expect_equal(ncol(rv3$by_gene), 35L)
+  expect_equal(ncol(rv4$by_gene), 15L)
+  expect_error(gcap.ASCNworkflow(data, outdir = tempdir()))
 })
 
