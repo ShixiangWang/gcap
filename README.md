@@ -3,8 +3,11 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of **gcap** is to provide a end-to-end pipeline for predicting
-circular amplicon (ecDNA) in gene level on WES data.
+**gcap** provides end-to-end pipelines for predicting
+circular amplicon (ecDNA) in gene level on WES (tumor-normal paired BAM) data,
+allele specific copy number data (e.g., results from [ASCAT](https://github.com/VanLoo-lab/ascat) or [Sequenza](https://cran.r-project.org/package=sequenza)), or even
+absolute integer copy number data (e.g., results from [ABSOLUTE](https://software.broadinstitute.org/cancer/cga/absolute)). The former two data
+sources are more suitable.
 
 The input of **gcap** is bam files or allele specific copy number data and
 output is a data table with features and prediction result.
@@ -72,6 +75,11 @@ good enough.
 For more custom and advanced control of the analysis, you can read the well
 organized function list at [*package site*](https://shixiangwang.github.io/gcap/reference/index.html).
 
+
+## Related tools
+
+- [DoAbsolute](https://github.com/ShixiangWang/DoAbsolute): Automate Absolute Copy Number Calling using 'ABSOLUTE' package.
+- [sigminer](https://github.com/ShixiangWang/sigminer): An easy-to-use and scalable toolkit for genomic alteration signature (a.k.a. mutational signature) analysis and visualization in R.
 
 ## LICENSE
 
