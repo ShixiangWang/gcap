@@ -38,14 +38,16 @@
 #' rv3 <- gcap.ASCNworkflow(data, outdir = tempdir())
 #' @testexamples
 #' expect_equal(rv, rv2)
-#' expect_equal(ncol(rv3$by_gene), 36L)
+#' expect_equal(ncol(rv3$by_gene), 35L)
 gcap.ASCNworkflow <- function(data,
                               genome_build = c("hg38", "hg19"),
-                              target = c("circle", "nonLinear"),
+                              model = "XGB32",
+                              target = "circle",
                               outdir = getwd(),
                               result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE))) {
   genome_build <- match.arg(genome_build)
   target <- match.arg(target, choices = c("circle", "nonLinear"), several.ok = TRUE)
+  check_model(model)
 
   lg <- set_logger()
   lg$info("=========================")
@@ -68,6 +70,7 @@ gcap.ASCNworkflow <- function(data,
   for (t in target) {
     model_input[[paste0("pred_", t)]] <- gcap.runPrediction(
       model_input,
+      model = model,
       target = t
     )
   }

@@ -6,9 +6,7 @@
 \alias{gcap-package}
 \title{gcap: Gene-level Circular Amplicon Prediction}
 \description{
-Provides data processing pipeline feeding paired bam files
-    and XGBOOST model for predicting tumor circular amplicons (also known
-    as ecDNA) in gene level.
+Provides data processing pipeline feeding paired bam files and XGBOOST model for predicting tumor circular amplicons (also known as ecDNA) in gene level.
 }
 \seealso{
 Useful links:

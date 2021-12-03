@@ -12,7 +12,8 @@ gcap.workflow(
   jobname = tumourname,
   extra_info = NULL,
   genome_build = c("hg38", "hg19"),
-  target = c("circle", "nonLinear"),
+  model = "XGB32",
+  target = "circle",
   outdir = getwd(),
   result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE)),
   allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
@@ -51,6 +52,10 @@ also could be \code{0} for 'XX' and \code{1} for 'XY'.}
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
+
+\item{model}{model name ("XGB11", "XGB32", "XGB54",
+"XGB11_stepwise", "XGB32_stepwise", "XGB54_stepwise") or a custom model
+from input. 'toy' can be used for test.}
 
 \item{target}{'circle' and 'nonLinear' to select model if predict circle
 amplicon or non-linear amplicon. \strong{Can be one or both}.}

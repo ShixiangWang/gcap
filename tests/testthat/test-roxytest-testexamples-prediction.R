@@ -2,10 +2,11 @@
 
 # File R/prediction.R: @testexamples
 
-test_that("Function gcap.runPrediction() @ L21", {
+test_that("Function gcap.runPrediction() @ L22", {
   
   data("ec")
-  y_pred <- gcap.runPrediction(ec)
+  # Use toy model for illustration
+  y_pred <- gcap.runPrediction(ec, "toy")
   y_pred
   expect_equal(length(y_pred), 2020L)
 })

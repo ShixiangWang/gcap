@@ -13,6 +13,6 @@ test_that("Function gcap.ASCNworkflow() @ L42", {
   data$gender <- "XY"
   rv3 <- gcap.ASCNworkflow(data, outdir = tempdir())
   expect_equal(rv, rv2)
-  expect_equal(ncol(rv3$by_gene), 36L)
+  expect_equal(ncol(rv3$by_gene), 35L)
 })
 

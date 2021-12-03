@@ -1,7 +1,7 @@
 Type: Package
 Package: gcap
 Title: Gene-level Circular Amplicon Prediction
-Version: 0.3.3
+Version: 0.4.0
 Authors@R: 
     person(given = "Shixiang",
            family = "Wang",
@@ -44,4 +44,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxytest::testthat_roclet"))
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

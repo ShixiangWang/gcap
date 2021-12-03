@@ -4,24 +4,18 @@
 \alias{gcap.runPrediction}
 \title{Run gene-level amplicon prediction}
 \usage{
-gcap.runPrediction(
-  data,
-  target = c("circle", "nonLinear"),
-  use_toy = FALSE,
-  custom_model = NULL
-)
+gcap.runPrediction(data, model = "XGB32", target = c("circle", "nonLinear"))
 }
 \arguments{
 \item{data}{data to predict (\code{data.frame}/\code{matrix} format), from
 \code{\link[=gcap.collapse2Genes]{gcap.collapse2Genes()}} in general.}
 
+\item{model}{model name ("XGB11", "XGB32", "XGB54",
+"XGB11_stepwise", "XGB32_stepwise", "XGB54_stepwise") or a custom model
+from input. 'toy' can be used for test.}
+
 \item{target}{one of 'circle' and 'nonLinear' to select model
 if predict circle amplicon or non-linear amplicon.}
-
-\item{use_toy}{if \code{TRUE}, use a toy model for showing example,
-not for practical use.}
-
-\item{custom_model}{a outer custom xgboost model for prediction.}
 }
 \value{
 a numeric vector representing prob.
@@ -31,6 +25,7 @@ Run gene-level amplicon prediction
 }
 \examples{
 data("ec")
-y_pred <- gcap.runPrediction(ec)
+# Use toy model for illustration
+y_pred <- gcap.runPrediction(ec, "toy")
 y_pred
 }

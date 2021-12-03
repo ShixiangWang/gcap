@@ -1,3 +1,10 @@
+# gcap 0.4.0
+
+- Added stepwised model for circle target.
+- Changed the way how to select model and run prediction.
+- `custom_model` in `gcap.runPrediction()` has been changed to `model`. This is
+inconsistent with version below v0.4.
+
 # gcap 0.3.3
 
 * Updated scoring for supporting different thresholds.

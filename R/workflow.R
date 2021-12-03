@@ -19,7 +19,8 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
                           tumourname, normalname, jobname = tumourname,
                           extra_info = NULL,
                           genome_build = c("hg38", "hg19"),
-                          target = c("circle", "nonLinear"),
+                          model = "XGB32",
+                          target = "circle",
                           outdir = getwd(),
                           result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE)),
                           allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
@@ -44,6 +45,7 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
                           skip_finished_ASCAT = TRUE) {
   genome_build <- match.arg(genome_build)
   target <- match.arg(target, choices = c("circle", "nonLinear"), several.ok = TRUE)
+  check_model(model)
 
   lg <- set_logger()
   lg$info("=====================")
@@ -170,7 +172,8 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   for (t in target) {
     model_input[[paste0("pred_", t)]] <- gcap.runPrediction(
       model_input,
-      target = t
+      target = t,
+      model = model
     )
   }
   save_file <- file.path(outdir, paste0(result_file_prefix, "_by_gene.csv"))
