@@ -5,9 +5,21 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gene-level Circular Amplicon Prediction • gcap</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<!-- Inform modern browsers that this page supports both dark and light color schemes,
+  and the page author prefers light. --><meta name="color-scheme" content="dark light">
+<script>
+  // If `prefers-color-scheme` is not supported, fall back to light mode.
+  // i.e. In this case, inject the `light` CSS before the others, with
+  // no media filter so that it will be downloaded with highest priority.
+  if (window.matchMedia("(prefers-color-scheme: dark)").media === "not all") {
+    document.documentElement.style.display = "none";
+    document.head.insertAdjacentHTML(
+      "beforeend",
+      "<link id=\"css\" rel=\"stylesheet\" href=\"https://bootswatch.com/3/flatly/bootstrap.css\" onload=\"document.documentElement.style.display = ''\">"
+    );
+  }
+</script><title>Gene-level Circular Amplicon Prediction • gcap</title>
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -18,7 +30,12 @@
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<![endif]--><!-- Flatly Theme - Light  --><link id="css-light" rel="stylesheet" href="https://bootswatch.com/3/flatly/bootstrap.css" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)">
+<!-- Darkly Theme - Dark --><link id="css-dark" rel="stylesheet" href="https://bootswatch.com/3/darkly/bootstrap.css" media="(prefers-color-scheme: dark)">
+<!-- preferably CSS --><link rel="stylesheet" href="preferably.css">
+<link id="css-code-light" rel="stylesheet" href="code-color-scheme-light.css" media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)">
+<link id="css-code-dark" rel="stylesheet" href="code-color-scheme-dark.css" media="(prefers-color-scheme: dark)">
+<script src="darkswitch.js"></script>
 </head>
 <body data-spy="scroll" data-target="#toc">
     
@@ -35,7 +52,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -50,11 +67,21 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
+          <a href="#" id="css-toggle-btn">
+            <span class="fas fa-adjust fa-lg"></span>
+          </a>
+        </li>
+        
+        <li>
   <a href="https://github.com/ShixiangWang/gcap/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
+        
+        
+
+
       </ul>
 </div>
 <!--/.nav-collapse -->
@@ -72,13 +99,13 @@
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>The goal of <strong>gcap</strong> is to provide a end-to-end pipeline for predicting circular amplicon (ecDNA) in gene level on WES data.</p>
-<p>The input of <strong>gcap</strong> is bam files or allele specific copy number data and output is a data table with features and prediction result.</p>
+<p><strong>gcap</strong> provides end-to-end pipelines for predicting circular amplicon (ecDNA) in gene level on WES (tumor-normal paired BAM) data, allele specific copy number data (e.g., results from <a href="https://github.com/VanLoo-lab/ascat" class="external-link">ASCAT</a> or <a href="https://cran.r-project.org/package=sequenza" class="external-link">Sequenza</a>), or even absolute integer copy number data (e.g., results from <a href="https://software.broadinstitute.org/cancer/cga/absolute" class="external-link">ABSOLUTE</a>). The former two data sources are more suitable.</p>
+<p><strong>gcap</strong> outputs two data tables storing sample features and model prediction result.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="section level3">
-<h3 id="download-reference-files">Download reference files<a class="anchor" aria-label="anchor" href="#download-reference-files"></a>
+<h3 id="download-reference-files-wes-bam-data-only">Download reference files (WES bam data only)<a class="anchor" aria-label="anchor" href="#download-reference-files-wes-bam-data-only"></a>
 </h3>
 <p>For advanced users, you can prepare the reference files by following the instructions from <a href="https://github.com/shixiangwang/ascat/tree/v3.0" class="external-link uri">https://github.com/shixiangwang/ascat/tree/v3.0</a>.</p>
 <p>We recommend all users directly download the reference files from the links below:</p>
@@ -90,27 +117,35 @@
 </blockquote>
 </div>
 <div class="section level3">
-<h3 id="install-softwares">Install softwares<a class="anchor" aria-label="anchor" href="#install-softwares"></a>
+<h3 id="install-allelecount-wes-bam-data-only">Install alleleCount (WES bam data only)<a class="anchor" aria-label="anchor" href="#install-allelecount-wes-bam-data-only"></a>
 </h3>
 <p><a href="https://github.com/cancerit/alleleCount" class="external-link"><strong>alleleCount</strong></a> is required to run <strong>ASCAT</strong> on WES bam data, if you haven’t installed <a href="https://docs.conda.io/en/latest/" class="external-link"><strong>conda</strong></a> or <a href="https://docs.conda.io/en/latest/miniconda.html" class="external-link"><strong>miniconda</strong></a>, please install firstly, then install the <strong>alleleCount</strong> in terminal with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> cancerit <span class="at">-c</span> bioconda cancerit-allelecount</span></code></pre></div>
 <blockquote>
 <p>NOTE: <strong>gcap</strong> set the default <strong>alleleCount</strong> as the <code>~/miniconda3/envs/cancerit/bin/alleleCounter</code>, if you use <strong>conda</strong> or other approaches, please set the path when you use corresponding functions.</p>
 </blockquote>
+</div>
+<div class="section level3">
+<h3 id="install-ascat-required">Install ASCAT (required)<a class="anchor" aria-label="anchor" href="#install-ascat-required"></a>
+</h3>
 <p>Install <strong>ASCAT</strong> v3.0 (modified and adapted for GCAP workflow in HPC) in R console from GitHub with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># this is a fork version ASCAT</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/ascat@v3-for-gcap-v1"</span>, subdir <span class="op">=</span> <span class="st">"ASCAT"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/ascat@v3-for-gcap-v1"</span>, subdir <span class="op">=</span> <span class="st">"ASCAT"</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="install-gcap-required">Install GCAP (required)<a class="anchor" aria-label="anchor" href="#install-gcap-required"></a>
+</h3>
 <p>Install <strong>gcap</strong> in R console from GitHub with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/gcap"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/gcap"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <div class="section level3">
-<h3 id="pipeline">Pipeline<a class="anchor" aria-label="anchor" href="#pipeline"></a>
+<h3 id="pipeline-wes-bam-data-only">Pipeline (WES bam data only)<a class="anchor" aria-label="anchor" href="#pipeline-wes-bam-data-only"></a>
 </h3>
 <ul>
 <li>for one tumor-normal pair, you can refer to <a href="https://github.com/ShixiangWang/gcap/blob/master/test-workflow/one-pair.R" class="external-link">one-pair.R</a>.</li>
@@ -121,10 +156,25 @@
 <p>In our practice, when we want to process multiple cases, set <code>nthread = 22</code> and directly let <strong>gcap</strong> handle multiple cases (instead of writing a loop yourself) is good enough.</p>
 </div>
 <div class="section level3">
+<h3 id="pipeline-allele-specific-or-absolute-copy-number-data">Pipeline (Allele specific or absolute copy number data)<a class="anchor" aria-label="anchor" href="#pipeline-allele-specific-or-absolute-copy-number-data"></a>
+</h3>
+<p>Please refer to <a href="https://shixiangwang.github.io/gcap/reference/gcap.ASCNworkflow.html" class="external-link"><code>?gcap.ASCNworkflow()</code></a>.</p>
+</div>
+<div class="section level3">
 <h3 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
 </h3>
 <p>For more custom and advanced control of the analysis, you can read the well organized function list at <a href="https://shixiangwang.github.io/gcap/reference/index.html" class="external-link"><em>package site</em></a>.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="related-tools">Related tools<a class="anchor" aria-label="anchor" href="#related-tools"></a>
+</h2>
+<ul>
+<li>
+<a href="https://github.com/ShixiangWang/DoAbsolute" class="external-link">DoAbsolute</a>: Automate Absolute Copy Number Calling using ‘ABSOLUTE’ package.</li>
+<li>
+<a href="https://github.com/ShixiangWang/sigminer" class="external-link">sigminer</a>: An easy-to-use and scalable toolkit for genomic alteration signature (a.k.a. mutational signature) analysis and visualization in R.</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="license">LICENSE<a class="anchor" aria-label="anchor" href="#license"></a>
@@ -175,6 +225,7 @@
 <div class="pkgdown">
   <p></p>
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 
       </footer>

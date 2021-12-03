@@ -1,11 +1,8 @@
 template:
+  package: preferably
   boostrap: 5
-  bslib:
-    primary: "#0054AD"
-    border-radius: 0.5rem
-    btn-border-radius: 0.25rem
   params:
-    bootswatch: united
+    toggle: manual
 destination: docs
 
 authors:

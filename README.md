@@ -13,7 +13,7 @@ sources are more suitable.
 
 ## Installation
 
-### Download reference files
+### Download reference files (WES bam data only)
 
 For advanced users, you can prepare the reference files by following the instructions
 from <https://github.com/shixiangwang/ascat/tree/v3.0>.
@@ -25,7 +25,7 @@ We recommend all users directly download the reference files from the links belo
 > The prediction model is built with data on the top of hg38 genome build, so
 hg38 based bam files as input is more recommended.
 
-### Install softwares
+### Install alleleCount (WES bam data only)
 
 [**alleleCount**](https://github.com/cancerit/alleleCount) is required to run **ASCAT** on WES bam data,
 if you haven't installed [**conda**](https://docs.conda.io/en/latest/) or [**miniconda**](https://docs.conda.io/en/latest/miniconda.html), please install firstly,
@@ -38,12 +38,16 @@ conda create -n cancerit -c bioconda cancerit-allelecount
 > NOTE: **gcap** set the default **alleleCount** as the `~/miniconda3/envs/cancerit/bin/alleleCounter`,
 if you use **conda** or other approaches, please set the path when you use corresponding functions.
 
+### Install ASCAT (required)
+
 Install **ASCAT** v3.0 (modified and adapted for GCAP workflow in HPC) in R console from GitHub with:
 
 ```r
 # this is a fork version ASCAT
 remotes::install_github("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT")
 ```
+
+### Install GCAP (required)
 
 Install **gcap** in R console from GitHub with:
 
@@ -53,7 +57,7 @@ remotes::install_github("ShixiangWang/gcap")
 
 ## Example
 
-### Pipeline
+### Pipeline (WES bam data only)
 
 - for one tumor-normal pair, you can refer to [one-pair.R](https://github.com/ShixiangWang/gcap/blob/master/test-workflow/one-pair.R).
 - for multiple tumor-normal pairs, you can refer to [two-pair.R](https://github.com/ShixiangWang/gcap/blob/master/test-workflow/two-pairs.R).
@@ -68,6 +72,10 @@ It generally takes `~0.5h` to finish one case (tumor-normal pair).
 In our practice, when we want to process multiple cases, set `nthread = 22` and
 directly let **gcap** handle multiple cases (instead of writing a loop yourself) is
 good enough.
+
+### Pipeline (Allele specific or absolute copy number data)
+
+Please refer to [`?gcap.ASCNworkflow()`](https://shixiangwang.github.io/gcap/reference/gcap.ASCNworkflow.html).
 
 ### Functions
 
