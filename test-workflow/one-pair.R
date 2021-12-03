@@ -33,7 +33,7 @@ gcap::gcap.workflow(
     age = 60,
     gender = 1 # 1 for XY, 0 for XX. You can also use 'XY' and 'XX'
   ),
-  target = c("circle", "nonLinear"),
+  target = "circle",
   chrom_names = c(1:22, "X"),
   outdir = "~/proj/gcap/test-workflow/result",
   result_file_prefix = "test_one_case",
