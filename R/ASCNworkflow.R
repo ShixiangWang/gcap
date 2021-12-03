@@ -54,6 +54,7 @@ gcap.ASCNworkflow <- function(data,
   genome_build <- match.arg(genome_build)
   target <- match.arg(target, choices = c("circle", "nonLinear"), several.ok = TRUE)
   check_model(model)
+  if (!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
 
   lg <- set_logger()
   lg$info("=========================")
