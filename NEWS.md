@@ -1,5 +1,7 @@
 # gcap 0.4.0
 
+- After exploration, we found our stepwise model outperform MBO tuned model.
+So the models for predicting circular target have been limited to 3.
 - `gcap.ASCNworkflow()` now supports input with only total integer copy number,
 like the result from ABSOLUTE software (also [DoAbsolute](https://github.com/ShixiangWang/DoAbsolute)).
 - Added stepwised model for circle target.

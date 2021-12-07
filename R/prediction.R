@@ -2,8 +2,7 @@
 #'
 #' @param data data to predict (`data.frame`/`matrix` format), from
 #' [gcap.collapse2Genes()] in general.
-#' @param model model name ("XGB11", "XGB32", "XGB54",
-#' "XGB11_stepwise", "XGB32_stepwise", "XGB54_stepwise") or a custom model
+#' @param model model name ("XGB11", "XGB32", "XGB54") or a custom model
 #' from input. 'toy' can be used for test.
 #' @param target one of 'circle' and 'nonLinear' to select model
 #' if predict circle amplicon or non-linear amplicon.
@@ -39,12 +38,9 @@ gcap.runPrediction <- function(data,
     } else {
       if (target == "circle") {
         modfile <- switch(model,
-          XGB11 = "xgb_stepwise_model_NF11.rds", # NEED UPDATE
+          XGB11 = "xgb_stepwise_model_NF11.rds",
           XGB32 = "xgb_stepwise_model_NF32.rds",
           XGB54 = "xgb_stepwise_model_NF54.rds",
-          XGB11_stepwise = "xgb_stepwise_model_NF11.rds",
-          XGB32_stepwise = "xgb_stepwise_model_NF32.rds",
-          XGB54_stepwise = "xgb_stepwise_model_NF54.rds",
           stop("Unsupported model input!")
         )
       } else {

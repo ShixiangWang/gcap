@@ -2,7 +2,7 @@
 
 # File R/ASCNworkflow.R: @testexamples
 
-test_that("Function gcap.ASCNworkflow() @ L48", {
+test_that("Function gcap.ASCNworkflow() @ L44", {
   
   data("ascn")
   data <- ascn

@@ -33,12 +33,11 @@ to \code{NA} if you don't have this data.
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
 
-\item{model}{model name ("XGB11", "XGB32", "XGB54",
-"XGB11_stepwise", "XGB32_stepwise", "XGB54_stepwise") or a custom model
+\item{model}{model name ("XGB11", "XGB32", "XGB54") or a custom model
 from input. 'toy' can be used for test.}
 
-\item{target}{'circle' and 'nonLinear' to select model if predict circle
-amplicon or non-linear amplicon. \strong{Can be one or both}.}
+\item{target}{one of 'circle' and 'nonLinear' to select model
+if predict circle amplicon or non-linear amplicon.}
 
 \item{outdir}{result output path.}
 

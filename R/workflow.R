@@ -4,7 +4,7 @@
 #' @inheritParams gcap.extractFeatures
 #' @inheritParams gcap.collapse2Genes
 #' @inheritParams gcap.runPrediction
-#' @param target 'circle' and 'nonLinear' to select model if predict circle
+#' @param target 'circle' and 'nonLinear' (not supported yet) to select model if predict circle
 #' amplicon or non-linear amplicon. **Can be one or both**.
 #' @param result_file_prefix file name prefix (without directory path) for storing
 #' final model prediction file in CSV format.

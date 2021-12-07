@@ -10,8 +10,7 @@ gcap.runPrediction(data, model = "XGB32", target = c("circle", "nonLinear"))
 \item{data}{data to predict (\code{data.frame}/\code{matrix} format), from
 \code{\link[=gcap.collapse2Genes]{gcap.collapse2Genes()}} in general.}
 
-\item{model}{model name ("XGB11", "XGB32", "XGB54",
-"XGB11_stepwise", "XGB32_stepwise", "XGB54_stepwise") or a custom model
+\item{model}{model name ("XGB11", "XGB32", "XGB54") or a custom model
 from input. 'toy' can be used for test.}
 
 \item{target}{one of 'circle' and 'nonLinear' to select model

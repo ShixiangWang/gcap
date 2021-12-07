@@ -22,7 +22,7 @@ mergeDTs <- function(dt_list, by = NULL, sort = FALSE) {
 
 check_model <- function(m) {
   if (is.character(m)) {
-    opts <- c("XGB11", "XGB32", "XGB54", "XGB11_stepwise", "XGB32_stepwise", "XGB54_stepwise", "toy")
+    opts <- c("XGB11", "XGB32", "XGB54", "toy")
     if (length(m) > 1) stop("Multiple inputs for model are not allowed")
     if (!m %in% opts) {
       stop("Internal model can only set to one of ", paste(opts, collapse = ", "))
