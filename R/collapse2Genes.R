@@ -9,9 +9,10 @@
 #' also could be `0` for 'XX' and `1` for 'XY'.
 #' @param include_type if `TRUE`, a fourth column named 'type'
 #' should be included in `extra_info`, the supported cancer
-#' type includes `c("BLCA", "BRCA", "CESC", "COAD", "ESCA", "GBM", "HNSC",
-#' "KICH", "KIRP", "LGG", "LIHC", "LUAD", "LUSC",
-#' "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM")`.
+#' type includes `c("BLCA", "BRCA", "CESC", "COAD", "DLBC", "ESCA", "GBM", "HNSC",
+#' "KICH", "KIRC", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV",
+#' "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM")`. Only useful
+#' when use model 'XGB54'.
 #'
 #' @return a `data.table`.
 #' @export
@@ -42,9 +43,9 @@ gcap.collapse2Genes <- function(fts,
     if (include_type) {
       lg$info("one-hot encoding cancer type")
       types <- c(
-        "BLCA", "BRCA", "CESC", "COAD", "ESCA", "GBM", "HNSC",
-        "KICH", "KIRP", "LGG", "LIHC", "LUAD", "LUSC",
-        "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM"
+        "BLCA", "BRCA", "CESC", "COAD", "DLBC", "ESCA", "GBM", "HNSC",
+        "KICH", "KIRC", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV",
+        "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM"
       )
       lg$info("valid cancer types: {paste(types, collapse=',')}")
       extra_info$type <- factor(

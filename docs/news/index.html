@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -69,6 +69,11 @@
       <small>Source: <a href="https://github.com/ShixiangWang/gcap/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.1" id="gcap-041">gcap 0.4.1<a class="anchor" aria-label="anchor" href="#gcap-041"></a></h2>
+<ul><li>Automatically appended logs to specific directoy with <code>rappdirs::app_dir("gcap", "ShixiangWang")</code>. Users can obtain log path and cat log info with <code>gcap:::get_log_file()</code> and <code>gcap:::cat_log_file()</code> for debugging. (<a href="https://github.com/ShixiangWang/gcap/issues/14" class="external-link">#14</a>)</li>
+<li>Supported XGB54 model in workflows. (<a href="https://github.com/ShixiangWang/gcap/issues/13" class="external-link">#13</a>)</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.0" id="gcap-040">gcap 0.4.0<a class="anchor" aria-label="anchor" href="#gcap-040"></a></h2>
 <ul><li>After exploration, we found our stepwise model outperform MBO tuned model. So the models for predicting circular target have been limited to 3.</li>

@@ -1,3 +1,10 @@
+# gcap 0.4.1
+
+- Automatically appended logs to specific directoy with `rappdirs::app_dir("gcap", "ShixiangWang")`.
+Users can obtain log path and cat log info with `gcap:::get_log_file()` and `gcap:::cat_log_file()`
+for debugging. (#14)
+- Supported XGB54 model in workflows. (#13)
+
 # gcap 0.4.0
 
 - After exploration, we found our stepwise model outperform MBO tuned model.

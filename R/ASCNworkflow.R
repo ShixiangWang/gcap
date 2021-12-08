@@ -22,6 +22,10 @@
 #' - ploidy (optinal): ploidy value of the sample tumor genome.
 #' - age (optional): age of the case, use along with `gender`.
 #' - gender (optional): gender of the case, use along with `age`.
+#' - type (optional): cancer type of the case, use along with `age` and `gender`.
+#' Please refer to [gcap.collapse2Genes] to see the supported cancer types.
+#' This info is only used in 'XGB54' model. If you don't use this model, you
+#' don't need to set it.
 #' @return a list of invisible `data.table` and corresponding files saved to local machine.
 #' @export
 #' @examples
@@ -33,13 +37,17 @@
 #' data$age <- 60
 #' data$gender <- "XY"
 #' rv3 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB32")
+#' # If you want to use 'XGB54', you should include 'type' column
+#' data$type <- "LUAD"
+#' rv4 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB54")
 #' # If you only have total integer copy number
 #' data$minor_cn <- NA
-#' rv4 = gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
+#' rv5 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
 #' @testexamples
 #' expect_equal(rv, rv2)
 #' expect_equal(ncol(rv3$by_gene), 35L)
-#' expect_equal(ncol(rv4$by_gene), 15L)
+#' expect_equal(ncol(rv4$by_gene), 57L)
+#' expect_equal(ncol(rv5$by_gene), 15L)
 #' expect_error(gcap.ASCNworkflow(data, outdir = tempdir()))
 gcap.ASCNworkflow <- function(data,
                               genome_build = c("hg38", "hg19"),
@@ -115,8 +123,10 @@ gcap.runASCATBuildflow <- function(data,
     genome_build = genome_build
   )
 
-  lg$info("checking if input age and gender columns")
-  if (all(c("age", "gender") %in% colnames(data))) {
+  lg$info("checking if input age, gender (and type) columns")
+  if (all(c("age", "gender", "type") %in% colnames(data))) {
+    extra_info <- unique(data[, c("sample", "age", "gender", "type")])
+  } else if (all(c("age", "gender") %in% colnames(data))) {
     extra_info <- unique(data[, c("sample", "age", "gender")])
   } else {
     lg$info("None exist, set to NULL.")
@@ -126,6 +136,7 @@ gcap.runASCATBuildflow <- function(data,
   lg$info("collapsing all data into gene-level prediction input")
   gcap.collapse2Genes(
     fts = fts, extra_info = extra_info,
+    include_type = if ("type" %in% colnames(extra_info)) TRUE else FALSE,
     genome_build = genome_build
   )
 }

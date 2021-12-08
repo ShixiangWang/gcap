@@ -2,7 +2,7 @@
 
 # File R/ASCNworkflow.R: @testexamples
 
-test_that("Function gcap.ASCNworkflow() @ L44", {
+test_that("Function gcap.ASCNworkflow() @ L52", {
   
   data("ascn")
   data <- ascn
@@ -12,12 +12,16 @@ test_that("Function gcap.ASCNworkflow() @ L44", {
   data$age <- 60
   data$gender <- "XY"
   rv3 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB32")
+  # If you want to use 'XGB54', you should include 'type' column
+  data$type <- "LUAD"
+  rv4 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB54")
   # If you only have total integer copy number
   data$minor_cn <- NA
-  rv4 = gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
+  rv5 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
   expect_equal(rv, rv2)
   expect_equal(ncol(rv3$by_gene), 35L)
-  expect_equal(ncol(rv4$by_gene), 15L)
+  expect_equal(ncol(rv4$by_gene), 57L)
+  expect_equal(ncol(rv5$by_gene), 15L)
   expect_error(gcap.ASCNworkflow(data, outdir = tempdir()))
 })
 

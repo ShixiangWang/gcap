@@ -18,6 +18,7 @@
 gcap.workflow <- function(tumourseqfile, normalseqfile,
                           tumourname, normalname, jobname = tumourname,
                           extra_info = NULL,
+                          include_type = FALSE,
                           genome_build = c("hg38", "hg19"),
                           model = "XGB32",
                           target = "circle",
@@ -163,6 +164,7 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   model_input <- gcap.runBuildflow(
     ascat_files,
     extra_info,
+    include_type = include_type,
     genome_build = genome_build
   )
 

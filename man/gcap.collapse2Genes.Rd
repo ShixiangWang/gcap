@@ -21,7 +21,8 @@ also could be \code{0} for 'XX' and \code{1} for 'XY'.}
 
 \item{include_type}{if \code{TRUE}, a fourth column named 'type'
 should be included in \code{extra_info}, the supported cancer
-type includes \code{c("BLCA", "BRCA", "CESC", "COAD", "ESCA", "GBM", "HNSC", "KICH", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM")}.}
+type includes \code{c("BLCA", "BRCA", "CESC", "COAD", "DLBC", "ESCA", "GBM", "HNSC", "KICH", "KIRC", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM")}. Only useful
+when use model 'XGB54'.}
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}

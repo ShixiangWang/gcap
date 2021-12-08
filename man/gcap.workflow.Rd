@@ -11,6 +11,7 @@ gcap.workflow(
   normalname,
   jobname = tumourname,
   extra_info = NULL,
+  include_type = FALSE,
   genome_build = c("hg38", "hg19"),
   model = "XGB32",
   target = "circle",
@@ -49,6 +50,11 @@ gcap.workflow(
 (must identical to the setting of parameter \code{jobname}),
 'age' and 'gender'. For gender, should be 'XX' or 'XY',
 also could be \code{0} for 'XX' and \code{1} for 'XY'.}
+
+\item{include_type}{if \code{TRUE}, a fourth column named 'type'
+should be included in \code{extra_info}, the supported cancer
+type includes \code{c("BLCA", "BRCA", "CESC", "COAD", "DLBC", "ESCA", "GBM", "HNSC", "KICH", "KIRC", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM")}. Only useful
+when use model 'XGB54'.}
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}

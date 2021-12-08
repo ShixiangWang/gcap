@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -81,6 +81,7 @@
   <span class="va">normalname</span>,
   jobname <span class="op">=</span> <span class="va">tumourname</span>,
   extra_info <span class="op">=</span> <span class="cn">NULL</span>,
+  include_type <span class="op">=</span> <span class="cn">FALSE</span>,
   genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span>,
   model <span class="op">=</span> <span class="st">"XGB32"</span>,
   target <span class="op">=</span> <span class="st">"circle"</span>,
@@ -122,6 +123,11 @@
 (must identical to the setting of parameter <code>jobname</code>),
 'age' and 'gender'. For gender, should be 'XX' or 'XY',
 also could be <code>0</code> for 'XX' and <code>1</code> for 'XY'.</p></dd>
+<dt>include_type</dt>
+<dd><p>if <code>TRUE</code>, a fourth column named 'type'
+should be included in <code>extra_info</code>, the supported cancer
+type includes <code>c("BLCA", "BRCA", "CESC", "COAD", "DLBC", "ESCA", "GBM", "HNSC", "KICH", "KIRC", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM")</code>. Only useful
+when use model 'XGB54'.</p></dd>
 <dt>genome_build</dt>
 <dd><p>genome build version, should be
 one of 'hg38', 'hg19'.</p></dd>

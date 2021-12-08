@@ -57,7 +57,7 @@ gcap.extractFeatures <- function(ascat_files,
   lg$info("generating CopyNumber object in sigminer package")
   cn <- data.table::copy(rvlist$data)
   if ("old_sample" %in% colnames(cn)) cn$old_sample <- NULL
-  add_loh = if (all(is.na(cn$minor_cn))) FALSE else TRUE
+  add_loh <- if (all(is.na(cn$minor_cn))) FALSE else TRUE
   cn <- read_copynumber(
     cn,
     seg_cols = colnames(cn)[1:4],
@@ -89,7 +89,7 @@ gcap.extractFeatures <- function(ascat_files,
     df_pLOH <- get_pLOH_score(cn)
   } else {
     lg$info("pLOH score is skipped as no LOH data available")
-    df_pLOH = NULL
+    df_pLOH <- NULL
   }
 
   lg$info("getting CNA burden")
@@ -107,7 +107,7 @@ gcap.extractFeatures <- function(ascat_files,
     )
   } else {
     lg$info("copy number signature activity quantification is skipped as no LOH data available")
-    df_act = NULL
+    df_act <- NULL
   }
 
   lg$info("merging data")
