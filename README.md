@@ -3,7 +3,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-**gcap** provides end-to-end pipelines for predicting
+**gcap** provides end-to-end workflows for predicting
 circular amplicon (ecDNA) in gene level on WES (tumor-normal paired BAM) data,
 allele specific copy number data (e.g., results from [ASCAT](https://github.com/VanLoo-lab/ascat) or [Sequenza](https://cran.r-project.org/package=sequenza)), or even
 absolute integer copy number data (e.g., results from [ABSOLUTE](https://software.broadinstitute.org/cancer/cga/absolute)). The former two data
@@ -82,6 +82,19 @@ Please refer to [`?gcap.ASCNworkflow()`](https://shixiangwang.github.io/gcap/ref
 For more custom and advanced control of the analysis, you can read the well
 organized function list at [*package site*](https://shixiangwang.github.io/gcap/reference/index.html).
 
+## Logging
+
+For better debugging and rechecking.
+The logging information of your operation with **gcap** would be saved into
+an independent file. You can use the following commands to get the file path
+and print logging message. Please note you have to use `:::` to access these
+functions as they are not exported from **gcap**.
+
+```r
+> gcap:::get_log_file()
+[1] "~/Library/Logs/gcap/gcap.log"
+> gcap:::cat_log_file()
+```
 
 ## Related tools
 

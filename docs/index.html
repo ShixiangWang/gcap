@@ -99,7 +99,7 @@
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p><strong>gcap</strong> provides end-to-end pipelines for predicting circular amplicon (ecDNA) in gene level on WES (tumor-normal paired BAM) data, allele specific copy number data (e.g., results from <a href="https://github.com/VanLoo-lab/ascat" class="external-link">ASCAT</a> or <a href="https://cran.r-project.org/package=sequenza" class="external-link">Sequenza</a>), or even absolute integer copy number data (e.g., results from <a href="https://software.broadinstitute.org/cancer/cga/absolute" class="external-link">ABSOLUTE</a>). The former two data sources are more suitable.</p>
+<p><strong>gcap</strong> provides end-to-end workflows for predicting circular amplicon (ecDNA) in gene level on WES (tumor-normal paired BAM) data, allele specific copy number data (e.g., results from <a href="https://github.com/VanLoo-lab/ascat" class="external-link">ASCAT</a> or <a href="https://cran.r-project.org/package=sequenza" class="external-link">Sequenza</a>), or even absolute integer copy number data (e.g., results from <a href="https://software.broadinstitute.org/cancer/cga/absolute" class="external-link">ABSOLUTE</a>). The former two data sources are more suitable.</p>
 <p><strong>gcap</strong> outputs two data tables storing sample features and model prediction result.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -165,6 +165,14 @@
 </h3>
 <p>For more custom and advanced control of the analysis, you can read the well organized function list at <a href="https://shixiangwang.github.io/gcap/reference/index.html" class="external-link"><em>package site</em></a>.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="logging">Logging<a class="anchor" aria-label="anchor" href="#logging"></a>
+</h2>
+<p>For better debugging and rechecking. The logging information of your operation with <strong>gcap</strong> would be saved into an independent file. You can use the following commands to get the file path and print logging message. Please note you have to use <code>:::</code> to access these functions as they are not exported from <strong>gcap</strong>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">get_log_file</span>()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"~/Library/Logs/gcap/gcap.log"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">cat_log_file</span>()</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="related-tools">Related tools<a class="anchor" aria-label="anchor" href="#related-tools"></a>
