@@ -14,7 +14,7 @@ gcap.ASCNworkflow(
 )
 }
 \arguments{
-\item{data}{a \code{data.frame} with following rows. The key columns can be obtained
+\item{data}{a \code{data.frame} with following columns. The key columns can be obtained
 from common allele specific CNV calling software, e.g., ASCAT, Sequenza, FACETS.
 \itemize{
 \item chromosome: chromosome names starts with 'chr'.

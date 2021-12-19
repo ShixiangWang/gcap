@@ -9,7 +9,7 @@
 #' @inheritParams gcap.collapse2Genes
 #' @inheritParams gcap.runPrediction
 #' @inheritParams gcap.workflow
-#' @param data a `data.frame` with following rows. The key columns can be obtained
+#' @param data a `data.frame` with following columns. The key columns can be obtained
 #' from common allele specific CNV calling software, e.g., ASCAT, Sequenza, FACETS.
 #' - chromosome: chromosome names starts with 'chr'.
 #' - start: start position of the segment.

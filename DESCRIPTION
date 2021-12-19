@@ -30,7 +30,8 @@ Imports:
     Rcpp,
     stats,
     uuid,
-    xgboost
+    xgboost,
+    GetoptLong
 Suggests: 
     BiocManager,
     PRROC,
