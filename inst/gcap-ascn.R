@@ -12,7 +12,7 @@ GetoptLong(
     "A file storing following columns: chromosome, start, end, total_cn,",
     "minor_cn, sample, purity, ploidy (optinal), age (optinal), gender (optinal), type (optinal)."
   ),
-  "outdir=s", "result output path.",
+  "outdir=s", "Result output path.",
   "genome=s",  "Genome build version, should be hg38 or hg19.",
   "model=s", "Model name, should be one of XGB11, XGB32, XGB54."
 )
@@ -21,7 +21,7 @@ suppressMessages(library(data.table))
 suppressMessages(library(gcap))
 
 gcap.ASCNworkflow(
-  fread(input),
+  fread(input, header = TRUE),
   genome_build = genome,
   model = model,
   #target = "circle",

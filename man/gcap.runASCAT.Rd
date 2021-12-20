@@ -61,7 +61,8 @@ gcap.runASCAT(
 
 \item{probloci_file}{A file (chromosome <tab> position; no header) containing specific loci to ignore (optional, default=NA).}
 
-\item{chrom_names}{A vector containing the names of chromosomes to be considered (optional, default=c(1:22,'X')).}
+\item{chrom_names}{A vector containing the names of chromosomes to be
+considered (optional, default=1:22).}
 
 \item{gender}{a vector of gender for each cases ("XX" or "XY").
 Default = all female ("XX"). Ignore this if you don't include sex

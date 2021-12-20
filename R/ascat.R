@@ -21,6 +21,8 @@
 #' @param gender a vector of gender for each cases ("XX" or "XY").
 #' Default = all female ("XX"). Ignore this if you don't include sex
 #' chromosomes.
+#' @param chrom_names A vector containing the names of chromosomes to be
+#' considered (optional, default=1:22).
 #' @param skip_finished_ASCAT if `TRUE`, skipped finished ASCAT calls
 #' to save time.
 #'

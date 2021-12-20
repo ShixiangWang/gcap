@@ -1,5 +1,6 @@
 # gcap 0.4.1
 
+- Add easy-to-use CLI in `inst` directory.
 - Filled `NA`s to input when age and gender are not available.
 - Automatically appended logs to specific directory with `rappdirs::app_dir("gcap", "ShixiangWang")`.
 Users can obtain log path and cat log info with `gcap:::get_log_file()` and `gcap:::cat_log_file()`
