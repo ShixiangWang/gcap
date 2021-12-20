@@ -14,6 +14,7 @@ reference:
     contents:
     - gcap.workflow
     - gcap.ASCNworkflow
+    - deploy
   - title: Analysis Wrapper
     desc: Core build block for constructing pipeline
     contents:
