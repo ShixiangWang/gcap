@@ -12,7 +12,7 @@ NumericMatrix calc_dist(NumericMatrix x) {
         out(i, j) = abs(x(i, 1) - x(j, 1));
       } else {
         // Set a hard distance for genes not in same chromosome
-        out(i, j) = 1e7;
+        out(i, j) = 1e8;
       }
     }
   }

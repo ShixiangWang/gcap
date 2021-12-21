@@ -8,7 +8,7 @@
 #' - `*_burden` for size of genome (per Mb) affected.
 #' - `*_clusters` for number of region affected by clustering
 #' distance with hard cutoff `1e6` (i.e., 1Mb). For genes from different
-#' chromosomes, the distance set to `1e7` (i.e., 10Mb).
+#' chromosomes, the distance set to `1e8` (i.e., 10Mb).
 #' @export
 #'
 #' @examples
