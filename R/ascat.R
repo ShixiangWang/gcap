@@ -149,7 +149,7 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
       },
       error = function(e) {
         lg$fatal("job {id} failed in ASCAT due to following error")
-        message(e$message)
+        lg$info(e$message)
         lg$info("Please check your input bam files (and its alignment quality further).")
       }
     )
