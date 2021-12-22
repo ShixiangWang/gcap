@@ -20,7 +20,7 @@ a \code{data.table}.
 \item \verb{*_burden} for size of genome (per Mb) affected.
 \item \verb{*_clusters} for number of region affected by clustering
 distance with hard cutoff \code{1e6} (i.e., 1Mb). For genes from different
-chromosomes, the distance set to \code{1e7} (i.e., 10Mb).
+chromosomes, the distance set to \code{1e8} (i.e., 100Mb).
 }
 }
 \description{

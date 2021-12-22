@@ -1,5 +1,7 @@
 # gcap 0.4.1
 
+- Added `use_best_ntreelimit` in `gcap.runPrediction()` to control the ntree setting.
+When it is `FALSE`, we use a custom processing to obtain a more conservative tree number.
 - Added `deploy()` to auto-deploy the CLI to `/usr/loca/bin`.
 - Added easy-to-use CLI in `inst` directory.
 - Filled `NA`s to input when age and gender are not available.

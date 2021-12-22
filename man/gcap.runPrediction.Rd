@@ -4,7 +4,12 @@
 \alias{gcap.runPrediction}
 \title{Run gene-level amplicon prediction}
 \usage{
-gcap.runPrediction(data, model = "XGB32", target = c("circle", "nonLinear"))
+gcap.runPrediction(
+  data,
+  model = "XGB32",
+  target = c("circle", "nonLinear"),
+  use_best_ntreelimit = FALSE
+)
 }
 \arguments{
 \item{data}{data to predict (\code{data.frame}/\code{matrix} format), from
@@ -15,6 +20,10 @@ from input. 'toy' can be used for test.}
 
 \item{target}{one of 'circle' and 'nonLinear' to select model
 if predict circle amplicon or non-linear amplicon.}
+
+\item{use_best_ntreelimit}{if \code{TRUE}, use default \code{best_ntreelimit}
+proposed by XGBOOST, otherwise we determine a iteration number (
+i.e. tree number) with more careful processing to avoid over-fitting.}
 }
 \value{
 a numeric vector representing prob.

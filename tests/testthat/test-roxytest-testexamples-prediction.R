@@ -2,7 +2,7 @@
 
 # File R/prediction.R: @testexamples
 
-test_that("Function gcap.runPrediction() @ L21", {
+test_that("Function gcap.runPrediction() @ L24", {
   
   data("ec")
   # Use toy model for illustration

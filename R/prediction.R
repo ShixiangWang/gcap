@@ -6,6 +6,9 @@
 #' from input. 'toy' can be used for test.
 #' @param target one of 'circle' and 'nonLinear' to select model
 #' if predict circle amplicon or non-linear amplicon.
+#' @param use_best_ntreelimit if `TRUE`, use default `best_ntreelimit`
+#' proposed by XGBOOST, otherwise we determine a iteration number (
+#' i.e. tree number) with more careful processing to avoid over-fitting.
 #'
 #' @return a numeric vector representing prob.
 #' @importFrom stats predict
@@ -20,7 +23,8 @@
 #' expect_equal(length(y_pred), 2020L)
 gcap.runPrediction <- function(data,
                                model = "XGB32",
-                               target = c("circle", "nonLinear")) {
+                               target = c("circle", "nonLinear"),
+                               use_best_ntreelimit = FALSE) {
   stopifnot(data.table::is.data.table(data))
   target <- match.arg(target)
 
@@ -74,8 +78,21 @@ gcap.runPrediction <- function(data,
 
   lg$info("running prediction")
   if ("best_ntreelimit" %in% names(model)) {
-    predict(model, data, ntreelimit = model$best_ntreelimit)
+    predict(model, data, ntreelimit = if (use_best_ntreelimit)
+      model$best_ntreelimit else determine_iter(model))
   } else {
     predict(model, data)
+  }
+}
+
+determine_iter = function(m) {
+  log =  m$evaluation_log
+  nc = ncol(log)
+  if (nc < 2) {
+    return(NULL)
+  } else if (nc == 2 || nc > 3) {
+    return(order(log[[nc]], decreasing = TRUE)[1])
+  } else {
+    log[order(abs(eval_aucpr - train_aucpr), -eval_aucpr, decreasing = FALSE)]$iter[1]
   }
 }
