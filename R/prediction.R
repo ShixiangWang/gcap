@@ -78,16 +78,19 @@ gcap.runPrediction <- function(data,
 
   lg$info("running prediction")
   if ("best_ntreelimit" %in% names(model)) {
-    predict(model, data, ntreelimit = if (use_best_ntreelimit)
-      model$best_ntreelimit else determine_iter(model))
+    predict(model, data, ntreelimit = if (use_best_ntreelimit) {
+      model$best_ntreelimit
+    } else {
+      determine_iter(model)
+    })
   } else {
     predict(model, data)
   }
 }
 
-determine_iter = function(m) {
-  log =  m$evaluation_log
-  nc = ncol(log)
+determine_iter <- function(m) {
+  log <- m$evaluation_log
+  nc <- ncol(log)
   if (nc < 2) {
     return(NULL)
   } else if (nc == 2 || nc > 3) {
