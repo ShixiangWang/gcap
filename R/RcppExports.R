@@ -5,3 +5,11 @@ calc_dist <- function(x) {
     .Call(`_gcap_calc_dist`, x)
 }
 
+vec_shift <- function(arr) {
+    .Call(`_gcap_vec_shift`, arr)
+}
+
+conv_binomial <- function(p) {
+    .Call(`_gcap_conv_binomial`, p)
+}
+

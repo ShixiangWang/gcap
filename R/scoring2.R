@@ -105,15 +105,28 @@ calc_clusters2 <- function(dt, genome_build, n = 2) {
 
 
 # https://stats.stackexchange.com/questions/41247/risk-of-extinction-of-schr%C3%B6dingers-cats
-convolve.binomial <- function(p) {
+convolve.binomial <- function(p, r = FALSE) {
   # p is a vector of probabilities of Bernoulli distributions.
   # The convolution of these distributions is returned as a vector
   # `z` where z[i] is the probability of i-1, i=1, 2, ..., length(p)+1.
-  n <- length(p) + 1
-  z <- c(1, rep(0, n - 1))
-  for (p in p) z <- (1 - p) * z + p * c(0, z[-n])
-  return(z)
+  if (r) {
+    n <- length(p) + 1
+    z <- c(1, rep(0, n - 1))
+    for (pi in p) z <- (1 - pi) * z + pi * c(0, z[-n])
+    return(z)
+  } else {
+    conv_binomial(p)
+  }
 }
+
+# set.seed(123)
+# x = abs(runif(10000))
+# r = microbenchmark::microbenchmark(
+#   rversion = convolve.binomial(x, r = TRUE),
+#   rcpp = convolve.binomial(x), times = 10, check = "equal"
+# )
+# r
+# plot(r)
 
 # n refer to occur >= n
 calc_prob <- function(p, n) {

@@ -21,9 +21,33 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// vec_shift
+NumericVector vec_shift(NumericVector arr);
+RcppExport SEXP _gcap_vec_shift(SEXP arrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type arr(arrSEXP);
+    rcpp_result_gen = Rcpp::wrap(vec_shift(arr));
+    return rcpp_result_gen;
+END_RCPP
+}
+// conv_binomial
+NumericVector conv_binomial(NumericVector p);
+RcppExport SEXP _gcap_conv_binomial(SEXP pSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type p(pSEXP);
+    rcpp_result_gen = Rcpp::wrap(conv_binomial(p));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_gcap_calc_dist", (DL_FUNC) &_gcap_calc_dist, 1},
+    {"_gcap_vec_shift", (DL_FUNC) &_gcap_vec_shift, 1},
+    {"_gcap_conv_binomial", (DL_FUNC) &_gcap_conv_binomial, 1},
     {NULL, NULL, 0}
 };
 
