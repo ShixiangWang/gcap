@@ -48,6 +48,12 @@ gcap.aggrProb <- function(data,
     data$sample <- "sample"
   }
 
+  lg$info("estimating gene numbers with prob")
+  dt_ng <- data[, lapply(scs, function(x) {
+    estimate_n(.SD[[x]])
+  }), by = "sample"]
+  colnames(dt_ng)[-1] <- paste0(scs, "_ngenes")
+
   lg$info("aggregating prob over genes")
   dt_genes <- data[, lapply(scs, function(x) {
     calc_prob(.SD[[x]], n = min_ngene)
@@ -62,7 +68,7 @@ gcap.aggrProb <- function(data,
   colnames(dt_clusters)[-1] <- paste0(scs, paste0("_cluster_based_prob"))
 
   lg$info("merging and outputing final data")
-  mergeDTs(list(dt_genes, dt_clusters), by = "sample")
+  mergeDTs(list(dt_ng, dt_genes, dt_clusters), by = "sample")
 }
 
 calc_clusters2 <- function(dt, genome_build, n = 2) {
@@ -114,4 +120,12 @@ calc_prob <- function(p, n) {
   p <- convolve.binomial(p)
   p <- 1 - sum(p[seq_len(n)])
   if (is.na(p)) 0 else p
+}
+
+estimate_n <- function(p, level = 0.01) {
+  p <- convolve.binomial(p)
+  z <- cumsum(p) < level
+  if (any(z)) {
+    max(which(z))
+  } else 0L
 }
