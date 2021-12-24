@@ -19,7 +19,7 @@ The column storing prediction result must start with \code{pred}.}
 one of 'hg38', 'hg19'.}
 
 \item{min_ngene, min_ncluster}{minimal gene or cluster number hosted on
-amplicon.}
+amplicon. In logic, at least \code{2}.}
 }
 \value{
 a \code{data.table}.

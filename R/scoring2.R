@@ -7,7 +7,7 @@
 #' @param data a `data.table` containing result from [gcap.runPrediction].
 #' The column storing prediction result must start with `pred`.
 #' @param min_ngene,min_ncluster minimal gene or cluster number hosted on
-#' amplicon.
+#' amplicon. In logic, at least `2`.
 #' @return a `data.table`.
 #' - `*_gene_based_prob` for gene based probability.
 #' - `*_cluster_based_prob` for cluster based probability.
@@ -137,8 +137,10 @@ calc_prob <- function(p, n) {
 
 estimate_n <- function(p, level = 0.01) {
   p <- convolve.binomial(p)
-  z <- cumsum(p) < level
-  if (any(z)) {
-    max(which(z))
-  } else 0L
+  vapply(level, function(l) {
+    z <- cumsum(p) < l
+    if (any(z)) {
+      max(which(z))
+    } else 0L
+  }, 0L)
 }
