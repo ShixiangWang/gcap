@@ -112,6 +112,9 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
     # Maybe we should handle the ASCAT source code to fix corresponding issues
     tryCatch(
       {
+        if (!all(file.exists(tfile, nfile))) {
+          lg$fatal("Not all bam files exist")
+        }
         ascat.prepareHTS(
           tumourseqfile = tfile,
           normalseqfile = nfile,
