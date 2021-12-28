@@ -3,13 +3,11 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-**gcap** provides end-to-end workflows for predicting
-circular amplicon (ecDNA) in gene level on WES (tumor-normal paired BAM) data,
+In a nutshell, **gcap** provides end-to-end machine learning approache for predicting
+circular amplicon (also known as ecDNA, extrachromosomal DNA ) in gene level from WES (tumor-normal paired BAM) data,
 allele specific copy number data (e.g., results from [ASCAT](https://github.com/VanLoo-lab/ascat) or [Sequenza](https://cran.r-project.org/package=sequenza)), or even
 absolute integer copy number data (e.g., results from [ABSOLUTE](https://software.broadinstitute.org/cancer/cga/absolute)). The former two data
-sources are more suitable.
-
-**gcap** outputs two data tables storing sample features and model prediction result.
+sources are preferred as input of **gcap** .
 
 ## Installation
 
@@ -22,8 +20,8 @@ We recommend all users directly download the reference files from the links belo
 
 - [Curated reference files for GCAP (WES)](https://zenodo.org/record/5533065)
 
-> The prediction model is built with data on the top of hg38 genome build, so
-hg38 based bam files as input is more recommended.
+> The prediction model was built with data on the top of hg38 genome build, while 
+hg38-based BAM file input is more recommended.
 
 ### Install alleleCount (WES bam data only)
 
@@ -43,7 +41,7 @@ if you use **conda** or other approaches, please set the path when you use corre
 Install **ASCAT** v3.0 (modified and adapted for GCAP workflow in HPC) in R console from GitHub with:
 
 ```r
-# this is a fork version ASCAT
+# This is a forked version ASCAT
 remotes::install_github("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT")
 ```
 
@@ -79,8 +77,7 @@ Please refer to [`?gcap.ASCNworkflow()`](https://shixiangwang.github.io/gcap/ref
 
 ### Functions
 
-For more custom and advanced control of the analysis, you can read the well
-organized function list at [*package site*](https://shixiangwang.github.io/gcap/reference/index.html).
+For more custom and advanced control of the analysis, you can read the structured documentation at [*package site*](https://shixiangwang.github.io/gcap/reference/index.html).
 
 ## Logging
 
@@ -100,6 +97,12 @@ functions as they are not exported from **gcap**.
 
 - [DoAbsolute](https://github.com/ShixiangWang/DoAbsolute): Automate Absolute Copy Number Calling using 'ABSOLUTE' package.
 - [sigminer](https://github.com/ShixiangWang/sigminer): An easy-to-use and scalable toolkit for genomic alteration signature (a.k.a. mutational signature) analysis and visualization in R.
+
+## Output     
+ **gcap** outputs two data tables including feature table and prediction result.
+ 
+## Citations 
+
 
 ## LICENSE
 
