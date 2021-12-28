@@ -127,9 +127,9 @@ collapse_to_genes <- function(x, genome_build = "hg38") {
   # Calculate the region cov ratio
   out[, intersect_ratio := intersect_size / (abs(end - start) + 1)]
 
-  lg$info("keeping records with >0.5 overlap ratio with a gene")
+  lg$info("keeping records with 100% overlap ratio with a gene")
   out <- out[
-    intersect_ratio > 0.5,
+    intersect_ratio >= 1,
     .(
       sample, gene_id,
       total_cn, minor_cn
