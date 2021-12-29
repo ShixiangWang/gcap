@@ -6,5 +6,6 @@
 ## usethis namespace: start
 #' @useDynLib gcap, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
+#' @importFrom data.table .N
 ## usethis namespace: end
 NULL

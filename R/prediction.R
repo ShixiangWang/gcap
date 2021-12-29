@@ -96,6 +96,9 @@ determine_iter <- function(m) {
   } else if (nc == 2 || nc > 3) {
     return(order(log[[nc]], decreasing = TRUE)[1])
   } else {
-    log[order(abs(eval_aucpr - train_aucpr), -eval_aucpr, decreasing = FALSE)]$iter[1]
+    if (nrow(log) > 10) {
+      log <- log[seq(11, .N)]
+    }
+    log[rev(seq_len(.N))][order(abs(eval_aucpr - train_aucpr), -eval_aucpr, decreasing = FALSE)]$iter[1]
   }
 }
