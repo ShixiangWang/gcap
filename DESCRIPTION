@@ -3,10 +3,7 @@ Package: gcap
 Title: Gene-level Circular Amplicon Prediction
 Version: 0.4.1
 Authors@R: 
-    person(given = "Shixiang",
-           family = "Wang",
-           role = c("aut", "cre"),
-           email = "w_shixiang@163.com",
+    person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357"))
 Description: Provides data processing pipeline feeding paired bam files
     and XGBOOST model for predicting tumor circular amplicons (also known
@@ -21,17 +18,18 @@ Depends:
     sigminer (>= 2.1.1)
 Imports:
     cli,
+    flexmix,
+    GetoptLong,
     glue,
-    rappdirs,
     lgr,
     magrittr,
     mltools,
     quadprog,
+    rappdirs,
     Rcpp,
     stats,
     uuid,
-    xgboost,
-    GetoptLong
+    xgboost
 Suggests: 
     BiocManager,
     PRROC,

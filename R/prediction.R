@@ -100,4 +100,3 @@ determine_iter <- function(m) {
     if (is.na(z)) NULL else z
   }
 }
-

@@ -141,6 +141,8 @@ estimate_n <- function(p, level = 0.01) {
     z <- cumsum(p) < l
     if (any(z)) {
       max(which(z))
-    } else 0L
+    } else {
+      0L
+    }
   }, 0L)
 }

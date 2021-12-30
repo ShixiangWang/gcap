@@ -52,7 +52,7 @@ gcap.collapse2Genes <- function(fts,
         )
         lg$info("valid cancer types: {paste(types, collapse=',')}")
       } else {
-        types = sort(unique(extra_info$type))
+        types <- sort(unique(extra_info$type))
       }
       extra_info$type <- factor(
         as.character(extra_info$type),
