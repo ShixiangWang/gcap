@@ -9,16 +9,17 @@
 #' also could be `0` for 'XX' and `1` for 'XY'.
 #' @param include_type if `TRUE`, a fourth column named 'type'
 #' should be included in `extra_info`, the supported cancer
-#' type includes `c("BLCA", "BRCA", "CESC", "COAD", "DLBC", "ESCA", "GBM", "HNSC",
-#' "KICH", "KIRC", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV",
-#' "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM")`. Only useful
-#' when use model 'XGB54'.
+#' type should be described with [TCGA cancer type abbr.](https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/tcga-study-abbreviations).
+#' @param fix_type default is `TRUE`, only cancer types used in pre-trained
+#' models are used, others will be convert to `NA`. If `FALSE`, only generating
+#' one-hot encoding for cancer types in input data.
 #'
 #' @return a `data.table`.
 #' @export
 gcap.collapse2Genes <- function(fts,
                                 extra_info = NULL,
                                 include_type = FALSE,
+                                fix_type = TRUE,
                                 genome_build = c("hg38", "hg19")) {
   stopifnot(
     is.list(fts),
@@ -42,12 +43,17 @@ gcap.collapse2Genes <- function(fts,
     extra_info <- as.data.table(extra_info)
     if (include_type) {
       lg$info("one-hot encoding cancer type")
-      types <- c(
-        "BLCA", "BRCA", "CESC", "COAD", "DLBC", "ESCA", "GBM", "HNSC",
-        "KICH", "KIRC", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV",
-        "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM"
-      )
-      lg$info("valid cancer types: {paste(types, collapse=',')}")
+      if (fix_type) {
+        # UPDATE!!!
+        types <- c(
+          "BLCA", "BRCA", "CESC", "COAD", "DLBC", "ESCA", "GBM", "HNSC",
+          "KICH", "KIRC", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV",
+          "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM"
+        )
+        lg$info("valid cancer types: {paste(types, collapse=',')}")
+      } else {
+        types = sort(unique(extra_info$type))
+      }
       extra_info$type <- factor(
         as.character(extra_info$type),
         levels = types

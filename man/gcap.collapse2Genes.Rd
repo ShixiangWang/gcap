@@ -8,6 +8,7 @@ gcap.collapse2Genes(
   fts,
   extra_info = NULL,
   include_type = FALSE,
+  fix_type = TRUE,
   genome_build = c("hg38", "hg19")
 )
 }
@@ -21,8 +22,11 @@ also could be \code{0} for 'XX' and \code{1} for 'XY'.}
 
 \item{include_type}{if \code{TRUE}, a fourth column named 'type'
 should be included in \code{extra_info}, the supported cancer
-type includes \code{c("BLCA", "BRCA", "CESC", "COAD", "DLBC", "ESCA", "GBM", "HNSC", "KICH", "KIRC", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV", "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM")}. Only useful
-when use model 'XGB54'.}
+type should be described with \href{https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/tcga-study-abbreviations}{TCGA cancer type abbr.}.}
+
+\item{fix_type}{default is \code{TRUE}, only cancer types used in pre-trained
+models are used, others will be convert to \code{NA}. If \code{FALSE}, only generating
+one-hot encoding for cancer types in input data.}
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
