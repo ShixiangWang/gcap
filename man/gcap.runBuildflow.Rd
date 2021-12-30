@@ -2,7 +2,7 @@
 % Please edit documentation in R/buildflow.R
 \name{gcap.runBuildflow}
 \alias{gcap.runBuildflow}
-\title{Build data for prediction from ASCAT results}
+\title{Build data for prediction from ASCAT result files}
 \usage{
 gcap.runBuildflow(
   ascat_files,

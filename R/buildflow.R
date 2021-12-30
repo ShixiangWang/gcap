@@ -1,4 +1,4 @@
-#' Build data for prediction from ASCAT results
+#' Build data for prediction from ASCAT result files
 #'
 #' This is is a wrapper of [gcap.extractFeatures()]
 #' and [gcap.collapse2Genes()] to combine the feature extraction

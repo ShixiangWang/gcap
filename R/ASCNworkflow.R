@@ -112,6 +112,20 @@ gcap.ASCNworkflow <- function(data,
 
 # runASCATBuildflow -----------------------------------
 
+#' Build data for prediction from absolute copy number data
+#'
+#' This is is a wrapper of [gcap.extractFeatures()]
+#' and [gcap.collapse2Genes()] to combine the feature extraction
+#' and predict input generate procedure.
+#' If you want to modify the result of [gcap.extractFeatures()],
+#' you should always use the two functions instead of this
+#' wrapper.
+#' @inheritParams gcap.ASCNworkflow
+#'
+#' @seealso [gcap.runBuildflow]
+#'
+#' @return a `data.table`.
+#' @export
 gcap.runASCATBuildflow <- function(data,
                                    genome_build = c("hg38", "hg19")) {
   genome_build <- match.arg(genome_build)
