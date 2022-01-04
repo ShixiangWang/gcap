@@ -18,7 +18,7 @@ hg19 <- process_geneinfo(hg19)
 saveRDS(hg38, file = "inst/extdata/hg38_target_genes.rds")
 saveRDS(hg19, file = "inst/extdata/hg19_target_genes.rds")
 
-freq_df <- readRDS("../ecDNA/data/model_gene_amplicon_freq.rds")
+freq_df <- readRDS("~/Downloads/model_gene_amplicon_freq.rds")
 
 
 library(tidyverse)
