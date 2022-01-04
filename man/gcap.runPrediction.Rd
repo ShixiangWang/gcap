@@ -8,7 +8,7 @@ gcap.runPrediction(
   data,
   model = "XGB32",
   target = c("circle", "nonLinear"),
-  use_best_ntreelimit = FALSE
+  use_best_ntreelimit = TRUE
 )
 }
 \arguments{

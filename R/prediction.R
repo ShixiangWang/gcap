@@ -24,7 +24,7 @@
 gcap.runPrediction <- function(data,
                                model = "XGB32",
                                target = c("circle", "nonLinear"),
-                               use_best_ntreelimit = FALSE) {
+                               use_best_ntreelimit = TRUE) {
   stopifnot(data.table::is.data.table(data))
   target <- match.arg(target)
 
