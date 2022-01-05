@@ -13,6 +13,9 @@
 #' (must identical to the setting of parameter `jobname`),
 #' 'age' and 'gender'. For gender, should be 'XX' or 'XY',
 #' also could be `0` for 'XX' and `1` for 'XY'.
+#' @param skip_ascat_call if `TRUE`, skip calling ASCAT.
+#' This is useful when you have done this step and just want
+#' to run next steps.
 #' @return a list of invisible `data.table` and corresponding files saved to local machine.
 #' @export
 gcap.workflow <- function(tumourseqfile, normalseqfile,
@@ -43,7 +46,8 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
                           min_base_qual = 20,
                           min_map_qual = 35,
                           penalty = 70,
-                          skip_finished_ASCAT = TRUE) {
+                          skip_finished_ASCAT = TRUE,
+                          skip_ascat_call = FALSE) {
   genome_build <- match.arg(genome_build)
   target <- match.arg(target, choices = c("circle", "nonLinear"), several.ok = TRUE)
   check_model(model)
@@ -104,37 +108,39 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
     nthreads <- totalT
   }
 
-  gcap.runASCAT(
-    tumourseqfile,
-    normalseqfile,
-    tumourname,
-    normalname,
-    jobname,
-    outdir = outdir,
-    allelecounter_exe = allelecounter_exe,
-    g1000allelesprefix = g1000allelesprefix,
-    g1000lociprefix = g1000lociprefix,
-    GCcontentfile = GCcontentfile,
-    replictimingfile = replictimingfile,
-    nthreads = nthreads,
-    minCounts = minCounts,
-    BED_file = BED_file,
-    probloci_file = probloci_file,
-    chrom_names = chrom_names,
-    gender = if (!is.null(extra_info)) {
-      if (is.numeric(extra_info$gender)) {
-        data.table::fifelse(extra_info$gender == 1, "XY", "XX", na = "XX")
+  if (!skip_ascat_call) {
+    gcap.runASCAT(
+      tumourseqfile,
+      normalseqfile,
+      tumourname,
+      normalname,
+      jobname,
+      outdir = outdir,
+      allelecounter_exe = allelecounter_exe,
+      g1000allelesprefix = g1000allelesprefix,
+      g1000lociprefix = g1000lociprefix,
+      GCcontentfile = GCcontentfile,
+      replictimingfile = replictimingfile,
+      nthreads = nthreads,
+      minCounts = minCounts,
+      BED_file = BED_file,
+      probloci_file = probloci_file,
+      chrom_names = chrom_names,
+      gender = if (!is.null(extra_info)) {
+        if (is.numeric(extra_info$gender)) {
+          data.table::fifelse(extra_info$gender == 1, "XY", "XX", na = "XX")
+        } else {
+          extra_info$gender
+        }
       } else {
-        extra_info$gender
-      }
-    } else {
-      "XX"
-    },
-    min_base_qual = min_base_qual,
-    min_map_qual = min_map_qual,
-    penalty = penalty,
-    skip_finished_ASCAT
-  )
+        "XX"
+      },
+      min_base_qual = min_base_qual,
+      min_map_qual = min_map_qual,
+      penalty = penalty,
+      skip_finished_ASCAT
+    )
+  }
 
   lg$info("checking ASCAT result files")
   ascat_files <- file.path(outdir, paste0(jobname, ".ASCAT.rds"))

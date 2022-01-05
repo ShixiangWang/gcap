@@ -32,7 +32,8 @@ gcap.workflow(
   min_base_qual = 20,
   min_map_qual = 35,
   penalty = 70,
-  skip_finished_ASCAT = TRUE
+  skip_finished_ASCAT = TRUE,
+  skip_ascat_call = FALSE
 )
 }
 \arguments{
@@ -99,6 +100,10 @@ considered (optional, default=1:22).}
 
 \item{skip_finished_ASCAT}{if \code{TRUE}, skipped finished ASCAT calls
 to save time.}
+
+\item{skip_ascat_call}{if \code{TRUE}, skip calling ASCAT.
+This is useful when you have done this step and just want
+to run next steps.}
 }
 \value{
 a list of invisible \code{data.table} and corresponding files saved to local machine.
