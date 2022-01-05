@@ -30,6 +30,15 @@ check_model <- function(m) {
   }
 }
 
+sortGeneDT = function(dt) {
+  if ("pred_circle" %in% colnames(dt)) {
+    fc = (dt$total_cn / dt$ploidy) - 1
+    dt[order(dt$pred_circle, fc, decreasing = TRUE)]
+  } else {
+    dt
+  }
+}
+
 # Global variables
 utils::globalVariables(
   c(

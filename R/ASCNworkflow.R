@@ -87,6 +87,7 @@ gcap.ASCNworkflow <- function(data,
       target = t
     )
   }
+  model_input <- sortGeneDT(model_input)
   save_file <- file.path(outdir, paste0(result_file_prefix, "_by_gene.csv"))
   lg$info("Saving result to {save_file}")
   data.table::fwrite(model_input, file = save_file)
