@@ -39,61 +39,46 @@ gcap.extractComponents <-
     control@minprior <- min_prior
     control@iter.max <- niter
 
+    stopifnot(max_comp >= min_comp)
     set.seed(seed, kind = "L'Ecuyer-CMRG")
 
     if (dist == "norm") {
-      if (min_comp == max_comp) {
-        fit <-
-          flexmix::flexmix(
-            dat ~ 1,
-            model = flexmix::FLXMCnorm1(),
-            k = min_comp,
-            control = control
-          )
-      } else {
-        fit <-
-          flexmix::stepFlexmix(
-            dat ~ 1,
-            model = flexmix::FLXMCnorm1(),
-            k = min_comp:max_comp,
-            nrep = nrep,
-            control = control
-          )
-        if (inherits(fit, "stepFlexmix")) {
-          fit <- recur_fit_component(
-            fit = fit, dist = dist,
-            threshold = threshold,
-            control = control,
-            model_selection = model_selection
-          )
-        }
+      fit <-
+        flexmix::stepFlexmix(
+          dat ~ 1,
+          model = flexmix::FLXMCnorm1(),
+          k = seq(min_comp, max_comp),
+          nrep = nrep,
+          control = control,
+          drop = TRUE,
+          verbose = FALSE
+        )
+      if (inherits(fit, "stepFlexmix")) {
+        fit <- recur_fit_component(
+          fit = fit, dist = dist,
+          threshold = threshold,
+          control = control,
+          model_selection = model_selection
+        )
       }
     } else if (dist == "pois") {
-      if (min_comp == max_comp) {
-        fit <-
-          flexmix::flexmix(
-            dat ~ 1,
-            model = flexmix::FLXMCmvpois(),
-            k = min_comp,
-            control = control
-          )
-      } else {
-        fit <-
-          flexmix::stepFlexmix(
-            dat ~ 1,
-            model = flexmix::FLXMCmvpois(),
-            k = min_comp:max_comp,
-            nrep = nrep,
-            control = control
-          )
-        if (inherits(fit, "stepFlexmix")) {
-          fit <- recur_fit_component(
-            fit = fit, dist = dist,
-            threshold = threshold,
-            control = control,
-            model_selection = model_selection
-          )
-        }
+      fit <-
+        flexmix::stepFlexmix(
+          dat ~ 1,
+          model = flexmix::FLXMCmvpois(),
+          k = seq(min_comp, max_comp),
+          nrep = nrep,
+          control = control,
+          drop = TRUE,
+          verbose = FALSE
+        )
+      if (inherits(fit, "stepFlexmix")) {
+        fit <- recur_fit_component(
+          fit = fit, dist = dist,
+          threshold = threshold,
+          control = control,
+          model_selection = model_selection
+        )
       }
     }
 
@@ -120,25 +105,25 @@ recur_fit_component <- function(fit, dist, threshold, control, model_selection =
   while (sub_len > 0) {
     K <- fit@k
     fit <- tryCatch(flexmix::getModel(fits, which = as.character(K - sub_len)),
-      error = function(e) {
-        # If the model is not called by user
-        # Call it
-        if (dist == "norm") {
-          flexmix::flexmix(
-            dat ~ 1,
-            model = flexmix::FLXMCnorm1(),
-            k = K,
-            control = control
-          )
-        } else {
-          flexmix::flexmix(
-            dat ~ 1,
-            model = flexmix::FLXMCmvpois(),
-            k = K,
-            control = control
-          )
-        }
-      }
+                    error = function(e) {
+                      # If the model is not called by user
+                      # Call it
+                      if (dist == "norm") {
+                        flexmix::flexmix(
+                          dat ~ 1,
+                          model = flexmix::FLXMCnorm1(),
+                          k = K,
+                          control = control
+                        )
+                      } else {
+                        flexmix::flexmix(
+                          dat ~ 1,
+                          model = flexmix::FLXMCmvpois(),
+                          k = K,
+                          control = control
+                        )
+                      }
+                    }
     )
 
     mu <- find_mu(fit)
