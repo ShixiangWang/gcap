@@ -16,6 +16,7 @@
 #' keep only the solution with maximum likelihood.
 #' @param niter the maximum number of iterations.
 #' @importClassesFrom flexmix FLXcontrol
+#' @importFrom flexmix flexmix logLik
 #' @export
 #' @examples
 #' set.seed(2021)
@@ -44,14 +45,12 @@ gcap.extractComponents <-
 
     if (dist == "norm") {
       fit <-
-        flexmix::stepFlexmix(
+        stepFlexmix_v2(
           dat ~ 1,
           model = flexmix::FLXMCnorm1(),
           k = seq(min_comp, max_comp),
           nrep = nrep,
-          control = control,
-          drop = TRUE,
-          verbose = FALSE
+          control = control
         )
       if (inherits(fit, "stepFlexmix")) {
         fit <- recur_fit_component(
@@ -63,14 +62,12 @@ gcap.extractComponents <-
       }
     } else if (dist == "pois") {
       fit <-
-        flexmix::stepFlexmix(
+        stepFlexmix_v2(
           dat ~ 1,
           model = flexmix::FLXMCmvpois(),
           k = seq(min_comp, max_comp),
           nrep = nrep,
-          control = control,
-          drop = TRUE,
-          verbose = FALSE
+          control = control
         )
       if (inherits(fit, "stepFlexmix")) {
         fit <- recur_fit_component(
@@ -186,3 +183,68 @@ get_component_parameter <- function(x) {
   z
 }
 
+
+# stepFlex v2
+stepFlexmix_v2 <- function (..., k = NULL, nrep = 3, verbose = TRUE, drop = TRUE, unique = FALSE)
+{
+  MYCALL <- match.call()
+  MYCALL1 <- MYCALL
+  bestFlexmix <- function(...) {
+    z = new("flexmix", logLik = -Inf)
+    logLiks = rep(NA, length.out = nrep)
+    for (m in seq_len(nrep)) {
+      if (verbose)
+        cat(" *")
+      x = try(flexmix(...), silent = TRUE)
+      if (!is(x, "try-error")) {
+        logLiks[m] <- logLik(x)
+        if (logLik(x) > logLik(z))
+          z = x
+      }
+    }
+    return(list(z = z, logLiks = logLiks))
+  }
+  z = list()
+  if (is.null(k)) {
+    RET = bestFlexmix(...)
+    z[[1]] <- RET$z
+    logLiks <- as.matrix(RET$logLiks)
+    z[[1]]@call <- MYCALL
+    z[[1]]@control@nrep <- nrep
+    names(z) <- as.character(z[[1]]@k)
+    if (verbose)
+      cat("\n")
+  }
+  else {
+    k = as.integer(k)
+    logLiks <- matrix(nrow = length(k), ncol = nrep)
+    for (n in seq_along(k)) {
+      ns <- as.character(k[n])
+      if (verbose)
+        cat(k[n], ":")
+      RET <- bestFlexmix(..., k = k[n])
+      z[[ns]] = RET$z
+      logLiks[n, ] <- RET$logLiks
+      MYCALL1[["k"]] <- as.numeric(k[n])
+      z[[ns]]@call <- MYCALL1
+      z[[ns]]@control@nrep <- nrep
+      if (verbose)
+        cat("\n")
+    }
+  }
+  logLiks <- logLiks[is.finite(sapply(z, logLik)), , drop = FALSE]
+  z <- z[is.finite(sapply(z, logLik))]
+  rownames(logLiks) <- names(z)
+  if (!length(z))
+    stop("no convergence to a suitable mixture")
+  if (drop & (length(z) == 1)) {
+    return(z[[1]])
+  }
+  else {
+    z <- return(new("stepFlexmix", models = z, k = as.integer(names(z)),
+                    nrep = as.integer(nrep), logLiks = logLiks, call = MYCALL))
+    if (unique)
+      z <- unique(z)
+    return(z)
+  }
+}
