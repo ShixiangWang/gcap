@@ -107,7 +107,7 @@ gcap.collapse2Genes <- function(fts,
   dt
 }
 
-collapse_to_genes <- function(x, genome_build = "hg38") {
+collapse_to_genes <- function(x, genome_build = "hg38", overlap = 1, drop = TRUE) {
   lg <- set_logger()
 
   x <- data.table::as.data.table(x)
@@ -133,13 +133,15 @@ collapse_to_genes <- function(x, genome_build = "hg38") {
   # Calculate the region cov ratio
   out[, intersect_ratio := intersect_size / (abs(end - start) + 1)]
 
-  lg$info("keeping records with 100% overlap ratio with a gene")
-  out <- out[
-    intersect_ratio >= 1,
-    .(
-      sample, gene_id,
-      total_cn, minor_cn
-    )
-  ]
+  lg$info("keeping records with >= {round(100 * overlap, 3)}% overlap ratio with a gene")
+  if (drop) {
+    out <- out[
+      intersect_ratio >= overlap,
+      .(
+        sample, gene_id,
+        total_cn, minor_cn
+      )
+    ]
+  }
   out
 }
