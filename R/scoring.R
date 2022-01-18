@@ -68,12 +68,12 @@ gcap.runScoring <- function(data,
 
   # sample_cn = data[, .(sample_cn_outlier = median(total_cn, na.rm = TRUE) + 1.5*IQR(total_cn, na.rm = TRUE)), by = .(sample)]
   # data = merge(data, sample_cn, by = c("sample"), all.x = TRUE)
-  data$expect_norm_cn = round(data$blood_cn_median * data$ploidy / 2)
+  data$background_cn = round(data$blood_cn_median * data$ploidy / 2)
 
   if (apply_filter) {
     # !!! 后面再想想，并探索下实际有没有用
-    # status should set to 0 if total_cn <= expect_norm_cn + 1
-    data$status[data$total_cn <= data$expect_norm_cn + 1] = 0L
+    # status should set to 0 if total_cn <= background_cn + 1
+    data$status[data$total_cn <= data$background_cn + 1] = 0L
     # status should set to 0 if total_cn <= cytoband_cn_median - 1
     data$status[data$total_cn <= data$cytoband_cn_median - 1] = 0L
   }
