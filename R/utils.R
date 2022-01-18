@@ -30,13 +30,28 @@ check_model <- function(m) {
   }
 }
 
-sortGeneDT = function(dt) {
-  if ("pred_circle" %in% colnames(dt)) {
-    fc = (dt$total_cn / dt$ploidy) - 1
-    dt[order(dt$pred_circle, fc, decreasing = TRUE)]
-  } else {
-    dt
+overlaps = function(x, y) {
+  ## Overlaps genome regions from x and y
+  if (!is.data.frame(x)) {
+    stop("x must be a data.frame")
   }
+  if (!is.data.frame(y)) {
+    stop("y must be a data.frame")
+  }
+
+  x <- data.table::as.data.table(x)
+  y <- data.table::as.data.table(y)
+
+  colnames(x)[1:3] <- colnames(y)[1:3] <- c("chr", "start", "end")
+
+  # Determine the intersect size
+  data.table::setkey(y, chr, start, end)
+  out <- data.table::foverlaps(x, y)[!is.na(start)]
+
+  out[, `:=`(intersect_size, sigminer::get_intersect_size(i.start, i.end, start, end))]
+  # Calculate the region cov ratio
+  out[, `:=`(intersect_ratio, intersect_size / (abs(end - start) + 1))]
+  out
 }
 
 # Global variables

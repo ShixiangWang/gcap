@@ -1,28 +1,23 @@
-#' Quantify sample-level ecDNA measueres
-#'
-#' @inheritParams gcap.collapse2Genes
+#' Summarize prediction result into gene/sample-level
 #' @param data a `data.table` containing result from [gcap.runPrediction].
-#' The column storing prediction result must start with `pred`.
-#' @return a `data.table`.
-#' - `*_load` for number of gene affected.
-#' - `*_burden` for size of genome (per Mb) affected.
-#' - `*_clusters` for number of region affected by clustering
-#' distance with hard cutoff `1e6` (i.e., 1Mb). For genes from different
-#' chromosomes, the distance set to `1e8` (i.e., 100Mb).
+#' The column storing prediction result must be "prob".
+#' @param prob_cutoff a numeric cutoff `[0, 1]` to determine the positive class.
+#' @return a list of `data.table`.
 #' @export
 #'
 #' @examples
 #' data("ec")
 #' ec2 <- ec
-#' ec2$pred <- gcap.runPrediction(ec)
+#' ec2$prob <- gcap.runPrediction(ec)
 #' score <- gcap.runScoring(ec2)
 #' score
 #' @testexamples
 #' expect_equal(nrow(score), 1L)
 gcap.runScoring <- function(data,
-                            genome_build = c("hg38", "hg19")) {
+                            genome_build = "hg38",
+                            prob_cutoff = 0.5,
+                            apply_filter = TRUE) {
   stopifnot(is.data.frame(data))
-  genome_build <- match.arg(genome_build)
   lg <- set_logger()
 
   lg$info("checking input data type")
@@ -31,9 +26,8 @@ gcap.runScoring <- function(data,
   }
 
   lg$info("checking columns")
-  scs <- colnames(data)[startsWith(colnames(data), "pred")]
-  if (length(scs) < 1) {
-    lg$fatal("no columns start with 'pred' found, please check your input")
+  if (!"prob" %in% colnames(data)) {
+    lg$fatal("no columns 'prob' found, please check your input")
     stop()
   }
   if (!"sample" %in% colnames(data)) {
@@ -41,102 +35,77 @@ gcap.runScoring <- function(data,
     data$sample <- "sample"
   }
 
-  lg$info("using 0.1, 0.5 and 0.9 as cutoffs for low, medium and high-level thresholded amplicon genes")
-  scs2 <- paste0(scs, "_levels")
-  for (i in seq_along(scs)) {
-    data[[scs2[i]]] <- cut(data[[scs[i]]], breaks = c(0.1, 0.5, 0.9, 1), labels = c("low", "medium", "high"))
+  data = data[!is.na(data$prob)]
+  data$status = ifelse(data$prob > prob_cutoff, 1L, 0L)
+  data$prob = NULL
+
+  blood_cn = readRDS(system.file("extdata", "blood_gene_cn.rds", package = "gcap"))
+  colnames(blood_cn)[2] = c("blood_cn_median")
+
+  cytobands = as.data.table(
+    sigminer::get_genome_annotation("cytobands", genome_build = genome_build)
+    )[chrom %in% paste0("chr", 1:22)]
+  cytobands$stain = NULL
+  cytobands$start = cytobands$start + 1L
+
+  ref_file <- system.file(
+    "extdata", paste0(genome_build, "_target_genes.rds"),
+    package = "gcap", mustWork = TRUE
+  )
+  refgene = readRDS(ref_file)
+  gene_cytobands = overlaps(refgene, cytobands)
+  gene_cytobands[, intersect_ratio := intersect_size / (i.end - i.start + 1) ]
+  gene_cytobands = gene_cytobands[, .SD[which.max(intersect_ratio)], by = .(gene_id)][order(chr, i.start)]
+  #gene_cytobands[, gene_id := factor(gene_id, levels = gene_id)]
+  gene_cytobands = gene_cytobands[, .(gene_id, band = paste(chr, band, sep = ":"))]
+
+  data = merge(data, blood_cn, by = "gene_id", all.x = TRUE)
+  data$blood_cn_median = ifelse(is.na(data$blood_cn_median), 2, data$blood_cn_median)
+  data = merge(data, gene_cytobands, by = "gene_id", all.x = TRUE)
+
+  cytoband_cn = data[, .(cytoband_cn_median = median(total_cn, na.rm = TRUE)), by = .(sample, band)]
+  data = merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
+
+  # sample_cn = data[, .(sample_cn_outlier = median(total_cn, na.rm = TRUE) + 1.5*IQR(total_cn, na.rm = TRUE)), by = .(sample)]
+  # data = merge(data, sample_cn, by = c("sample"), all.x = TRUE)
+  data$expect_norm_cn = round(data$blood_cn_median * data$ploidy / 2)
+
+  if (apply_filter) {
+    # !!! 后面再想想，并探索下实际有没有用
+    # status should set to 0 if total_cn <= expect_norm_cn + 1
+    data$status[data$total_cn <= data$expect_norm_cn + 1] = 0L
+    # status should set to 0 if total_cn <= cytoband_cn_median - 1
+    data$status[data$total_cn <= data$cytoband_cn_median - 1] = 0L
   }
 
-  lg$info("calculating load with different thresholds")
-  th_levels <- c("low", "medium", "high")
+  # Sample level summary
 
-  dt_load <- list()
-  for (i in th_levels) {
-    dt_load[[i]] <- data[, lapply(.SD, function(x) {
-      if (i == "low") lvls <- c("low", "medium", "high")
-      if (i == "medium") lvls <- c("medium", "high")
-      if (i == "high") lvls <- "high"
-      sum(x %in% lvls, na.rm = TRUE)
-    }),
-    .SDcols = scs2, by = "sample"
-    ]
-    colnames(dt_load[[i]]) <- sub("levels", paste0("load_", i, "_thresholded"), colnames(dt_load[[i]]))
-  }
-  dt_load <- Reduce(merge, dt_load)
+  dt <- gene_result[sample %in% clinfo$Tumor_Sample_Barcode,
+                    .(gene_id, sample, status = ifelse(pred_circle > 0.5, 1L, 0L),
+                      total_cn)] %>%
+    dplyr::group_by(gene_id) %>%
+    dplyr::filter(sum(status) != 0) %>%
+    dplyr::ungroup()
 
-  lg$info("calculating burden with different thresholds")
-  dt_burden <- list()
-  for (i in th_levels) {
-    dt_burden[[i]] <- data[, lapply(scs2, function(x) {
-      calc_burden(.SD[, c(x, "gene_id"), with = FALSE], genome_build, th = i)
-    }), by = "sample"]
-    scs_burden <- paste0(scs, paste0("_burden_", i, "_thresholded"))
-    colnames(dt_burden[[i]])[-1] <- scs_burden
-  }
-  dt_burden <- Reduce(merge, dt_burden)
+  dt_genes = dt %>%
+    dplyr::group_by(gene_id, sample) %>%
+    summarise(status = ifelse(sum(status) > 0, 1L, 0L),
+              total_cn = mean(total_cn, na.rm = TRUE), .groups = "drop") %>%
+    group_by(gene_id) %>%
+    filter(sum(status) >= 1) %>%
+    group_by(gene_id, status) %>%
+    summarise(total_cn_mean = mean(total_cn, na.rm = TRUE),
+              N = sum(status), .groups = "drop") %>%
+    dplyr::mutate(status = ifelse(status == 1L, "ecDNA+", "ecDNA-"))
+
+  dt_genes = dt_genes %>%
+    select(-N) %>%
+    tidyr::pivot_wider(names_from = "status", values_from = "total_cn_mean") %>%
+    left_join(dt_genes %>% filter(status == "ecDNA+") %>% select(-total_cn_mean, -status),
+              by = "gene_id") %>%
+    arrange(desc(N))
+
+  # Sample level summary
 
 
-  lg$info("detecting clusters (<1e6 bp from center) with different thresholds")
-  dt_clusters <- list()
-  for (i in th_levels) {
-    dt_clusters[[i]] <- data[, lapply(scs2, function(x) {
-      calc_clusters(.SD[, c(x, "gene_id"), with = FALSE], genome_build, th = i)
-    }), by = "sample"]
-    scs_clusters <- paste0(scs, paste0("_clusters_", i, "_thresholded"))
-    colnames(dt_clusters[[i]])[-1] <- scs_clusters
-  }
-  dt_clusters <- Reduce(merge, dt_clusters)
-
-  lg$info("merging and outputing final data")
-  mergeDTs(list(dt_load, dt_burden, dt_clusters), by = "sample")
-}
-
-calc_burden <- function(dt, genome_build, th = "low") {
-  if (th == "low") lvls <- c("low", "medium", "high")
-  if (th == "medium") lvls <- c("medium", "high")
-  if (th == "high") lvls <- "high"
-  dt <- dt[dt[[1]] %in% lvls]
-  if (nrow(dt) > 0) {
-    ref_file <- system.file(
-      "extdata", paste0(genome_build, "_target_genes.rds"),
-      package = "gcap", mustWork = TRUE
-    )
-    y <- readRDS(ref_file)
-    colnames(y)[1:3] <- c("chr", "start", "end")
-    y <- merge(dt, y, by = "gene_id", all.x = TRUE)
-    y[, len := end - start + 1L]
-    sum(y$len / 1e6)
-  } else {
-    0
-  }
-}
-
-calc_clusters <- function(dt, genome_build, th = "low") {
-  if (th == "low") lvls <- c("low", "medium", "high")
-  if (th == "medium") lvls <- c("medium", "high")
-  if (th == "high") lvls <- "high"
-  dt <- dt[dt[[1]] %in% lvls]
-  if (nrow(dt) > 0) {
-    ref_file <- system.file(
-      "extdata", paste0(genome_build, "_target_genes.rds"),
-      package = "gcap", mustWork = TRUE
-    )
-    y <- readRDS(ref_file)
-    colnames(y)[1:3] <- c("chr", "start", "end")
-    y <- merge(dt, y, by = "gene_id", all.x = TRUE)
-    # calculate the distance
-    y$chr <- gsub("X", "23", y$chr, ignore.case = TRUE)
-    y$chr <- gsub("Y", "24", y$chr, ignore.case = TRUE)
-    y$chr <- as.integer(gsub("chr", "", y$chr))
-    y$center <- round((y$end - y$start) / 2)
-    y <- na.omit(as.matrix(y[, .(chr, center)]))
-    if (nrow(y) < 2) {
-      nrow(y)
-    } else {
-      dst <- calc_dist(y)
-      length(table(stats::cutree(stats::hclust(stats::as.dist(dst), method = "average"), h = 1e6)))
-    }
-  } else {
-    0L
-  }
 }

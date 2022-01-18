@@ -8,7 +8,6 @@ gcap.ASCNworkflow(
   data,
   genome_build = c("hg38", "hg19"),
   model = "XGB32",
-  target = "circle",
   outdir = getwd(),
   result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE))
 )
@@ -39,9 +38,6 @@ one of 'hg38', 'hg19'.}
 
 \item{model}{model name ("XGB11", "XGB32", "XGB54") or a custom model
 from input. 'toy' can be used for test.}
-
-\item{target}{one of 'circle' and 'nonLinear' to select model
-if predict circle amplicon or non-linear amplicon.}
 
 \item{outdir}{result output path.}
 

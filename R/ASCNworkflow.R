@@ -52,11 +52,9 @@
 gcap.ASCNworkflow <- function(data,
                               genome_build = c("hg38", "hg19"),
                               model = "XGB32",
-                              target = "circle",
                               outdir = getwd(),
                               result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE))) {
   genome_build <- match.arg(genome_build)
-  target <- match.arg(target, choices = c("circle", "nonLinear"), several.ok = TRUE)
   check_model(model)
   if (!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
 
@@ -80,22 +78,19 @@ gcap.ASCNworkflow <- function(data,
   lg$info("=======================")
   lg$info("Step 2: Run prediction")
   lg$info("=======================")
-  for (t in target) {
-    model_input[[paste0("pred_", t)]] <- gcap.runPrediction(
-      model_input,
-      model = model,
-      target = t
-    )
-  }
-  model_input <- sortGeneDT(model_input)
-  save_file <- file.path(outdir, paste0(result_file_prefix, "_by_gene.csv"))
+  model_input$prob <- gcap.runPrediction(
+    model_input,
+    model = model
+  )
+
+  save_file <- file.path(outdir, paste0(result_file_prefix, "_prediction_result.csv"))
   lg$info("Saving result to {save_file}")
   data.table::fwrite(model_input, file = save_file)
 
-  lg$info("=======================")
-  lg$info("Step 3: Run scoring")
-  lg$info("=======================")
-  out <- gcap.runScoring(model_input, genome_build)
+  lg$info("====================================")
+  lg$info("Step 3: Run scoring and summarizing")
+  lg$info("====================================")
+  out <- gcap.runScoring(model_input)
 
   save_file <- file.path(outdir, paste0(result_file_prefix, "_by_case.csv"))
   lg$info("Saving result to {save_file}")

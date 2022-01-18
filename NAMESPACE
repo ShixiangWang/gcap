@@ -3,7 +3,6 @@
 export("%>%")
 export(deploy)
 export(gcap.ASCNworkflow)
-export(gcap.aggrProb)
 export(gcap.collapse2Genes)
 export(gcap.extractComponents)
 export(gcap.extractFeatures)

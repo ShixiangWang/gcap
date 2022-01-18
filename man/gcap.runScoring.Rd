@@ -2,29 +2,21 @@
 % Please edit documentation in R/scoring.R
 \name{gcap.runScoring}
 \alias{gcap.runScoring}
-\title{Quantify sample-level ecDNA measueres}
+\title{Summarize prediction result into gene/sample-level}
 \usage{
-gcap.runScoring(data, genome_build = c("hg38", "hg19"))
+gcap.runScoring(data, prob_cutoff = 0.45)
 }
 \arguments{
 \item{data}{a \code{data.table} containing result from \link{gcap.runPrediction}.
-The column storing prediction result must start with \code{pred}.}
+The column storing prediction result must be "prob".}
 
-\item{genome_build}{genome build version, should be
-one of 'hg38', 'hg19'.}
+\item{prob_cutoff}{a numeric cutoff \verb{[0, 1]} to determine the positive class.}
 }
 \value{
-a \code{data.table}.
-\itemize{
-\item \verb{*_load} for number of gene affected.
-\item \verb{*_burden} for size of genome (per Mb) affected.
-\item \verb{*_clusters} for number of region affected by clustering
-distance with hard cutoff \code{1e6} (i.e., 1Mb). For genes from different
-chromosomes, the distance set to \code{1e8} (i.e., 100Mb).
-}
+a list of \code{data.table}.
 }
 \description{
-Quantify sample-level ecDNA measueres
+Summarize prediction result into gene/sample-level
 }
 \examples{
 data("ec")
