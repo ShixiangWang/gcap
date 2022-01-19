@@ -29,24 +29,24 @@ gcap.runPrediction <- function(data,
         )
       )
     } else {
-        modfile <- switch(model,
-          XGB11 = "xgb_stepwise_model_NF11.rds",
-          XGB32 = "xgb_stepwise_model_NF32.rds",
-          XGB54 = "xgb_stepwise_model_NF54.rds",
-          stop("Unsupported model input!")
-        )
+      modfile <- switch(model,
+        XGB11 = "xgb_stepwise_model_NF11.rds",
+        XGB32 = "xgb_stepwise_model_NF32.rds",
+        XGB54 = "xgb_stepwise_model_NF54.rds",
+        stop("Unsupported model input!")
+      )
 
-        lg$info("using model file {modfile}")
-        model <- readRDS(
-          system.file(
-            "extdata", modfile,
-            package = "gcap", mustWork = TRUE
-          )
+      lg$info("using model file {modfile}")
+      model <- readRDS(
+        system.file(
+          "extdata", modfile,
+          package = "gcap", mustWork = TRUE
         )
+      )
     }
   } else {
-      lg$info("a custom model is selected from user input")
-    }
+    lg$info("a custom model is selected from user input")
+  }
 
   lg$info("selecting necessary features from input data")
   if (is.null(data$pLOH)) data$pLOH <- NA

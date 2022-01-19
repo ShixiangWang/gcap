@@ -19,9 +19,9 @@ test_that("Function gcap.ASCNworkflow() @ L52", {
   data$minor_cn <- NA
   rv5 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
   expect_equal(rv, rv2)
-  expect_equal(ncol(rv3$by_gene), 35L)
-  expect_equal(ncol(rv4$by_gene), 57L)
-  expect_equal(ncol(rv5$by_gene), 15L)
+  expect_equal(length(rv3), 2L)
+  expect_equal(length(rv4), 2L)
+  expect_equal(length(rv5), 2L)
   expect_error(gcap.ASCNworkflow(data, outdir = tempdir()))
 })
 

@@ -30,7 +30,7 @@ check_model <- function(m) {
   }
 }
 
-overlaps = function(x, y) {
+overlaps <- function(x, y) {
   ## Overlaps genome regions from x and y
   if (!is.data.frame(x)) {
     stop("x must be a data.frame")
@@ -62,6 +62,7 @@ utils::globalVariables(
     "freq_Linear", "gender", "gene_id", "i.end", "i.start",
     "intersect_ratio", "intersect_size", "minor_cn", "total_cn",
     "len", "center", "ploidy2",
-    "eval_aucpr", "prob", "train_aucpr"
+    "eval_aucpr", "prob", "train_aucpr", "background_cn",
+    "band", "chrom", "cytoband_cn_median", "status"
   )
 )

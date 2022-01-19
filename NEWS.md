@@ -1,3 +1,7 @@
+# gcap 0.5.0
+
+- Re-constructed scoring and workflow output.
+
 # gcap 0.4.1
 
 - Added `use_best_ntreelimit` in `gcap.runPrediction()` to control the ntree setting.

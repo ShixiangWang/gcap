@@ -102,25 +102,25 @@ recur_fit_component <- function(fit, dist, threshold, control, model_selection =
   while (sub_len > 0) {
     K <- fit@k
     fit <- tryCatch(flexmix::getModel(fits, which = as.character(K - sub_len)),
-                    error = function(e) {
-                      # If the model is not called by user
-                      # Call it
-                      if (dist == "norm") {
-                        flexmix::flexmix(
-                          dat ~ 1,
-                          model = flexmix::FLXMCnorm1(),
-                          k = K,
-                          control = control
-                        )
-                      } else {
-                        flexmix::flexmix(
-                          dat ~ 1,
-                          model = flexmix::FLXMCmvpois(),
-                          k = K,
-                          control = control
-                        )
-                      }
-                    }
+      error = function(e) {
+        # If the model is not called by user
+        # Call it
+        if (dist == "norm") {
+          flexmix::flexmix(
+            dat ~ 1,
+            model = flexmix::FLXMCnorm1(),
+            k = K,
+            control = control
+          )
+        } else {
+          flexmix::flexmix(
+            dat ~ 1,
+            model = flexmix::FLXMCmvpois(),
+            k = K,
+            control = control
+          )
+        }
+      }
     )
 
     mu <- find_mu(fit)
@@ -185,66 +185,72 @@ get_component_parameter <- function(x) {
 
 
 # stepFlex v2
-stepFlexmix_v2 <- function (..., k = NULL, nrep = 3, verbose = TRUE, drop = TRUE, unique = FALSE)
-{
+stepFlexmix_v2 <- function(..., k = NULL, nrep = 3, verbose = TRUE, drop = TRUE, unique = FALSE) {
   MYCALL <- match.call()
   MYCALL1 <- MYCALL
   bestFlexmix <- function(...) {
-    z = new("flexmix", logLik = -Inf)
-    logLiks = rep(NA, length.out = nrep)
+    z <- new("flexmix", logLik = -Inf)
+    logLiks <- rep(NA, length.out = nrep)
     for (m in seq_len(nrep)) {
-      if (verbose)
+      if (verbose) {
         cat(" *")
-      x = try(flexmix(...), silent = TRUE)
+      }
+      x <- try(flexmix(...), silent = TRUE)
       if (!is(x, "try-error")) {
         logLiks[m] <- logLik(x)
-        if (logLik(x) > logLik(z))
-          z = x
+        if (logLik(x) > logLik(z)) {
+          z <- x
+        }
       }
     }
     return(list(z = z, logLiks = logLiks))
   }
-  z = list()
+  z <- list()
   if (is.null(k)) {
-    RET = bestFlexmix(...)
+    RET <- bestFlexmix(...)
     z[[1]] <- RET$z
     logLiks <- as.matrix(RET$logLiks)
     z[[1]]@call <- MYCALL
     z[[1]]@control@nrep <- nrep
     names(z) <- as.character(z[[1]]@k)
-    if (verbose)
+    if (verbose) {
       cat("\n")
-  }
-  else {
-    k = as.integer(k)
+    }
+  } else {
+    k <- as.integer(k)
     logLiks <- matrix(nrow = length(k), ncol = nrep)
     for (n in seq_along(k)) {
       ns <- as.character(k[n])
-      if (verbose)
+      if (verbose) {
         cat(k[n], ":")
+      }
       RET <- bestFlexmix(..., k = k[n])
-      z[[ns]] = RET$z
+      z[[ns]] <- RET$z
       logLiks[n, ] <- RET$logLiks
       MYCALL1[["k"]] <- as.numeric(k[n])
       z[[ns]]@call <- MYCALL1
       z[[ns]]@control@nrep <- nrep
-      if (verbose)
+      if (verbose) {
         cat("\n")
+      }
     }
   }
   logLiks <- logLiks[is.finite(sapply(z, logLik)), , drop = FALSE]
   z <- z[is.finite(sapply(z, logLik))]
   rownames(logLiks) <- names(z)
-  if (!length(z))
+  if (!length(z)) {
     stop("no convergence to a suitable mixture")
+  }
   if (drop & (length(z) == 1)) {
     return(z[[1]])
-  }
-  else {
-    z <- return(new("stepFlexmix", models = z, k = as.integer(names(z)),
-                    nrep = as.integer(nrep), logLiks = logLiks, call = MYCALL))
-    if (unique)
+  } else {
+    z <- return(new("stepFlexmix",
+      models = z, k = as.integer(names(z)),
+      nrep = as.integer(nrep), logLiks = logLiks, call = MYCALL
+    ))
+    if (unique) {
       z <- unique(z)
+    }
     return(z)
   }
 }

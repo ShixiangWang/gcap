@@ -45,9 +45,9 @@
 #' rv5 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
 #' @testexamples
 #' expect_equal(rv, rv2)
-#' expect_equal(ncol(rv3$by_gene), 35L)
-#' expect_equal(ncol(rv4$by_gene), 57L)
-#' expect_equal(ncol(rv5$by_gene), 15L)
+#' expect_equal(length(rv3), 2L)
+#' expect_equal(length(rv4), 2L)
+#' expect_equal(length(rv5), 2L)
 #' expect_error(gcap.ASCNworkflow(data, outdir = tempdir()))
 gcap.ASCNworkflow <- function(data,
                               genome_build = c("hg38", "hg19"),
@@ -90,20 +90,21 @@ gcap.ASCNworkflow <- function(data,
   lg$info("====================================")
   lg$info("Step 3: Run scoring and summarizing")
   lg$info("====================================")
-  out <- gcap.runScoring(model_input)
+  out <- gcap.runScoring(model_input, genome_build)
 
-  save_file <- file.path(outdir, paste0(result_file_prefix, "_by_case.csv"))
-  lg$info("Saving result to {save_file}")
-  data.table::fwrite(out, file = save_file)
+  save_file <- file.path(outdir, paste0(result_file_prefix, "_by_gene.csv"))
+  lg$info("Saving gene result to {save_file}")
+  data.table::fwrite(out$gene, file = save_file)
+
+  save_file <- file.path(outdir, paste0(result_file_prefix, "_by_sample.csv"))
+  lg$info("Saving sample result to {save_file}")
+  data.table::fwrite(out$sample, file = save_file)
 
   lg$info("===========================================")
   lg$info(" Done! Thanks for using GCAP ASCN workflow")
   lg$info("===========================================")
 
-  invisible(list(
-    by_gene = model_input,
-    by_case = out
-  ))
+  invisible(out)
 }
 
 # runASCATBuildflow -----------------------------------
