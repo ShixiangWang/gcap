@@ -25,6 +25,7 @@ gcap.runScoring <- function(data,
                             prob_cutoff = 0.5,
                             N_cutoff = 2,
                             apply_filter = FALSE) {
+  on.exit(invisible(gc()))
   stopifnot(is.data.frame(data))
   lg <- set_logger()
 
@@ -76,7 +77,7 @@ gcap.runScoring <- function(data,
   # sample_cn = data[, .(sample_cn_outlier = median(total_cn, na.rm = TRUE) + 1.5*IQR(total_cn, na.rm = TRUE)), by = .(sample)]
   # data = merge(data, sample_cn, by = c("sample"), all.x = TRUE)
   data$background_cn <- data$blood_cn_median * data$ploidy / 2
-  data$blood_cn_median = NULL
+  data$blood_cn_median <- NULL
 
   if (apply_filter) {
     # !!! 后面再想想，并探索下实际有没有用
@@ -106,17 +107,32 @@ gcap.runScoring <- function(data,
     drop = FALSE
   )
 
-  data$cytoband_cn_median = NULL
+  dt_genes <- merge(dt_genes, data[match(dt_genes$gene_id, gene_id), .(gene_id, band)],
+    by = "gene_id", all.x = TRUE
+  )
+
+  data$cytoband_cn_median <- NULL
   # Sample level summary
   # Number of ec Genes, ec Status and sample classification
+  data[, amplicon_type := data.table::fifelse(
+    status == 1, "ec_fCNA",
+    data.table::fifelse(total_cn > round(data$background_cn) * 2,
+      "nonec_fCNA", "nonfCNA",
+      na = "nonfCNA"
+    )
+  )]
+  data[, amplicon_type := factor(amplicon_type, levels = c("nonfCNA", "nonec_fCNA", "ec_fCNA"))]
+  data$status <- NULL
+
   summarize_sample <- function(data) {
-    ec_genes <- sum(data$status)
+    ec_genes <- sum(data$amplicon_type == "ec_fCNA", na.rm = TRUE)
     ec_status <- as.integer(ec_genes >= N_cutoff)
     # For nonec Amplicons, use cytobands instead of genes to count
     # and set a minimal cutoff based on background_cn
-    N_AMP <- length(unique(data$band[data$total_cn > round(data$background_cn) + 1]))
-    class <- ifelse(ec_genes >= N_cutoff, "ec-fCNA",
-      ifelse(N_AMP >= N_cutoff, "nonec-fCNA", "non-fCNA")
+    N_AMP <- length(unique(data$band[data$amplicon_type == "nonec_fCNA"]))
+    class <- data.table::fifelse(
+      ec_status == 1, "ec_fCNA",
+      data.table::fifelse(N_AMP >= N_cutoff, "nonec_fCNA", "nonfCNA")
     )
     data.frame(
       ec_genes = ec_genes,
@@ -125,7 +141,16 @@ gcap.runScoring <- function(data,
     )
   }
 
+  sel_cols <- c(
+    "sample", "purity", "ploidy", "AScore", "pLOH", "cna_burden",
+    paste0("CN", 1:19)
+  )
+  sel_cols <- sel_cols[sel_cols %in% colnames(data)]
   dt_sample <- data[, summarize_sample(.SD), by = .(sample)]
+  dt_sample <- merge(dt_sample, data[match(dt_sample$sample, sample),
+    sel_cols,
+    with = FALSE
+  ], by = "sample", all.x = TRUE)
 
   list(
     data = data,

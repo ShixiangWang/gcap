@@ -63,6 +63,7 @@ utils::globalVariables(
     "intersect_ratio", "intersect_size", "minor_cn", "total_cn",
     "len", "center", "ploidy2",
     "eval_aucpr", "prob", "train_aucpr", "background_cn",
-    "band", "chrom", "cytoband_cn_median", "status"
+    "band", "chrom", "cytoband_cn_median", "status",
+    "N_pos", "amplicon_type", "ec_genes", "total_cn_neg", "total_cn_pos"
   )
 )
