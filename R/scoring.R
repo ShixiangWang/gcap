@@ -76,7 +76,7 @@ gcap.runScoring <- function(data,
 
   # sample_cn = data[, .(sample_cn_outlier = median(total_cn, na.rm = TRUE) + 1.5*IQR(total_cn, na.rm = TRUE)), by = .(sample)]
   # data = merge(data, sample_cn, by = c("sample"), all.x = TRUE)
-  data$background_cn <- round(data$blood_cn_median * data$ploidy / 2)
+  data$background_cn <- data$blood_cn_median * data$ploidy / 2
 
   if (apply_filter) {
     # !!! 后面再想想，并探索下实际有没有用
@@ -111,9 +111,10 @@ gcap.runScoring <- function(data,
   summarize_sample <- function(data) {
     ec_genes <- sum(data$status)
     ec_status <- as.integer(ec_genes >= N_cutoff)
-    N_AMP <- sum(data$total_cn > data$background_cn + 0.5)
-    class <- ifelse(ec_genes >= N_cutoff, "ecDNA_AMP",
-      ifelse(N_AMP >= N_cutoff, "focal_AMP", "nonfocal")
+    # For nonec Amplicons, use cytobands instead of genes to count
+    N_AMP <- length(unique(data$band[data$total_cn > median(data$background_cn) + 1.5*IQR(data$background_cn)]))
+    class <- ifelse(ec_genes >= N_cutoff, "ec-fCNA",
+      ifelse(N_AMP >= N_cutoff, "nonec-fCNA", "non-fCNA")
     )
     data.frame(
       ec_genes = ec_genes,
