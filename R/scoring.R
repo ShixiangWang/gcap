@@ -112,7 +112,11 @@ gcap.runScoring <- function(data,
     ec_genes <- sum(data$status)
     ec_status <- as.integer(ec_genes >= N_cutoff)
     # For nonec Amplicons, use cytobands instead of genes to count
-    N_AMP <- length(unique(data$band[data$total_cn > median(data$background_cn) + 1.5*IQR(data$background_cn)]))
+    # focal amplification means gene duplication multiple times
+    # here use background_cn * 2 + 1 as cutoff to indicate the
+    # region duplicated more than expected and should not a false positive
+    # event or due to WGD
+    N_AMP <- length(unique(data$band[data$total_cn > data$background_cn * 2 + 1]))
     class <- ifelse(ec_genes >= N_cutoff, "ec-fCNA",
       ifelse(N_AMP >= N_cutoff, "nonec-fCNA", "non-fCNA")
     )
