@@ -44,9 +44,11 @@ gcap.runScoring <- function(data,
     data$sample <- "sample"
   }
 
+  lg$info("filtering out records without prob result")
   data <- data[!is.na(data$prob)]
   data$status <- ifelse(data$prob > prob_cutoff, 1L, 0L)
 
+  lg$info("joining extra annotation data")
   blood_cn <- readRDS(system.file("extdata", "blood_gene_cn.rds", package = "gcap"))
   colnames(blood_cn)[2] <- c("blood_cn_median")
 
@@ -80,6 +82,7 @@ gcap.runScoring <- function(data,
   data$blood_cn_median <- NULL
 
   if (apply_filter) {
+    lg$info("applying filter")
     # !!! 后面再想想，并探索下实际有没有用
     # status should set to 0 if total_cn <= background_cn + 1
     data$status[data$total_cn <= data$background_cn + 1] <- 0L
@@ -87,6 +90,7 @@ gcap.runScoring <- function(data,
     data$status[data$total_cn <= data$cytoband_cn_median - 1] <- 0L
   }
 
+  lg$info("summarizing in gene level")
   # Gene level summary
   dt <- data[, .SD[sum(status) > 0], by = .(gene_id)][
     , .(
@@ -112,6 +116,8 @@ gcap.runScoring <- function(data,
   )
 
   data$cytoband_cn_median <- NULL
+
+  lg$info("summarizing in sample level")
   # Sample level summary
   # Number of ec Genes, ec Status and sample classification
   data[, amplicon_type := data.table::fifelse(
@@ -152,6 +158,7 @@ gcap.runScoring <- function(data,
     with = FALSE
   ], by = "sample", all.x = TRUE)
 
+  lg$info("done")
   list(
     data = data,
     gene = dt_genes[order(total_cn_pos - total_cn_neg, N_pos, decreasing = TRUE)],
