@@ -9,7 +9,6 @@ gcap.runScoring(
   genome_build = "hg38",
   prob_cutoff = 0.5,
   N_cutoff = 2,
-  level = c("gene", "cytoband"),
   apply_filter = TRUE
 )
 }
@@ -26,8 +25,6 @@ one of 'hg38', 'hg19'.}
 \code{2} means a sample with >=2 predicted ecDNA member genes will be assigned
 to ecDNA class, otherwise >=2 detected focal amplicon genes will be assigned
 to focal AMP class.}
-
-\item{level}{one of 'gene' or 'cytoband'.}
 
 \item{apply_filter}{if \code{TRUE}, apply some filters to ease false positive calls.}
 }

@@ -8,7 +8,6 @@
 #' `2` means a sample with >=2 predicted ecDNA member genes will be assigned
 #' to ecDNA class, otherwise >=2 detected focal amplicon genes will be assigned
 #' to focal AMP class.
-#' @param level one of 'gene' or 'cytoband'.
 #' @param apply_filter if `TRUE`, apply some filters to ease false positive calls.
 #' @return a list of `data.table`.
 #' @export
@@ -25,10 +24,8 @@ gcap.runScoring <- function(data,
                             genome_build = "hg38",
                             prob_cutoff = 0.5,
                             N_cutoff = 2,
-                            level = c("gene", "cytoband"),
                             apply_filter = TRUE) {
   stopifnot(is.data.frame(data))
-  level = match.arg(level)
   lg <- set_logger()
 
   lg$info("checking input data type")
@@ -111,32 +108,21 @@ gcap.runScoring <- function(data,
 
   # Sample level summary
   # Number of ec Genes, ec Status and sample classification
-  summarize_sample <- function(data, level = "gene") {
-    ec_nelement <- if (level == "gene") {
-      sum(data$status)
-    } else {
-      # Cytoband
-      length(unique(data$band[data$status == 1L]))
-    }
-    ec_status <- as.integer(ec_nelement >= N_cutoff)
-    N_AMP <- if (level == "gene") {
-      sum(data$total_cn > data$background_cn + 0.5)
-    } else {
-      # Cytoband
-      length(unique(data$band[data$total_cn > data$background_cn + 0.5]))
-    }
-    # CNA for copy number amplification
-    class <- ifelse(ec_nelement >= N_cutoff, "ec-fCNA",
-      ifelse(N_AMP >= N_cutoff, "nonec-fCNA", "non-fCNA")
+  summarize_sample <- function(data) {
+    ec_genes <- sum(data$status)
+    ec_status <- as.integer(ec_genes >= N_cutoff)
+    N_AMP <- sum(data$total_cn > data$background_cn + 0.5)
+    class <- ifelse(ec_genes >= N_cutoff, "ecDNA_AMP",
+      ifelse(N_AMP >= N_cutoff, "focal_AMP", "nonfocal")
     )
     data.frame(
-      ec_nelement = ec_nelement,
+      ec_genes = ec_genes,
       ec_status = ec_status,
       class = class
     )
   }
 
-  dt_sample <- data[, summarize_sample(.SD, level), by = .(sample)]
+  dt_sample <- data[, summarize_sample(.SD), by = .(sample)]
 
   list(
     gene = dt_genes,
