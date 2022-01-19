@@ -9,7 +9,7 @@ gcap.runScoring(
   genome_build = "hg38",
   prob_cutoff = 0.5,
   N_cutoff = 2,
-  apply_filter = TRUE
+  apply_filter = FALSE
 )
 }
 \arguments{

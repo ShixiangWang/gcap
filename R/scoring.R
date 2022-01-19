@@ -24,7 +24,7 @@ gcap.runScoring <- function(data,
                             genome_build = "hg38",
                             prob_cutoff = 0.5,
                             N_cutoff = 2,
-                            apply_filter = TRUE) {
+                            apply_filter = FALSE) {
   stopifnot(is.data.frame(data))
   lg <- set_logger()
 
@@ -45,7 +45,6 @@ gcap.runScoring <- function(data,
 
   data <- data[!is.na(data$prob)]
   data$status <- ifelse(data$prob > prob_cutoff, 1L, 0L)
-  data$prob <- NULL
 
   blood_cn <- readRDS(system.file("extdata", "blood_gene_cn.rds", package = "gcap"))
   colnames(blood_cn)[2] <- c("blood_cn_median")
@@ -77,6 +76,7 @@ gcap.runScoring <- function(data,
   # sample_cn = data[, .(sample_cn_outlier = median(total_cn, na.rm = TRUE) + 1.5*IQR(total_cn, na.rm = TRUE)), by = .(sample)]
   # data = merge(data, sample_cn, by = c("sample"), all.x = TRUE)
   data$background_cn <- data$blood_cn_median * data$ploidy / 2
+  data$blood_cn_median = NULL
 
   if (apply_filter) {
     # !!! 后面再想想，并探索下实际有没有用
@@ -106,17 +106,15 @@ gcap.runScoring <- function(data,
     drop = FALSE
   )
 
+  data$cytoband_cn_median = NULL
   # Sample level summary
   # Number of ec Genes, ec Status and sample classification
   summarize_sample <- function(data) {
     ec_genes <- sum(data$status)
     ec_status <- as.integer(ec_genes >= N_cutoff)
     # For nonec Amplicons, use cytobands instead of genes to count
-    # focal amplification means gene duplication multiple times
-    # here use background_cn * 2 + 1 as cutoff to indicate the
-    # region duplicated more than expected and should not a false positive
-    # event or due to WGD
-    N_AMP <- length(unique(data$band[data$total_cn > data$background_cn * 2 + 1]))
+    # and set a minimal cutoff based on background_cn
+    N_AMP <- length(unique(data$band[data$total_cn > round(data$background_cn) + 2]))
     class <- ifelse(ec_genes >= N_cutoff, "ec-fCNA",
       ifelse(N_AMP >= N_cutoff, "nonec-fCNA", "non-fCNA")
     )
@@ -130,6 +128,7 @@ gcap.runScoring <- function(data,
   dt_sample <- data[, summarize_sample(.SD), by = .(sample)]
 
   list(
+    data = data,
     gene = dt_genes,
     sample = dt_sample
   )
