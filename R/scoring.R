@@ -114,7 +114,7 @@ gcap.runScoring <- function(data,
     ec_status <- as.integer(ec_genes >= N_cutoff)
     # For nonec Amplicons, use cytobands instead of genes to count
     # and set a minimal cutoff based on background_cn
-    N_AMP <- length(unique(data$band[data$total_cn > round(data$background_cn) + 2]))
+    N_AMP <- length(unique(data$band[data$total_cn > round(data$background_cn) + 1]))
     class <- ifelse(ec_genes >= N_cutoff, "ec-fCNA",
       ifelse(N_AMP >= N_cutoff, "nonec-fCNA", "non-fCNA")
     )
@@ -129,7 +129,7 @@ gcap.runScoring <- function(data,
 
   list(
     data = data,
-    gene = dt_genes,
-    sample = dt_sample
+    gene = dt_genes[order(total_cn_pos - total_cn_neg, N_pos, decreasing = TRUE)],
+    sample = dt_sample[order(ec_genes, decreasing = TRUE)]
   )
 }
