@@ -4,29 +4,13 @@
 \alias{gcap.runScoring}
 \title{Summarize prediction result into gene/sample-level}
 \usage{
-gcap.runScoring(
-  data,
-  genome_build = "hg38",
-  prob_cutoff = 0.5,
-  N_cutoff = 2,
-  apply_filter = FALSE
-)
+gcap.runScoring(data, genome_build = "hg38")
 }
 \arguments{
-\item{data}{a \code{data.table} containing result from \link{gcap.runPrediction}.
-The column storing prediction result must be "prob".}
+\item{data}{a \code{data.table} containing result from \link{gcap.runPrediction}.}
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
-
-\item{prob_cutoff}{a numeric cutoff \verb{[0, 1]} to determine the positive class.}
-
-\item{N_cutoff}{an integer cutoff to deterimine sample class. e.g.,
-\code{2} means a sample with >=2 predicted ecDNA member genes will be assigned
-to ecDNA class, otherwise >=2 detected focal amplicon genes will be assigned
-to focal AMP class.}
-
-\item{apply_filter}{if \code{TRUE}, apply some filters to ease false positive calls.}
 }
 \value{
 a list of \code{data.table}.

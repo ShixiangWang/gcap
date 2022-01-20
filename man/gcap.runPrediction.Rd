@@ -2,7 +2,7 @@
 % Please edit documentation in R/prediction.R
 \name{gcap.runPrediction}
 \alias{gcap.runPrediction}
-\title{Run gene-level amplicon prediction}
+\title{Run gene-level circular prediction}
 \usage{
 gcap.runPrediction(data, model = "XGB32")
 }
@@ -17,7 +17,7 @@ from input. 'toy' can be used for test.}
 a numeric vector representing prob.
 }
 \description{
-Run gene-level amplicon prediction
+Run gene-level circular prediction
 }
 \examples{
 data("ec")

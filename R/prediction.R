@@ -1,4 +1,4 @@
-#' Run gene-level amplicon prediction
+#' Run gene-level circular prediction
 #'
 #' @param data data to predict (`data.frame`/`matrix` format), from
 #' [gcap.collapse2Genes()] in general.
