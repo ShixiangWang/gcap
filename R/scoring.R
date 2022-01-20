@@ -2,6 +2,9 @@
 #'
 #' @inheritParams gcap.collapse2Genes
 #' @param data a `data.table` containing result from [gcap.runPrediction].
+#' @param min_n a minimal cytoband number (default is `1`) to determine
+#' sample class. e.g., sample with at least 1 cytoband harboring circular
+#' genes would be labelled as "circular".
 #' @return a list of `data.table`.
 #' @export
 #'
@@ -14,7 +17,8 @@
 #' @testexamples
 #' expect_equal(length(score), 2L)
 gcap.runScoring <- function(data,
-                            genome_build = "hg38") {
+                            genome_build = "hg38",
+                            min_n = 1L) {
   on.exit(invisible(gc()))
   stopifnot(is.data.frame(data))
   lg <- set_logger()
@@ -103,16 +107,24 @@ gcap.runScoring <- function(data,
 
   lg$info("summarizing in sample level")
   # Sample level summary
-  # Number of ec Genes, ec Status and sample classification
+  # Number of ec Genes and sample classification
   summarize_sample <- function(data) {
     ec_genes <- sum(data$amplicon_type == "circular", na.rm = TRUE)
+    ec_cytobands_detail <- unique(data$band[data$amplicon_type == "circular"])
+    ec_cytobands <- length(ec_cytobands_detail)
+    ec_cytobands_detail <- paste(sort(ec_cytobands_detail), collapse = ",")
     ec_possibly_genes <- sum(data$amplicon_type == "possibly_circular", na.rm = TRUE)
-    prob_possibly <- data$prob[data$amplicon_type %in% c("possibly_circular", "circular")]
+    # prob_possibly <- data$prob[data$amplicon_type %in% c("possibly_circular", "circular")]
+    prob_possibly <- data[data$amplicon_type %in% c("possibly_circular", "circular")][
+      , .(prob = max(prob, na.rm = TRUE)),
+      by = .(band)
+    ]$prob
 
     # flags have priority
-    flag_ec <- ec_genes >= 1
+    # flag_ec <- ec_genes >= min_n
+    flag_ec <- ec_cytobands >= min_n
     flag_ec_possibly <- if (length(prob_possibly) > 0) {
-      calc_prob(prob_possibly, 1) > 0.95
+      calc_prob(prob_possibly, min_n) > 0.75
     } else {
       FALSE
     }
@@ -131,6 +143,8 @@ gcap.runScoring <- function(data,
 
     data.frame(
       ec_genes = ec_genes,
+      ec_cytobands = ec_cytobands,
+      ec_cytobands_detail = ec_cytobands_detail,
       ec_possibly_genes = ec_possibly_genes,
       class = class
     )

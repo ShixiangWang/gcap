@@ -4,13 +4,17 @@
 \alias{gcap.runScoring}
 \title{Summarize prediction result into gene/sample-level}
 \usage{
-gcap.runScoring(data, genome_build = "hg38")
+gcap.runScoring(data, genome_build = "hg38", min_n = 1L)
 }
 \arguments{
 \item{data}{a \code{data.table} containing result from \link{gcap.runPrediction}.}
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
+
+\item{min_n}{a minimal cytoband number (default is \code{1}) to determine
+sample class. e.g., sample with at least 1 cytoband harboring circular
+genes would be labelled as "circular".}
 }
 \value{
 a list of \code{data.table}.

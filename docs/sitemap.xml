@@ -19,6 +19,9 @@
     <loc>/reference/ascn.html</loc>
   </url>
   <url>
+    <loc>/reference/deploy.html</loc>
+  </url>
+  <url>
     <loc>/reference/ec.html</loc>
   </url>
   <url>
@@ -31,10 +34,16 @@
     <loc>/reference/gcap.collapse2Genes.html</loc>
   </url>
   <url>
+    <loc>/reference/gcap.extractComponents.html</loc>
+  </url>
+  <url>
     <loc>/reference/gcap.extractFeatures.html</loc>
   </url>
   <url>
     <loc>/reference/gcap.runASCAT.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gcap.runASCATBuildflow.html</loc>
   </url>
   <url>
     <loc>/reference/gcap.runBuildflow.html</loc>

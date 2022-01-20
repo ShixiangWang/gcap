@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -70,8 +70,13 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.0" id="gcap-050">gcap 0.5.0<a class="anchor" aria-label="anchor" href="#gcap-050"></a></h2>
+<ul><li>Re-constructed scoring and workflow output.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1" id="gcap-041">gcap 0.4.1<a class="anchor" aria-label="anchor" href="#gcap-041"></a></h2>
-<ul><li>Added <code><a href="../reference/deploy.html">deploy()</a></code> to auto-deploy the CLI to <code>/usr/loca/bin</code>.</li>
+<ul><li>Added <code>use_best_ntreelimit</code> in <code><a href="../reference/gcap.runPrediction.html">gcap.runPrediction()</a></code> to control the ntree setting. When it is <code>FALSE</code>, we use a custom processing to obtain a more conservative tree number.</li>
+<li>Added <code><a href="../reference/deploy.html">deploy()</a></code> to auto-deploy the CLI to <code>/usr/loca/bin</code>.</li>
 <li>Added easy-to-use CLI in <code>inst</code> directory.</li>
 <li>Filled <code>NA</code>s to input when age and gender are not available.</li>
 <li>Automatically appended logs to specific directory with <code>rappdirs::app_dir("gcap", "ShixiangWang")</code>. Users can obtain log path and cat log info with <code>gcap:::get_log_file()</code> and <code>gcap:::cat_log_file()</code> for debugging. (<a href="https://github.com/ShixiangWang/gcap/issues/14" class="external-link">#14</a>)</li>

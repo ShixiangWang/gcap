@@ -11,7 +11,7 @@
       "<link id=\"css\" rel=\"stylesheet\" href=\"https://bootswatch.com/3/flatly/bootstrap.css\" onload=\"document.documentElement.style.display = ''\">"
     );
   }
-</script><title>Build data for prediction from ASCAT result files — gcap.runBuildflow • gcap</title><!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css"><script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet"><script src="../pkgdown.js"></script><meta property="og:title" content="Build data for prediction from ASCAT result files — gcap.runBuildflow"><meta property="og:description" content="This is is a wrapper of gcap.extractFeatures()
+</script><title>Build data for prediction from absolute copy number data — gcap.runASCATBuildflow • gcap</title><!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css"><script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet"><script src="../pkgdown.js"></script><meta property="og:title" content="Build data for prediction from absolute copy number data — gcap.runASCATBuildflow"><meta property="og:description" content="This is is a wrapper of gcap.extractFeatures()
 and gcap.collapse2Genes() to combine the feature extraction
 and predict input generate procedure.
 If you want to modify the result of gcap.extractFeatures(),
@@ -70,9 +70,9 @@ wrapper."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/ma
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build data for prediction from ASCAT result files</h1>
-    <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/gcap/blob/HEAD/R/buildflow.R" class="external-link"><code>R/buildflow.R</code></a></small>
-    <div class="hidden name"><code>gcap.runBuildflow.Rd</code></div>
+    <h1>Build data for prediction from absolute copy number data</h1>
+    <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/gcap/blob/HEAD/R/ASCNworkflow.R" class="external-link"><code>R/ASCNworkflow.R</code></a></small>
+    <div class="hidden name"><code>gcap.runASCATBuildflow.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -84,28 +84,29 @@ you should always use the two functions instead of this
 wrapper.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.runBuildflow</span><span class="op">(</span>
-  <span class="va">ascat_files</span>,
-  <span class="va">extra_info</span>,
-  include_type <span class="op">=</span> <span class="cn">FALSE</span>,
-  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.runASCATBuildflow</span><span class="op">(</span><span class="va">data</span>, genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 
     <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>ascat_files</dt>
-<dd><p>a list of file path.
-Typically the result of <code><a href="gcap.runASCAT.html">gcap.runASCAT()</a></code></p></dd>
-<dt>extra_info</dt>
-<dd><p>(optional) a <code>data.frame</code> with 3 columns 'sample',
-'age' and 'gender', for including cancer type, check
-parameter <code>include_type</code>. For gender, should be 'XX' or 'XY',
-also could be <code>0</code> for 'XX' and <code>1</code> for 'XY'.</p></dd>
-<dt>include_type</dt>
-<dd><p>if <code>TRUE</code>, a fourth column named 'type'
-should be included in <code>extra_info</code>, the supported cancer
-type should be described with <a href="https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/tcga-study-abbreviations" class="external-link">TCGA cancer type abbr.</a>.</p></dd>
+    <dl><dt>data</dt>
+<dd><p>a <code>data.frame</code> with following columns. The key columns can be obtained
+from common allele specific CNV calling software, e.g., ASCAT, Sequenza, FACETS.</p><ul><li><p>chromosome: chromosome names starts with 'chr'.</p></li>
+<li><p>start: start position of the segment.</p></li>
+<li><p>end: end position of the segment.</p></li>
+<li><p>total_cn: total integer copy number of the segment.</p></li>
+<li><p>minor_cn: minor allele integer copy number of the segment. Set it
+to <code>NA</code> if you don't have this data.</p></li>
+<li><p>sample: sample identifier.</p></li>
+<li><p>purity: tumor purity of the sample. Set to <code>1</code> if you don't know.</p></li>
+<li><p>ploidy (optinal): ploidy value of the sample tumor genome.</p></li>
+<li><p>age (optional): age of the case, use along with <code>gender</code>.</p></li>
+<li><p>gender (optional): gender of the case, use along with <code>age</code>.</p></li>
+<li><p>type (optional): cancer type of the case, use along with <code>age</code> and <code>gender</code>.
+Please refer to <a href="gcap.collapse2Genes.html">gcap.collapse2Genes</a> to see the supported cancer types.
+This info is only used in 'XGB54' model. If you don't use this model, you
+don't need to set it.</p></li>
+</ul></dd>
 <dt>genome_build</dt>
 <dd><p>genome build version, should be
 one of 'hg38', 'hg19'.</p></dd>
@@ -113,6 +114,10 @@ one of 'hg38', 'hg19'.</p></dd>
     <div id="value">
     <h2>Value</h2>
     <p>a <code>data.table</code>.</p>
+    </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p><a href="gcap.runBuildflow.html">gcap.runBuildflow</a></p></div>
     </div>
     </div>
 
