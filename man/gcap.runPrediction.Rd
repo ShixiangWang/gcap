@@ -10,7 +10,7 @@ gcap.runPrediction(data, model = "XGB32")
 \item{data}{data to predict (\code{data.frame}/\code{matrix} format), from
 \code{\link[=gcap.collapse2Genes]{gcap.collapse2Genes()}} in general.}
 
-\item{model}{model name ("XGB11", "XGB32", "XGB54") or a custom model
+\item{model}{model name ("XGB11", "XGB32", "XGB56") or a custom model
 from input. 'toy' can be used for test.}
 }
 \value{

@@ -15,7 +15,7 @@
 #' score <- gcap.runScoring(ec2)
 #' score
 #' @testexamples
-#' expect_equal(length(score), 2L)
+#' expect_equal(length(score), 3L)
 gcap.runScoring <- function(data,
                             genome_build = "hg38",
                             min_n = 1L) {

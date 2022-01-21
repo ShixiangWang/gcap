@@ -9,6 +9,6 @@ test_that("Function gcap.runScoring() @ L19", {
   ec2$prob <- gcap.runPrediction(ec)
   score <- gcap.runScoring(ec2)
   score
-  expect_equal(length(score), 2L)
+  expect_equal(length(score), 3L)
 })
 

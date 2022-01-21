@@ -12,3 +12,4 @@ test/
 data-raw/rmsk_hg19.bed
 data-raw/rmsk_hg38.bed
 inst/.DS_Store
+*.DS_Store

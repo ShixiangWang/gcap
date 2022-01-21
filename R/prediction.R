@@ -2,7 +2,7 @@
 #'
 #' @param data data to predict (`data.frame`/`matrix` format), from
 #' [gcap.collapse2Genes()] in general.
-#' @param model model name ("XGB11", "XGB32", "XGB54") or a custom model
+#' @param model model name ("XGB11", "XGB32", "XGB56") or a custom model
 #' from input. 'toy' can be used for test.
 #' @return a numeric vector representing prob.
 #' @importFrom stats predict
@@ -30,9 +30,9 @@ gcap.runPrediction <- function(data,
       )
     } else {
       modfile <- switch(model,
-        XGB11 = "xgb_stepwise_model_NF11.rds",
-        XGB32 = "xgb_stepwise_model_NF32.rds",
-        XGB54 = "xgb_stepwise_model_NF54.rds",
+        XGB11 = "XGB_NF11.rds",
+        XGB32 = "XGB_NF32.rds",
+        XGB56 = "XGB_NF56.rds",
         stop("Unsupported model input!")
       )
 

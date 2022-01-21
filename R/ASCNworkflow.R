@@ -24,7 +24,7 @@
 #' - gender (optional): gender of the case, use along with `age`.
 #' - type (optional): cancer type of the case, use along with `age` and `gender`.
 #' Please refer to [gcap.collapse2Genes] to see the supported cancer types.
-#' This info is only used in 'XGB54' model. If you don't use this model, you
+#' This info is only used in 'XGB56' model. If you don't use this model, you
 #' don't need to set it.
 #' @return a list of invisible `data.table` and corresponding files saved to local machine.
 #' @export
@@ -37,9 +37,9 @@
 #' data$age <- 60
 #' data$gender <- "XY"
 #' rv3 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB32")
-#' # If you want to use 'XGB54', you should include 'type' column
+#' # If you want to use 'XGB56', you should include 'type' column
 #' data$type <- "LUAD"
-#' rv4 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB54")
+#' rv4 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB56")
 #' # If you only have total integer copy number
 #' data$minor_cn <- NA
 #' rv5 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")

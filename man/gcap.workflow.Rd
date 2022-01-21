@@ -58,7 +58,7 @@ type should be described with \href{https://gdc.cancer.gov/resources-tcga-users/
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
 
-\item{model}{model name ("XGB11", "XGB32", "XGB54") or a custom model
+\item{model}{model name ("XGB11", "XGB32", "XGB56") or a custom model
 from input. 'toy' can be used for test.}
 
 \item{outdir}{result output path.}

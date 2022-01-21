@@ -48,7 +48,7 @@ gcap.collapse2Genes <- function(fts,
         types <- c(
           "BLCA", "BRCA", "CESC", "COAD", "DLBC", "ESCA", "GBM", "HNSC",
           "KICH", "KIRC", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV",
-          "PRAD", "SARC", "SKCM", "STAD", "UCEC", "UVM"
+          "PRAD", "READ", "SARC", "SKCM", "STAD", "THCA", "UCEC", "UVM"
         )
         lg$info("valid cancer types: {paste(types, collapse=',')}")
       } else {

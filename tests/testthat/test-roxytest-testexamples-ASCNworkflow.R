@@ -12,9 +12,9 @@ test_that("Function gcap.ASCNworkflow() @ L52", {
   data$age <- 60
   data$gender <- "XY"
   rv3 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB32")
-  # If you want to use 'XGB54', you should include 'type' column
+  # If you want to use 'XGB56', you should include 'type' column
   data$type <- "LUAD"
-  rv4 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB54")
+  rv4 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB56")
   # If you only have total integer copy number
   data$minor_cn <- NA
   rv5 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")

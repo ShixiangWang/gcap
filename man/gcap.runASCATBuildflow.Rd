@@ -23,7 +23,7 @@ to \code{NA} if you don't have this data.
 \item gender (optional): gender of the case, use along with \code{age}.
 \item type (optional): cancer type of the case, use along with \code{age} and \code{gender}.
 Please refer to \link{gcap.collapse2Genes} to see the supported cancer types.
-This info is only used in 'XGB54' model. If you don't use this model, you
+This info is only used in 'XGB56' model. If you don't use this model, you
 don't need to set it.
 }}
 
