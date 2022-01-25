@@ -80,10 +80,10 @@ gcap.runScoring <- function(data,
     flag_amp & flag_circle == 3, "circular",
     flag_amp & flag_circle == 2, "possibly_circular",
     flag_amp, "noncircular",
-    default = "nonfocal"
+    default = "nofocal"
   )
   data$amplicon_type <- factor(data$amplicon_type, levels = c(
-    "nonfocal", "noncircular", "possibly_circular", "circular"
+    "nofocal", "noncircular", "possibly_circular", "circular"
   ))
 
   lg$info("summarizing in gene level")
@@ -138,7 +138,7 @@ gcap.runScoring <- function(data,
     } else if (flag_amp) {
       "noncircular"
     } else {
-      "nonfocal"
+      "nofocal"
     }
 
     data.frame(
