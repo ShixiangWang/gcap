@@ -115,10 +115,14 @@ gcap.runScoring <- function(data,
     ec_cytobands_detail <- paste(sort(ec_cytobands_detail), collapse = ",")
     ec_possibly_genes <- sum(data$amplicon_type == "possibly_circular", na.rm = TRUE)
     # prob_possibly <- data$prob[data$amplicon_type %in% c("possibly_circular", "circular")]
-    prob_possibly <- data[data$amplicon_type %in% c("possibly_circular", "circular")][
-      , .(prob = max(prob, na.rm = TRUE)),
-      by = .(band)
-    ]$prob
+    prob_possibly <- data[data$amplicon_type %in% c("possibly_circular", "circular")]
+    if (nrow(prob_possibly) > 0) {
+      prob_possibly <- prob_possibly[
+        , .(prob = max(prob, na.rm = TRUE)),
+        by = .(band)]$prob
+    } else {
+      prob_possibly <- NULL
+    }
 
     # flags have priority
     # flag_ec <- ec_genes >= min_n
