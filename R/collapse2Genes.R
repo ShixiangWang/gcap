@@ -44,7 +44,6 @@ gcap.collapse2Genes <- function(fts,
     if (include_type) {
       lg$info("one-hot encoding cancer type")
       if (fix_type) {
-        # UPDATE!!!
         types <- c(
           "BLCA", "BRCA", "CESC", "COAD", "DLBC", "ESCA", "GBM", "HNSC",
           "KICH", "KIRC", "KIRP", "LGG", "LIHC", "LUAD", "LUSC", "OV",
