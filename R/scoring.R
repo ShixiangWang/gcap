@@ -63,6 +63,8 @@ gcap.runScoring <- function(data,
 
   data <- merge(data, blood_cn, by = "gene_id", all.x = TRUE)
   data$blood_cn_median <- ifelse(is.na(data$blood_cn_median), 2, data$blood_cn_median)
+
+  if ("band" %in% colnames(data)) data$band <- NULL
   data <- merge(data, gene_cytobands, by = "gene_id", all.x = TRUE)
 
   cytoband_cn <- data[, .(cytoband_cn_median = median(total_cn, na.rm = TRUE)), by = .(sample, band)]
