@@ -1,3 +1,6 @@
+# This script is independent of other code part of this package.
+# It is kept here as it may be useful for some extra analysis or future integration.
+
 #' Decompose distribution into components
 #' @param dat a distribution represented as a numeric vector to decompose.
 #' @param dist 'pois' or 'norm' (default).
