@@ -2,7 +2,7 @@
 
 # File R/cn_components.R: @testexamples
 
-test_that("Function gcap.extractComponents() @ L28", {
+test_that("Function gcap.extractComponents() @ L31", {
   
   set.seed(2021)
   x <- c(rnorm(10, 0), rnorm(50, 1), rnorm(20, 4), rnorm(5, 10))

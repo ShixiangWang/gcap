@@ -90,12 +90,15 @@ gcap.runScoring <- function(data,
 
   lg$info("summarizing in gene level")
   # Gene level summary
+  # Keep sample IDs for gene with (possibly) circular label
   dt_genes <- data[, .SD[sum(amplicon_type %in% c("possibly_circular", "circular")) > 0], by = .(gene_id)][
     , .(
       N = .N,
       total_cn = mean(total_cn, na.rm = TRUE),
       minor_cn = mean(minor_cn, na.rm = TRUE),
-      cytoband_cn = mean(cytoband_cn_median, na.rm = TRUE)
+      cytoband_cn = mean(cytoband_cn_median, na.rm = TRUE),
+      support_IDs = ifelse(amplicon_type %in% c("possibly_circular", "circular"),
+                           paste(sort(unique(sample)), collapse = ","), NA_character_)
     ),
     by = .(gene_id, amplicon_type)
   ]
