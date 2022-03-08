@@ -98,7 +98,8 @@ gcap.runScoring <- function(data,
       minor_cn = mean(minor_cn, na.rm = TRUE),
       cytoband_cn = mean(cytoband_cn_median, na.rm = TRUE),
       support_IDs = ifelse(amplicon_type %in% c("possibly_circular", "circular"),
-                           paste(sort(unique(sample)), collapse = ","), NA_character_)
+        paste(sort(unique(sample)), collapse = ","), NA_character_
+      )
     ),
     by = .(gene_id, amplicon_type)
   ]
@@ -124,7 +125,8 @@ gcap.runScoring <- function(data,
     if (nrow(prob_possibly) > 0) {
       prob_possibly <- prob_possibly[
         , .(prob = max(prob, na.rm = TRUE)),
-        by = .(band)]$prob
+        by = .(band)
+      ]$prob
     } else {
       prob_possibly <- NULL
     }

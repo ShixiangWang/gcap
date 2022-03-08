@@ -74,7 +74,8 @@
     <p>Decompose distribution into components</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.extractComponents</span><span class="op">(</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.extractComponents</span><span class="op">(</span>
   <span class="va">dat</span>,
   dist <span class="op">=</span> <span class="st">"norm"</span>,
   seed <span class="op">=</span> <span class="fl">2021L</span>,
@@ -86,8 +87,8 @@
   min_comp <span class="op">=</span> <span class="fl">1</span>,
   max_comp <span class="op">=</span> <span class="fl">10</span>
 <span class="op">)</span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dat</dt>
@@ -117,14 +118,37 @@ keep only the solution with maximum likelihood.</p></dd>
 <dt>max_comp</dt>
 <dd><p>maximal number of components to fit, default is 10.</p></dd>
 </dl></div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2021</span><span class="op">)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">gcap.extractComponents</span><span class="op">(</span><span class="va">x</span>, max_comp <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-<span class="va">y</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2021</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">gcap.extractComponents</span><span class="op">(</span><span class="va">x</span>, max_comp <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 : * * * * *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 : * * * * *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 : * * * * *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 : * * * * *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 : * * * * *</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Select 2 according to BIC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Finally, select 2 after passing threshold 0.4.</span>
+<span class="r-in"><span class="va">y</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stepFlexmix_v2(dat ~ 1, model = flexmix::FLXMCnorm1(), control = control, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     k = 2, nrep = nrep)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Cluster sizes:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1  2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5 80 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> convergence after 82 iterations</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $params</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        mean       sd  n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 9.480160 1.022848  5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 1.516025 1.727538 80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </div>
@@ -139,7 +163,7 @@ keep only the solution with maximum likelihood.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

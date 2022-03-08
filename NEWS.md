@@ -1,5 +1,7 @@
 # gcap 0.5.0
 
+- Provided a function `convertID()` to convert gene IDs.
+- Optimized the output summary.
 - Re-constructed scoring and workflow output.
 
 # gcap 0.4.1
