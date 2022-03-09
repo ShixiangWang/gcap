@@ -10,51 +10,6 @@
   }
 }
 
-# Copy from sigminer
-query_remote_data <- function(x) {
-  x_url <- paste0("https://zenodo.org/record/4771552/files/", x)
-  x_dest <- file.path(system.file("extdata", package = "sigminer"), x)
-  message("Downloading ", x_url, " to ", x_dest)
-  tryCatch(
-    {
-      download.file(
-        url = x_url,
-        destfile = x_dest
-      )
-      TRUE
-    },
-    error = function(e) {
-      warning("Failed downloading the data.", immediate. = TRUE)
-      FALSE
-    }
-  )
-}
-
-get_ref_data <- function(genome_build = c("hg38", "hg19", "mm10", "mm9")) {
-  genome_build <- match.arg(genome_build)
-  gene_file <- switch(genome_build,
-    mm9 = file.path(
-      system.file("extdata", package = "sigminer"),
-      "mouse_mm9_gene_info.rds"
-    ),
-    mm10 = file.path(
-      system.file("extdata", package = "sigminer"),
-      "mouse_mm10_gene_info.rds"
-    ),
-    file.path(
-      system.file("extdata", package = "sigminer"),
-      paste0("human_", genome_build, "_gene_info.rds")
-    )
-  )
-  ok <- TRUE
-  if (!file.exists(gene_file)) ok <- query_remote_data(basename(gene_file))
-  if (!ok) {
-    return(invisible(NULL))
-  }
-  gene_dt <- readRDS(gene_file)
-  gene_dt
-}
-
 mergeDTs <- function(dt_list, by = NULL, sort = FALSE) {
   dt_list <- dt_list[lengths(dt_list) != 0]
   Reduce(

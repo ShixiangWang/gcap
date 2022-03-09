@@ -39,7 +39,7 @@ LinkingTo:
     Rcpp
 Remotes: 
     github::ShixiangWang/ascat/ASCAT@v3-for-gcap-v1
-    github::ShixiangWang/IDConverter@v0.2.0
+    github::ShixiangWang/IDConverter
 biocViews:
 Config/testthat/edition: 3
 Encoding: UTF-8
