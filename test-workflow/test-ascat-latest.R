@@ -4,8 +4,8 @@
 library(readr)
 
 PROJ_DIR = "/data3/wsx_data/gcap-analysis/"
-setwd(file.path(PROJ_DIR, "applications/SYSUCC-GC"))
-df <- read_csv("data/own-data-pairs.csv")[1:2]
+setwd(file.path(PROJ_DIR, "SYSUCC-GC"))
+df <- read_csv("data/own-data-pairs.csv")[1:2, ]
 
 tfile <- df$tumor_file
 nfile <- df$normal_file
