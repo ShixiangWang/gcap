@@ -1,3 +1,8 @@
+# gcap 0.6.0
+
+- Designed and implemented a class `fCNA` used for storing the workflow key outputs
+and downstream analysis and visualization.
+
 # gcap 0.5.0
 
 - Provided a function `convertID()` to convert gene IDs.

@@ -88,95 +88,28 @@ gcap.runScoring <- function(data,
     "nofocal", "noncircular", "possibly_circular", "circular"
   ))
 
-  lg$info("summarizing in gene level")
-  # Gene level summary
-  # Keep sample IDs for gene with (possibly) circular label
-  dt_genes <- data[, .SD[sum(amplicon_type %in% c("possibly_circular", "circular")) > 0], by = .(gene_id)][
-    , .(
-      N = .N,
-      total_cn = mean(total_cn, na.rm = TRUE),
-      minor_cn = mean(minor_cn, na.rm = TRUE),
-      cytoband_cn = mean(cytoband_cn_median, na.rm = TRUE),
-      support_IDs = ifelse(amplicon_type %in% c("possibly_circular", "circular"),
-        paste(sort(unique(sample)), collapse = ","), NA_character_
-      )
-    ),
-    by = .(gene_id, amplicon_type)
-  ]
-
-  dt_genes <- merge(dt_genes, data[match(unique(dt_genes$gene_id), gene_id), .(gene_id, band)],
-    by = "gene_id", all.x = TRUE
-  )
-  dt_genes <- dt_genes[order(band, -total_cn)]
-
-  data$cytoband_cn_median <- NULL
-
-  lg$info("summarizing in sample level")
-  # Sample level summary
-  # Number of ec Genes and sample classification
-  summarize_sample <- function(data) {
-    ec_genes <- sum(data$amplicon_type == "circular", na.rm = TRUE)
-    ec_cytobands_detail <- unique(data$band[data$amplicon_type == "circular"])
-    ec_cytobands <- length(ec_cytobands_detail)
-    ec_cytobands_detail <- paste(sort(ec_cytobands_detail), collapse = ",")
-    ec_possibly_genes <- sum(data$amplicon_type == "possibly_circular", na.rm = TRUE)
-    # prob_possibly <- data$prob[data$amplicon_type %in% c("possibly_circular", "circular")]
-    prob_possibly <- data[data$amplicon_type %in% c("possibly_circular", "circular")]
-    if (nrow(prob_possibly) > 0) {
-      prob_possibly <- prob_possibly[
-        , .(prob = max(prob, na.rm = TRUE)),
-        by = .(band)
-      ]$prob
-    } else {
-      prob_possibly <- NULL
-    }
-
-    # flags have priority
-    # flag_ec <- ec_genes >= min_n
-    flag_ec <- ec_cytobands >= min_n
-    flag_ec_possibly <- if (length(prob_possibly) > 0) {
-      calc_prob(prob_possibly, min_n) > 0.75
-    } else {
-      FALSE
-    }
-    # For nonec Amplicons, use cytobands instead of genes to count
-    flag_amp <- length(unique(data$band[data$total_cn >= data$background_cn + 4])) >= 1
-
-    class <- if (flag_ec) {
-      "circular"
-    } else if (flag_ec_possibly) {
-      "possibly_circular"
-    } else if (flag_amp) {
-      "noncircular"
-    } else {
-      "nofocal"
-    }
-
-    data.frame(
-      ec_genes = ec_genes,
-      ec_cytobands = ec_cytobands,
-      ec_cytobands_detail = ec_cytobands_detail,
-      ec_possibly_genes = ec_possibly_genes,
-      class = class
-    )
-  }
-
+  # Generate input of fCNA class
   sel_cols <- c(
     "sample", "purity", "ploidy", "AScore", "pLOH", "cna_burden",
     paste0("CN", 1:19)
   )
   sel_cols <- sel_cols[sel_cols %in% colnames(data)]
-  dt_sample <- data[, summarize_sample(.SD), by = .(sample)]
-  dt_sample <- merge(dt_sample, data[match(dt_sample$sample, sample),
-    sel_cols,
+  pdata <- data[match(unique(data$sample), sample), sel_cols, with = FALSE]
+  fcna <- data[!amplicon_type %in% c(NA, "nofocal"),
+    c(
+      "sample", "band", "gene_id", "total_cn",
+      "minor_cn", "background_cn", "prob", "amplicon_type"
+    ),
     with = FALSE
-  ], by = "sample", all.x = TRUE)
+  ] # Only treat nofocal as (focal) variants
 
+  data.table::setkey(fcna, NULL) # To make sure all equal to rebuild the fCNA object from file
+  fCNAobj <- fCNA$new(fcna, pdata, min_n = min_n)
+  print(fCNAobj)
   lg$info("done")
   list(
     data = data,
-    gene = dt_genes,
-    sample = dt_sample[order(ec_genes, decreasing = TRUE)]
+    fCNA = fCNAobj
   )
 }
 

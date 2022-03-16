@@ -2,7 +2,7 @@
 
 # File R/ASCNworkflow.R: @testexamples
 
-test_that("Function gcap.ASCNworkflow() @ L52", {
+test_that("Function gcap.ASCNworkflow() @ L58", {
   
   data("ascn")
   data <- ascn
@@ -18,6 +18,12 @@ test_that("Function gcap.ASCNworkflow() @ L52", {
   # If you only have total integer copy number
   data$minor_cn <- NA
   rv5 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
+  
+  # R6 class fCNA --------------------------------
+  rv$data
+  rv$sample_summary
+  rv$gene_summary
+  rv$cytoband_summary
   expect_equal(rv, rv2)
   expect_equal(length(rv3), 2L)
   expect_equal(length(rv4), 2L)

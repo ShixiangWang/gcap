@@ -1,7 +1,7 @@
 Type: Package
 Package: gcap
 Title: Gene-level Circular Amplicon Prediction
-Version: 0.5.0
+Version: 0.6.0
 Authors@R: 
     person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357"))
@@ -13,11 +13,11 @@ URL: https://github.com/ShixiangWang/gcap
 BugReports: https://github.com/ShixiangWang/gcap/issues
 Depends: 
     ASCAT (>= 3.0.0),
-    data.table,
     R (>= 3.5),
     sigminer (>= 2.1.1)
 Imports:
     cli,
+    data.table,
     flexmix,
     GetoptLong,
     glue,
@@ -25,6 +25,7 @@ Imports:
     magrittr,
     mltools,
     quadprog,
+    R6,
     rappdirs,
     Rcpp,
     stats,

@@ -43,6 +43,12 @@
 #' # If you only have total integer copy number
 #' data$minor_cn <- NA
 #' rv5 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
+#'
+#' # R6 class fCNA --------------------------------
+#' rv$data
+#' rv$sample_summary
+#' rv$gene_summary
+#' rv$cytoband_summary
 #' @testexamples
 #' expect_equal(rv, rv2)
 #' expect_equal(length(rv3), 2L)
@@ -91,20 +97,19 @@ gcap.ASCNworkflow <- function(data,
   save_file <- file.path(outdir, paste0(result_file_prefix, "_prediction_result.rds"))
   lg$info("Saving raw prediction result to {save_file}")
   saveRDS(out$data, file = save_file)
+  fCNA <- out$fCNA
+  rm(out)
+  invisible(gc())
 
-  save_file <- file.path(outdir, paste0(result_file_prefix, "_by_gene.csv"))
-  lg$info("Saving gene result to {save_file}")
-  data.table::fwrite(out$gene, file = save_file)
-
-  save_file <- file.path(outdir, paste0(result_file_prefix, "_by_sample.csv"))
-  lg$info("Saving sample result to {save_file}")
-  data.table::fwrite(out$sample, file = save_file)
+  save_file <- file.path(outdir, paste0(result_file_prefix, c("_fCNA_records.csv", "_sample_info.csv")))
+  lg$info("Saving fCNA records and sample info to {save_file}")
+  fCNA$saveToFiles(outdir, result_file_prefix)
 
   lg$info("===========================================")
   lg$info(" Done! Thanks for using GCAP ASCN workflow")
   lg$info("===========================================")
 
-  invisible(out[2:3])
+  invisible(fCNA)
 }
 
 # runASCATBuildflow -----------------------------------

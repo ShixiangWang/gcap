@@ -15,6 +15,10 @@ reference:
     - gcap.workflow
     - gcap.ASCNworkflow
     - deploy
+  - title: Class
+    desc: Package builtin class
+    contents:
+    - fCNA
   - title: Analysis Wrapper
     desc: Core build block for constructing pipeline
     contents:

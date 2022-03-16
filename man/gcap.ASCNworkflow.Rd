@@ -68,4 +68,10 @@ rv4 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB56")
 # If you only have total integer copy number
 data$minor_cn <- NA
 rv5 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
+
+# R6 class fCNA --------------------------------
+rv$data
+rv$sample_summary
+rv$gene_summary
+rv$cytoband_summary
 }
