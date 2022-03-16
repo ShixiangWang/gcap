@@ -25,11 +25,11 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
                           outdir = getwd(),
                           result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE)),
                           allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
-                          g1000allelesprefix = file.path(
+                          alleles.prefix = file.path(
                             "~/data/snp/1000G_loci_hg38",
                             "1kg.phase3.v5a_GRCh38nounref_allele_index_chr"
                           ),
-                          g1000lociprefix = file.path(
+                          loci.prefix = file.path(
                             "~/data/snp/1000G_loci_hg38",
                             "1kg.phase3.v5a_GRCh38nounref_loci_chrstring_chr"
                           ),
@@ -113,8 +113,8 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
       jobname,
       outdir = outdir,
       allelecounter_exe = allelecounter_exe,
-      g1000allelesprefix = g1000allelesprefix,
-      g1000lociprefix = g1000lociprefix,
+      alleles.prefix = alleles.prefix,
+      loci.prefix = loci.prefix,
       GCcontentfile = GCcontentfile,
       replictimingfile = replictimingfile,
       nthreads = nthreads,
@@ -131,6 +131,7 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
       } else {
         "XX"
       },
+      genome_build = genome_build,
       min_base_qual = min_base_qual,
       min_map_qual = min_map_qual,
       penalty = penalty,

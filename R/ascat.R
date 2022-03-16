@@ -36,11 +36,11 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
                           tumourname, normalname, jobname = tumourname,
                           outdir = getwd(),
                           allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
-                          g1000allelesprefix = file.path(
+                          alleles.prefix = file.path(
                             "~/data/snp/1000G_loci_hg38",
                             "1kg.phase3.v5a_GRCh38nounref_allele_index_chr"
                           ),
-                          g1000lociprefix = file.path(
+                          loci.prefix = file.path(
                             "~/data/snp/1000G_loci_hg38",
                             "1kg.phase3.v5a_GRCh38nounref_loci_chrstring_chr"
                           ),
@@ -52,6 +52,7 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
                           probloci_file = NA,
                           chrom_names = 1:22,
                           gender = "XX",
+                          genome_build = "hg38",
                           min_base_qual = 20,
                           min_map_qual = 35,
                           penalty = 70,
@@ -71,8 +72,8 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
   lg$info("Configs:")
   lg$info("  result path set to {outdir}")
   lg$info("  allelecounter_exe set to {allelecounter_exe}")
-  lg$info("  g1000allelesprefix set to {g1000allelesprefix}")
-  lg$info("  g1000lociprefix set to {g1000lociprefix}")
+  lg$info("  alleles.prefix set to {alleles.prefix}")
+  lg$info("  loci.prefix set to {loci.prefix}")
   lg$info("  GCcontentfile set to {GCcontentfile}")
   lg$info("  replictimingfile set to {replictimingfile}")
   lg$info("  nthreads set to {nthreads}")
@@ -121,8 +122,8 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
           tumourname = tn,
           normalname = nn,
           allelecounter_exe = allelecounter_exe,
-          g1000allelesprefix = g1000allelesprefix,
-          g1000lociprefix = g1000lociprefix,
+          alleles.prefix = alleles.prefix,
+          loci.prefix = loci.prefix,
           nthreads = nthreads,
           minCounts = minCounts,
           BED_file = BED_file,
@@ -139,14 +140,15 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
           paste0(tn, "_tumourLogR.txt"), paste0(tn, "_tumourBAF.txt"),
           paste0(tn, "_normalLogR.txt"), paste0(tn, "_normalBAF.txt"),
           chrs = chrom_names,
-          gender = gender
+          gender = gender,
+          genomeVersion = genome_build
         )
-        ascat.bc <- ascat.GCcorrect(ascat.bc, GCcontentfile, replictimingfile)
-        ascat.plotRawData(ascat.bc)
+        ascat.bc <- ascat.correctLogR(ascat.bc, GCcontentfile, replictimingfile)
         ascat.bc <- ascat.aspcf(ascat.bc, penalty = penalty)
-        ascat.plotSegmentedData(ascat.bc)
         ascat.output <- ascat.runAscat(ascat.bc, gamma = 1L, pdfPlot = TRUE)
+        QC = ascat.metrics(ascat.bc, ascat.output)
         saveRDS(ascat.output, file = paste0(id, ".ASCAT.rds"))
+        saveRDS(QC, file = paste0(id, ".ascatQC.rds"))
 
         lg$info("job {id} done")
       },
