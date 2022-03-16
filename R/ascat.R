@@ -82,6 +82,7 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
   lg$info("  probloci_file set to {probloci_file}")
   lg$info("  chrom_names set to <{paste(chrom_names, collapse = ' ')}>")
   lg$info("  gender set to <{paste(gender, collapse = ' ')}>")
+  lg$info("  genome_build set to {genome_build}")
   lg$info("  min_base_qual set to {min_base_qual}")
   lg$info("  min_map_qual set to {min_map_qual}")
   lg$info("  penalty set to {penalty}")
