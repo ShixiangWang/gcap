@@ -130,6 +130,7 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
           BED_file = BED_file,
           probloci_file = probloci_file,
           gender = gd,
+          genomeVersion = genome_build,
           chrom_names = chrom_names,
           min_base_qual = min_base_qual,
           min_map_qual = min_map_qual,
@@ -146,9 +147,11 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
         )
         ascat.bc <- ascat.correctLogR(ascat.bc, GCcontentfile, replictimingfile)
         ascat.bc <- ascat.aspcf(ascat.bc, penalty = penalty)
-        ascat.output <- ascat.runAscat(ascat.bc, gamma = 1L, pdfPlot = TRUE)
+        ascat.output <- ascat.runAscat(ascat.bc, gamma = 1L, pdfPlot = FALSE)
         QC = ascat.metrics(ascat.bc, ascat.output)
-        saveRDS(ascat.output, file = paste0(id, ".ASCAT.rds"))
+
+        saveRDS(ascat.output, file = paste0(id, ".ASCAT.rds"))  # Key data for downstream
+        saveRDS(ascat.bc, file = paste0(id, ".ascatInput.rds"))
         saveRDS(QC, file = paste0(id, ".ascatQC.rds"))
 
         lg$info("job {id} done")
