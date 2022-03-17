@@ -153,6 +153,8 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
         saveRDS(ascat.output, file = paste0(id, ".ASCAT.rds"))  # Key data for downstream
         saveRDS(ascat.bc, file = paste0(id, ".ascatInput.rds"))
         saveRDS(QC, file = paste0(id, ".ascatQC.rds"))
+        # Remove temp files
+        unlink(list.files(pattern = "alleleFrequencies"))
 
         lg$info("job {id} done")
       },
