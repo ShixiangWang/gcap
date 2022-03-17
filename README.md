@@ -18,7 +18,7 @@ from <https://github.com/shixiangwang/ascat/tree/v3.0>.
 
 We recommend all users directly download the reference files from the links below:
 
-- [Curated reference files for GCAP (WES)](https://zenodo.org/record/5533065)
+- [Curated reference files for GCAP (WES)](https://zenodo.org/record/6364977)
 
 > The prediction model was built with data on the top of hg38 genome build, while 
 hg38-based BAM file input is more recommended.
