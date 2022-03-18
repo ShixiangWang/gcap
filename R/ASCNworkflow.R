@@ -102,7 +102,7 @@ gcap.ASCNworkflow <- function(data,
   invisible(gc())
 
   save_file <- file.path(outdir, paste0(result_file_prefix, c("_fCNA_records.csv", "_sample_info.csv")))
-  lg$info("Saving fCNA records and sample info to {save_file}")
+  lg$info("Saving fCNA records and sample info to {paste(save_file, collapse = ', ')}")
   fCNA$saveToFiles(outdir, result_file_prefix)
 
   lg$info("===========================================")
