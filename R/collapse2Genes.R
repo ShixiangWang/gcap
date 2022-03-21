@@ -33,7 +33,7 @@ gcap.collapse2Genes <- function(fts,
   if (!is.null(extra_info)) {
     stopifnot(
       is.data.frame(extra_info),
-      if (include_type) {
+      if (include_type || "type" %in% colnames(extra_info)) {
         all.equal(colnames(extra_info), c("sample", "age", "gender", "type"))
       } else {
         all.equal(colnames(extra_info), c("sample", "age", "gender"))
