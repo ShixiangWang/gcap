@@ -25,7 +25,8 @@ fCNA <- R6::R6Class(
     #' - `amplicon_type` the type of DNA amplicon.
     #' @field sample_summary a `data.table` storing sample summary data, which typically contains
     #' at least the following columns:
-    #' - `sample` sample or case ID.
+    #' - `sample` sample or case ID. **Should only include cases have been called with GCAP workflow,
+    #' otherwise the extra cases would be automatically classified as 'nofocal' (i.e. `NA` in `sample_summary` field) class**.
     #' - `purity`, `ploidy` for tumor purity or ploidy.
     #' - `AScore` aneuploidy score.
     #' - `pLOH` genome percentage harboring LOH events.

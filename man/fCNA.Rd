@@ -27,7 +27,8 @@ fCNA information. Examples please see \code{\link[=gcap.ASCNworkflow]{gcap.ASCNw
 \item{\code{sample_summary}}{a \code{data.table} storing sample summary data, which typically contains
 at least the following columns:
 \itemize{
-\item \code{sample} sample or case ID.
+\item \code{sample} sample or case ID. \strong{Should only include cases have been called with GCAP workflow,
+otherwise the extra cases would be automatically classified as 'nofocal' (i.e. \code{NA} in \code{sample_summary} field) class}.
 \item \code{purity}, \code{ploidy} for tumor purity or ploidy.
 \item \code{AScore} aneuploidy score.
 \item \code{pLOH} genome percentage harboring LOH events.
