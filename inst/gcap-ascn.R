@@ -7,24 +7,27 @@ VERSION = as.character(packageVersion("gcap"))
 model = "XGB32"
 genome = "hg38"
 outdir = getwd()
+
 GetoptLong(
   "input=s", paste(
     "A file storing following columns: chromosome, start, end, total_cn,",
-    "minor_cn, sample, purity, ploidy (optinal), age (optinal), gender (optinal), type (optinal)."
+    "minor_cn, sample,",
+    "(optinal) purity, (optinal) ploidy, (optinal) age, (optinal) gender, (optinal) type."
   ),
   "outdir=s", "Result output path.",
   "genome=s",  "Genome build version, should be hg38 or hg19.",
-  "model=s", "Model name, should be one of XGB11, XGB32, XGB54."
+  "model=s", "Trained model name, should be one of XGB11, XGB32, XGB56."
 )
 
 suppressMessages(library(data.table))
 suppressMessages(library(gcap))
 
+input = fread(input, header = TRUE)
+if (is.null(input$purity)) input$purity = 1L
+
 gcap.ASCNworkflow(
-  fread(input, header = TRUE),
+  input,
   genome_build = genome,
   model = model,
-  #target = "circle",
   outdir = outdir
-  #result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE))
 )

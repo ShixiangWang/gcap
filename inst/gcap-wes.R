@@ -8,6 +8,7 @@ model = "XGB32"
 genome = "hg38"
 outdir = getwd()
 extra = NULL
+bed = NULL
 
 allelecounter = "~/miniconda3/envs/cancerit/bin/alleleCounter"
 g1000allelesprefix = file.path("~/data/snp/1000G_loci_hg38",
@@ -25,11 +26,14 @@ GetoptLong(
     "sample (optional, it should be identical to sample in 'extra')"
   ),
   "extra=s", paste(
-    "A file storing following columns: sample, age, gender and type (optional)"
+    "A file storing following columns: sample, age, gender and (optional) type"
+  ),
+  "bed=s", paste(
+    "A BED file for only looking at SNPs within specific intervals"
   ),
   "outdir=s", "Result output path.",
   "genome=s",  "Genome build version, should be hg38 or hg19.",
-  "model=s", "Model name, should be one of XGB11, XGB32, XGB54.",
+  "model=s", "Trained model name, should be one of XGB11, XGB32, XGB56.",
   "allelecounter=s", "Path to the allele counter executable.",
   "g1000allelesprefix=s", "Prefix path to the 1000 Genomes alleles reference files.",
   "g1000lociprefix=s", "Prefix path to the 1000 Genomes SNP reference files.",
@@ -44,7 +48,8 @@ suppressMessages(library(data.table))
 suppressMessages(library(gcap))
 
 input = fread(input, header = TRUE)
-extra = fread(extra, header = TRUE)
+if (!is.null(extra)) extra = fread(extra, header = TRUE)
+if (is.null(bed)) bed = NA
 
 gcap.workflow(
   tumourseqfile = input$tumorfile,
@@ -56,8 +61,8 @@ gcap.workflow(
   include_type = "type" %in% colnames(extra),
   genome_build = genome,
   model = model,
-  #target = "circle",
   outdir = outdir,
   nthreads = nthreads,
+  BED_file = bed,
   skip_finished_ASCAT = skip
 )
