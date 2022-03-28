@@ -95,23 +95,31 @@ fCNA <- R6::R6Class(
     #' @description Get gene level summary of fCNA type
     #' @return a `data.table`
     getGeneSummary = function() {
-      rv <- data.table::dcast(self$data[, .N, by = .(gene_id, amplicon_type)],
-        gene_id ~ amplicon_type,
-        value.var = "N", fill = 0L,
-        drop = FALSE
-      )
-      rv$Total <- rowSums(rv[, -1])
+      if (nrow(self$data) > 0) {
+        rv <- data.table::dcast(self$data[, .N, by = .(gene_id, amplicon_type)],
+          gene_id ~ amplicon_type,
+          value.var = "N", fill = 0L,
+          drop = FALSE
+        )
+        rv$Total <- rowSums(rv[, -1])
+      } else {
+        rv <- data.table::data.table()
+      }
       rv
     },
     #' @description Get cytoband level summary of fCNA type
     #' @return a `data.table`
     getCytobandSummary = function() {
-      rv <- data.table::dcast(self$data[, .N, by = .(band, amplicon_type)],
-        band ~ amplicon_type,
-        value.var = "N", fill = 0L,
-        drop = FALSE
-      )
-      rv$Total <- rowSums(rv[, -1])
+      if (nrow(self$data) > 0) {
+        rv <- data.table::dcast(self$data[, .N, by = .(band, amplicon_type)],
+          band ~ amplicon_type,
+          value.var = "N", fill = 0L,
+          drop = FALSE
+        )
+        rv$Total <- rowSums(rv[, -1])
+      } else {
+        rv <- data.table::data.table()
+      }
       rv
     },
     #' @description Save the key data to local files

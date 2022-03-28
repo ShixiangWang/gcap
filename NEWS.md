@@ -1,5 +1,6 @@
 # gcap 0.7.0
 
+- Handled void result.
 - Updated the background copy number reference and criterion judging a amplicon (#22).
 
 # gcap 0.6.0

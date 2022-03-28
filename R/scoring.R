@@ -61,15 +61,15 @@ gcap.runScoring <- function(data,
   gene_cytobands <- gene_cytobands[, .SD[which.max(intersect_ratio)], by = .(gene_id)][order(chr, i.start)]
   gene_cytobands <- gene_cytobands[, .(gene_id, band = paste(chr, band, sep = ":"))]
 
-  all_ids = unique(data$gene_id)
-  df_ids = setdiff(all_ids, blood_cn$gene_id)
+  all_ids <- unique(data$gene_id)
+  df_ids <- setdiff(all_ids, blood_cn$gene_id)
   if (length(df_ids) > 0) {
-    blood_cn = rbind(blood_cn, data.table::data.table(
+    blood_cn <- rbind(blood_cn, data.table::data.table(
       gene_id = df_ids,
       blood_cn_top5 = blood_cn$blood_cn_top5[1],
       blood_cn_top5_sd = blood_cn$blood_cn_top5_sd[1]
     ))
-  }  # Fill with smallest value
+  } # Fill with smallest value
   data <- merge(data, blood_cn, by = "gene_id", all.x = TRUE)
 
   if ("band" %in% colnames(data)) data$band <- NULL
@@ -78,13 +78,13 @@ gcap.runScoring <- function(data,
   cytoband_cn <- data[, .(cytoband_cn_median = median(total_cn, na.rm = TRUE)), by = .(sample, band)]
   data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
 
-  data$background_cn <- (data$blood_cn_top5 + data$blood_cn_top5_sd) * data$ploidy / 2  # 这里可以设定一个参数阈值进行控制
+  data$background_cn <- (data$blood_cn_top5 + data$blood_cn_top5_sd) * data$ploidy / 2 # 这里可以设定一个参数阈值进行控制
   data$blood_cn_top5 <- NULL
   data$blood_cn_top5_sd <- NULL
 
   # Similar to NG paper
   # As a prerequisite, amplicons must at least 4 copies (for diploidy genome) above background CN to be considered a valid amplicon.
-  flag_amp <- data$total_cn >= data$background_cn + 4 * data$ploidy/2
+  flag_amp <- data$total_cn >= data$background_cn + 4 * data$ploidy / 2
   flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, 0.75, 1), include.lowest = TRUE))
   # Classify amplicon
   data$amplicon_type <- data.table::fcase(
@@ -113,8 +113,12 @@ gcap.runScoring <- function(data,
   ] # Only treat nofocal as (focal) variants
 
   data.table::setkey(fcna, NULL) # To make sure all equal to rebuild the fCNA object from file
-  fCNAobj <- fCNA$new(fcna, pdata, min_n = min_n)
-  print(fCNAobj)
+  if (nrow(fcna) > 0) {
+    fCNAobj <- fCNA$new(fcna, pdata, min_n = min_n)
+    print(fCNAobj)
+  } else {
+    lg$info("No fCNA records detected")
+  }
   lg$info("done")
   list(
     data = data,
