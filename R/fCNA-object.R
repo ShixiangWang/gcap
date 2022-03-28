@@ -144,11 +144,11 @@ fCNA <- R6::R6Class(
       cat(sprintf("%8s: %s\n", "gene", cli::col_green(nrow(self$gene_summary))))
       cat(sprintf("%8s: %s\n", "fCNA", cli::col_green(nrow(self$data))))
       cat("     |__ ", cli::col_green(tbl[1]),
-          " (", cli::col_cyan(sum(ss$class == "noncircular")), ") noncircular\n", sep = "")
+          " (", cli::col_cyan(sum(ss$class == "noncircular", na.rm = TRUE)), ") noncircular\n", sep = "")
       cat("     |__ ", cli::col_green(tbl[2]),
-          " (", cli::col_cyan(sum(ss$class == "possibly_circular")), ") possibly_circular\n", sep = "")
+          " (", cli::col_cyan(sum(ss$class == "possibly_circular", na.rm = TRUE)), ") possibly_circular\n", sep = "")
       cat("     |__ ", cli::col_green(tbl[3]),
-          " (", cli::col_cyan(sum(ss$class == "circular")), ") circular\n", sep = "")
+          " (", cli::col_cyan(sum(ss$class == "circular", na.rm = TRUE)), ") circular\n", sep = "")
       cat("======================\n")
     }
   ),
