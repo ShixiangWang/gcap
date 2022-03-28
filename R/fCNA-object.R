@@ -136,15 +136,19 @@ fCNA <- R6::R6Class(
     #' @param ... unused.
     print = function(...) {
       tbl <- table(self$data$amplicon_type)
+      ss <- self$sample_summary
       cat("======================\nA <")
       cat(cli::col_br_cyan("fCNA"))
       cat("> object\n")
-      cat(sprintf("%8s: %s\n", "case", cli::col_green(nrow(self$sample_summary))))
+      cat(sprintf("%8s: %s\n", "case", cli::col_cyan(nrow(ss))))
       cat(sprintf("%8s: %s\n", "gene", cli::col_green(nrow(self$gene_summary))))
       cat(sprintf("%8s: %s\n", "fCNA", cli::col_green(nrow(self$data))))
-      cat("     |__ ", cli::col_green(tbl[1]), " noncircular\n")
-      cat("     |__ ", cli::col_green(tbl[2]), " possibly_circular\n")
-      cat("     |__ ", cli::col_green(tbl[3]), " circular\n")
+      cat("     |__ ", cli::col_green(tbl[1]),
+          " (", cli::col_cyan(sum(ss$class == "noncircular")), ") noncircular\n", sep = "")
+      cat("     |__ ", cli::col_green(tbl[2]),
+          " (", cli::col_cyan(sum(ss$class == "possibly_circular")), ") possibly_circular\n", sep = "")
+      cat("     |__ ", cli::col_green(tbl[3]),
+          " (", cli::col_cyan(sum(ss$class == "circular")), ") circular\n", sep = "")
       cat("======================\n")
     }
   ),
