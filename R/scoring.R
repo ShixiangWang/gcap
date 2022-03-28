@@ -113,12 +113,10 @@ gcap.runScoring <- function(data,
   ] # Only treat nofocal as (focal) variants
 
   data.table::setkey(fcna, NULL) # To make sure all equal to rebuild the fCNA object from file
-  if (nrow(fcna) > 0) {
-    fCNAobj <- fCNA$new(fcna, pdata, min_n = min_n)
-    print(fCNAobj)
-  } else {
-    lg$info("No fCNA records detected")
-  }
+  if (nrow(fcna) == 0) lg$info("No fCNA records detected")
+  fCNAobj <- fCNA$new(fcna, pdata, min_n = min_n)
+  print(fCNAobj)
+
   lg$info("done")
   list(
     data = data,
