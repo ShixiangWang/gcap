@@ -43,7 +43,7 @@ gcap.runScoring <- function(data,
 
   lg$info("joining extra annotation data")
   blood_cn <- readRDS(system.file("extdata", "blood_gene_cn.rds", package = "gcap"))
-  colnames(blood_cn)[2] <- c("blood_cn_median")
+  colnames(blood_cn)[2:3] <- c("blood_cn_top5", "blood_cn_top5_sd")
 
   cytobands <- as.data.table(
     sigminer::get_genome_annotation("cytobands", genome_build = genome_build)
@@ -61,8 +61,16 @@ gcap.runScoring <- function(data,
   gene_cytobands <- gene_cytobands[, .SD[which.max(intersect_ratio)], by = .(gene_id)][order(chr, i.start)]
   gene_cytobands <- gene_cytobands[, .(gene_id, band = paste(chr, band, sep = ":"))]
 
+  all_ids = unique(data$gene_id)
+  df_ids = setdiff(all_ids, blood_cn$gene_id)
+  if (length(df_ids) > 0) {
+    blood_cn = rbind(blood_cn, data.table::data.table(
+      gene_id = df_ids,
+      blood_cn_top5 = blood_cn$blood_cn_top5[1],
+      blood_cn_top5_sd = blood_cn$blood_cn_top5_sd[1]
+    ))
+  }  # Fill with smallest value
   data <- merge(data, blood_cn, by = "gene_id", all.x = TRUE)
-  data$blood_cn_median <- ifelse(is.na(data$blood_cn_median), 2, data$blood_cn_median)
 
   if ("band" %in% colnames(data)) data$band <- NULL
   data <- merge(data, gene_cytobands, by = "gene_id", all.x = TRUE)
@@ -70,12 +78,13 @@ gcap.runScoring <- function(data,
   cytoband_cn <- data[, .(cytoband_cn_median = median(total_cn, na.rm = TRUE)), by = .(sample, band)]
   data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
 
-  data$background_cn <- data$blood_cn_median * data$ploidy / 2
-  data$blood_cn_median <- NULL
+  data$background_cn <- (data$blood_cn_top5 + data$blood_cn_top5_sd) * data$ploidy / 2  # 这里可以设定一个参数阈值进行控制
+  data$blood_cn_top5 <- NULL
+  data$blood_cn_top5_sd <- NULL
 
   # Similar to NG paper
-  # As a prerequisite, amplicons must at least 4 copies above background CN to be considered a valid amplicon.
-  flag_amp <- data$total_cn >= data$background_cn + 4
+  # As a prerequisite, amplicons must at least 4 copies (for diploidy genome) above background CN to be considered a valid amplicon.
+  flag_amp <- data$total_cn >= data$background_cn + 4 * data$ploidy/2
   flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, 0.75, 1), include.lowest = TRUE))
   # Classify amplicon
   data$amplicon_type <- data.table::fcase(

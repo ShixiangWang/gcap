@@ -17,8 +17,9 @@ fCNA information. Examples please see \code{\link[=gcap.ASCNworkflow]{gcap.ASCNw
 \item \code{gene_id} gene ID, typically Ensembl ID. You can convert the ID with R package \code{IDConverter}.
 \item \code{total_cn} total copy number value.
 \item \code{minor_cn} copy number value for minor allele.
-\item \code{background_cn} background copy number value, calculated as \code{blood_cn_median * ploidy / 2}.
-\code{blood_cn_median} is obtained from SNP array data of ~4000 TCGA from blood samples,
+\item \code{background_cn} background copy number value, calculated as \code{(blood_cn_top5 + blood_cn_top5_sd) * data$ploidy / 2}.
+At default, \verb{blood_cn_top5(_sd)} is obtained from SNP array data of ~2000 TCGA diploidy blood samples,
+they are mean and sd of top 5\% copy number values for each gene (in ~2000 samples);
 \code{ploidy} is tumor ploidy.
 \item \code{prob} the probability the gene located in circular DNA.
 \item \code{amplicon_type} the type of DNA amplicon.

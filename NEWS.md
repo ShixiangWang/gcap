@@ -1,3 +1,7 @@
+# gcap 0.7.0
+
+- Updated the background copy number reference and criterion judging a amplicon (#22).
+
 # gcap 0.6.0
 
 - Designed and implemented a class `fCNA` used for storing the workflow key outputs
