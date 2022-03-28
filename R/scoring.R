@@ -75,22 +75,27 @@ gcap.runScoring <- function(data,
   if ("band" %in% colnames(data)) data$band <- NULL
   data <- merge(data, gene_cytobands, by = "gene_id", all.x = TRUE)
 
-  cytoband_cn <- data[, .(cytoband_cn_median = median(total_cn, na.rm = TRUE)), by = .(sample, band)]
+  cytoband_cn <- data[
+    , .(cytoband_cn_median = median(total_cn, na.rm = TRUE)),
+    by = .(sample, band)] # Currently, median is not used
   data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
 
-  data$background_cn <- (data$blood_cn_top5 + data$blood_cn_top5_sd) * data$ploidy / 2 # 这里可以设定一个参数阈值进行控制
+  # Mean + 3SD for large threshold
+  # Mean - 3SD for small threshold
+  data$background_cn <- (data$blood_cn_top5 + 3*data$blood_cn_top5_sd) * data$ploidy / 2
+  data$background_cn2 <- (pmax(data$blood_cn_top5 - 3*data$blood_cn_top5_sd,
+                               data$ploidy)) * data$ploidy / 2
   data$blood_cn_top5 <- NULL
   data$blood_cn_top5_sd <- NULL
 
-  # Similar to NG paper
-  # As a prerequisite, amplicons must at least 4 copies (for diploidy genome) above background CN to be considered a valid amplicon.
   flag_amp <- data$total_cn >= data$background_cn + 4 * data$ploidy / 2
+  flag_amp2 <- data$total_cn >= data$background_cn2 + 4  # A smaller threshold
   flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, 0.75, 1), include.lowest = TRUE))
   # Classify amplicon
   data$amplicon_type <- data.table::fcase(
     flag_amp & flag_circle == 3, "circular",
     flag_amp & flag_circle == 2, "possibly_circular",
-    flag_amp, "noncircular",
+    flag_amp | flag_amp2, "noncircular",
     default = "nofocal"
   )
   data$amplicon_type <- factor(data$amplicon_type, levels = c(
