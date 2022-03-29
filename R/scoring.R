@@ -82,10 +82,15 @@ gcap.runScoring <- function(data,
 
   # Mean + 3SD for large threshold (circular)
   # Mean - 3SD for small threshold (noncircular)
-  data$background_cn <- (data$blood_cn_top5 + 3*data$blood_cn_top5_sd) * data$ploidy / 2
+  # data$background_cn <- (data$blood_cn_top5 + 3*data$blood_cn_top5_sd) * data$ploidy / 2
+  # data$background_cn <- ifelse(is.na(data$background_cn), 2, data$background_cn)
+  # data$background_cn2 <- (pmax(data$blood_cn_top5 - 3*data$blood_cn_top5_sd,
+  #                              data$ploidy, na.rm = TRUE)) * data$ploidy / 2
+  # data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)
+
+  data$background_cn <- (data$blood_cn_top5 + data$blood_cn_top5_sd) * data$ploidy / 2
   data$background_cn <- ifelse(is.na(data$background_cn), 2, data$background_cn)
-  data$background_cn2 <- (pmax(data$blood_cn_top5 - 3*data$blood_cn_top5_sd,
-                               data$ploidy, na.rm = TRUE)) * data$ploidy / 2
+  data$background_cn2 <- data$ploidy * data$ploidy / 2
   data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)
   data$blood_cn_top5 <- NULL
   data$blood_cn_top5_sd <- NULL
