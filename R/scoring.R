@@ -5,6 +5,9 @@
 #' @param min_n a minimal cytoband number (default is `1`) to determine
 #' sample class. e.g., sample with at least 1 cytoband harboring circular
 #' genes would be labelled as "circular".
+#' @param tightness a value to control the tightness to be a circular amplicon.
+#' If the value is larger, it is more likely a fCNA assigned to `noncircular`
+#' instead of `circular`.
 #' @return a list of `data.table`.
 #' @export
 #'
@@ -18,7 +21,8 @@
 #' expect_equal(length(score), 3L)
 gcap.runScoring <- function(data,
                             genome_build = "hg38",
-                            min_n = 1L) {
+                            min_n = 1L,
+                            tightness = 1L) {
   on.exit(invisible(gc()))
   stopifnot(is.data.frame(data))
   lg <- set_logger()
@@ -80,17 +84,9 @@ gcap.runScoring <- function(data,
     by = .(sample, band)] # Currently, median is not used
   data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
 
-  # Mean + 3SD for large threshold (circular)
-  # Mean - 3SD for small threshold (noncircular)
-  # data$background_cn <- (data$blood_cn_top5 + 3*data$blood_cn_top5_sd) * data$ploidy / 2
-  # data$background_cn <- ifelse(is.na(data$background_cn), 2, data$background_cn)
-  # data$background_cn2 <- (pmax(data$blood_cn_top5 - 3*data$blood_cn_top5_sd,
-  #                              data$ploidy, na.rm = TRUE)) * data$ploidy / 2
-  # data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)
-
-  # Mean + SD for large threshold (circular)
+  # Mean + SD for large threshold (circular), Okay to use + 1/2SD, 1SD is looser
   # Ploidy for small threshold (noncircular)
-  data$background_cn <- (data$blood_cn_top5 + 2*data$blood_cn_top5_sd) * data$ploidy / 2
+  data$background_cn <- (data$blood_cn_top5 + tightness * data$blood_cn_top5_sd) * data$ploidy / 2
   data$background_cn <- ifelse(is.na(data$background_cn), 2, data$background_cn)
   data$background_cn2 <- data$ploidy * data$ploidy / 2
   data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)

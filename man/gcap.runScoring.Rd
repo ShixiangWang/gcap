@@ -4,7 +4,7 @@
 \alias{gcap.runScoring}
 \title{Summarize prediction result into gene/sample-level}
 \usage{
-gcap.runScoring(data, genome_build = "hg38", min_n = 1L)
+gcap.runScoring(data, genome_build = "hg38", min_n = 1L, tightness = 1L)
 }
 \arguments{
 \item{data}{a \code{data.table} containing result from \link{gcap.runPrediction}.}
@@ -15,6 +15,10 @@ one of 'hg38', 'hg19'.}
 \item{min_n}{a minimal cytoband number (default is \code{1}) to determine
 sample class. e.g., sample with at least 1 cytoband harboring circular
 genes would be labelled as "circular".}
+
+\item{tightness}{a value to control the tightness to be a circular amplicon.
+If the value is larger, it is more likely a fCNA assigned to \code{noncircular}
+instead of \code{circular}.}
 }
 \value{
 a list of \code{data.table}.
