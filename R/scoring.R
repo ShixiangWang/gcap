@@ -80,16 +80,19 @@ gcap.runScoring <- function(data,
     by = .(sample, band)] # Currently, median is not used
   data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
 
-  # Mean + 3SD for large threshold
-  # Mean - 3SD for small threshold
+  # Mean + 3SD for large threshold (circular)
+  # Mean - 3SD for small threshold (noncircular)
   data$background_cn <- (data$blood_cn_top5 + 3*data$blood_cn_top5_sd) * data$ploidy / 2
+  data$background_cn <- ifelse(is.na(data$background_cn), 2, data$background_cn)
   data$background_cn2 <- (pmax(data$blood_cn_top5 - 3*data$blood_cn_top5_sd,
-                               data$ploidy)) * data$ploidy / 2
+                               data$ploidy, na.rm = TRUE)) * data$ploidy / 2
+  data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)
   data$blood_cn_top5 <- NULL
   data$blood_cn_top5_sd <- NULL
 
   flag_amp <- data$total_cn >= data$background_cn + 4 * data$ploidy / 2
-  flag_amp2 <- data$total_cn >= data$background_cn2 + 4  # A smaller threshold
+  flag_amp <- ifelse(is.na(flag_amp), FALSE, flag_amp)
+  flag_amp2 <- data$total_cn >= data$background_cn2 + 4  # A smaller threshold for nonec, same to fCNA code
   flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, 0.75, 1), include.lowest = TRUE))
   # Classify amplicon
   data$amplicon_type <- data.table::fcase(
@@ -112,7 +115,7 @@ gcap.runScoring <- function(data,
   fcna <- data[!amplicon_type %in% c(NA, "nofocal"),
     c(
       "sample", "band", "gene_id", "total_cn",
-      "minor_cn", "background_cn", "prob", "amplicon_type"
+      "minor_cn", "background_cn", "background_cn2", "prob", "amplicon_type"
     ),
     with = FALSE
   ] # Only treat nofocal as (focal) variants

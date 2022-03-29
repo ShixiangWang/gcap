@@ -18,7 +18,8 @@ fCNA <- R6::R6Class(
     #' - `gene_id` gene ID, typically Ensembl ID. You can convert the ID with R package `IDConverter`.
     #' - `total_cn` total copy number value.
     #' - `minor_cn` copy number value for minor allele.
-    #' - `background_cn` background copy number value, calculated as `(blood_cn_top5 + blood_cn_top5_sd) * data$ploidy / 2`.
+    #' - `background_cn` background copy number value (for circular amplicon), calculated as `(blood_cn_top5 + 3*blood_cn_top5_sd) * ploidy / 2`.
+    #' - `background_cn2` a smaller background copy number value, calculated as `(pmax(blood_cn_top5 - 3*blood_cn_top5_sd, ploidy)) * ploidy / 2`.
     #' At default, `blood_cn_top5(_sd)` is obtained from SNP array data of ~2000 TCGA diploidy blood samples,
     #' they are mean and sd of top 5% copy number values for each gene (in ~2000 samples);
     #' `ploidy` is tumor ploidy.
@@ -55,7 +56,7 @@ fCNA <- R6::R6Class(
         is.data.frame(fcna), is.data.frame(pdata),
         all(c(
           "sample", "band", "gene_id", "total_cn",
-          "background_cn", "prob", "amplicon_type"
+          "background_cn2", "prob", "amplicon_type"
         ) %in% colnames(fcna)),
         all(c("sample") %in% colnames(pdata)),
         !is.null(min_n) && min_n >= 1
@@ -64,9 +65,9 @@ fCNA <- R6::R6Class(
       private$n <- min_n
 
       message("set fixed levels for 'amplicon_type'")
-      fcna$amplicon_type <- factor(fcna$amplicon_type, levels = c(
-        "noncircular", "possibly_circular", "circular"
-      ))
+      amplvls <- c("noncircular", "possibly_circular", "circular")
+      fcna <- fcna[fcna$amplicon_type %in% amplvls, ]
+      fcna$amplicon_type <- factor(fcna$amplicon_type, levels = amplvls)
       self$data <- data.table::as.data.table(fcna)
       message("summarizing sample...")
       ss <- self$getSampleSummary()
@@ -209,7 +210,7 @@ summarize_sample <- function(data, min_n) {
     FALSE
   }
   # For nonec Amplicons, use cytobands instead of genes to count
-  flag_amp <- length(unique(data$band[data$total_cn >= data$background_cn + 4])) >= 1
+  flag_amp <- length(unique(data$band[data$total_cn >= data$background_cn2 + 4])) >= 1
 
   class <- if (flag_ec) {
     "circular"
