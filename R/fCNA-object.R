@@ -79,6 +79,8 @@ fCNA <- R6::R6Class(
       self$sample_summary <- merge(pdata, ss,
         by = "sample", all = TRUE
       )
+      # Set default label 'nofocal' to samples with NA
+      self$sample_summary[, `:=`(class = data.table::fifelse(is.na(class), "nofocal", class))]
 
       message("summarizing gene and cytoband...")
       self$gene_summary <- self$getGeneSummary()
