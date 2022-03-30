@@ -14,6 +14,7 @@ gcap.workflow(
   include_type = FALSE,
   genome_build = c("hg38", "hg19"),
   model = "XGB32",
+  tightness = 1L,
   outdir = getwd(),
   result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE)),
   allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
@@ -60,6 +61,10 @@ one of 'hg38', 'hg19'.}
 
 \item{model}{model name ("XGB11", "XGB32", "XGB56") or a custom model
 from input. 'toy' can be used for test.}
+
+\item{tightness}{a value to control the tightness to be a circular amplicon.
+If the value is larger, it is more likely a fCNA assigned to \code{noncircular}
+instead of \code{circular}.}
 
 \item{outdir}{result output path.}
 
