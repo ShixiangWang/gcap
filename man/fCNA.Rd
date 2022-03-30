@@ -17,8 +17,7 @@ fCNA information. Examples please see \code{\link[=gcap.ASCNworkflow]{gcap.ASCNw
 \item \code{gene_id} gene ID, typically Ensembl ID. You can convert the ID with R package \code{IDConverter}.
 \item \code{total_cn} total copy number value.
 \item \code{minor_cn} copy number value for minor allele.
-\item \code{background_cn} background copy number value (for circular amplicon), calculated as \code{(blood_cn_top5 + 3*blood_cn_top5_sd) * ploidy / 2}.
-\item \code{background_cn2} a smaller background copy number value, calculated as \code{(pmax(blood_cn_top5 - 3*blood_cn_top5_sd, ploidy)) * ploidy / 2}.
+\item \code{background_cn} background copy number value (for circular amplicon), calculated as \code{pmax(blood_cn_top5 + tightness * blood_cn_top5_sd, 2) * ploidy / 2}. (\strong{Optional})
 At default, \verb{blood_cn_top5(_sd)} is obtained from SNP array data of ~2000 TCGA diploidy blood samples,
 they are mean and sd of top 5\% copy number values for each gene (in ~2000 samples);
 \code{ploidy} is tumor ploidy.
@@ -74,7 +73,7 @@ a function will be called to update the sample summary.}
 Create a \code{fCNA} object.
 Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.workflow()}} or \code{\link[=gcap.ASCNworkflow]{gcap.ASCNworkflow()}}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(fcna, pdata, min_n = 1L, gap_cn = 4L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(fcna, pdata, min_n = 1L)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -87,11 +86,6 @@ Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.work
 \item{\code{min_n}}{a minimal cytoband number (default is \code{1}) to determine
 sample class. e.g., sample with at least 1 cytoband harboring circular
 genes would be labelled as "circular". \strong{This only affect \code{sample_summary} field}.}
-
-\item{\code{gap_cn}}{a gap copy number value, default is \code{4L} refer to Kim 2020 Nat.Gen.
-A gene with copy number above \code{ploidy + gap_cn} would be treated as amplicon.
-Smaller, more amplicons. \strong{If you have already run GCAP workflow, please
-keep consistent \code{gap_cn} value}.}
 }
 \if{html}{\out{</div>}}
 }

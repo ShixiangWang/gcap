@@ -89,12 +89,12 @@ gcap.runScoring <- function(data,
   ] # Currently, median is not used
   data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
 
-  # Mean + SD for large threshold (circular), smaller is looser
-  # Ploidy for small threshold (noncircular)
+  # (background_cn) Mean + SD for large threshold (circular), smaller is looser
+  # (background_cn2) Ploidy for small threshold (noncircular)
   data$background_cn <- pmax(data$blood_cn_top5 + tightness * data$blood_cn_top5_sd,
     data$ploidy,
     na.rm = TRUE
-  ) * data$ploidy / 2
+  ) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
   data$background_cn <- ifelse(is.na(data$background_cn), 2, data$background_cn)
   data$background_cn2 <- data$ploidy * data$ploidy / 2
   data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)
@@ -103,8 +103,7 @@ gcap.runScoring <- function(data,
   data$blood_cn_top5_sd <- NULL
 
   flag_amp <- data$total_cn >= data$background_cn + max(gap_cn, 4) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
-  flag_amp <- ifelse(is.na(flag_amp), FALSE, flag_amp)
-  flag_amp2 <- data$total_cn >= data$background_cn2 + gap_cn # A smaller threshold for nonec, same to fCNA code
+  flag_amp2 <- data$total_cn >= data$background_cn2 + gap_cn
   flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, 0.75, 1), include.lowest = TRUE))
   # Classify amplicon
   data$amplicon_type <- data.table::fcase(
@@ -127,14 +126,14 @@ gcap.runScoring <- function(data,
   fcna <- data[!amplicon_type %in% c(NA, "nofocal"),
     c(
       "sample", "band", "gene_id", "total_cn",
-      "minor_cn", "background_cn", "background_cn2", "prob", "amplicon_type"
+      "minor_cn", "background_cn", "prob", "amplicon_type"
     ),
     with = FALSE
   ] # Only treat nofocal as (focal) variants
 
   data.table::setkey(fcna, NULL) # To make sure all equal to rebuild the fCNA object from file
   if (nrow(fcna) == 0) lg$info("No fCNA records detected")
-  fCNAobj <- fCNA$new(fcna, pdata, min_n = min_n, gap_cn = gap_cn)
+  fCNAobj <- fCNA$new(fcna, pdata, min_n = min_n)
   print(fCNAobj)
 
   lg$info("done")

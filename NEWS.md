@@ -1,3 +1,7 @@
+# gcap 0.8.1
+
+- Cleaned logic.
+
 # gcap 0.8.0
 
 - Added options `tightness` and `gap_cn`.

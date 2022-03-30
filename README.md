@@ -3,8 +3,10 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-In a nutshell, **gcap** provides end-to-end machine learning approache for predicting
-circular amplicon (also known as ecDNA, extrachromosomal DNA ) in gene level from WES (tumor-normal paired BAM) data,
+In a nutshell, **gcap** provides an end-to-end workflow for predicting
+circular amplicon (also known as ecDNA, extra-chromosomal DNA ) in gene level with machine learning approach,
+then classifying cancer samples into different focal amplification (fCNA) types,
+based on input from WES (tumor-normal paired BAM) data,
 allele specific copy number data (e.g., results from [ASCAT](https://github.com/VanLoo-lab/ascat) or [Sequenza](https://cran.r-project.org/package=sequenza)), or even
 absolute integer copy number data (e.g., results from [ABSOLUTE](https://software.broadinstitute.org/cancer/cga/absolute)). The former two data
 sources are preferred as input of **gcap** .

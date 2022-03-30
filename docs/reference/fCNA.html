@@ -30,7 +30,7 @@ fCNA information. Examples please see gcap.ASCNworkflow()."><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.1</span>
       </span>
     </div>
 
@@ -85,8 +85,7 @@ fCNA information. Examples please see <code><a href="gcap.ASCNworkflow.html">gca
 <li><p><code>gene_id</code> gene ID, typically Ensembl ID. You can convert the ID with R package <code>IDConverter</code>.</p></li>
 <li><p><code>total_cn</code> total copy number value.</p></li>
 <li><p><code>minor_cn</code> copy number value for minor allele.</p></li>
-<li><p><code>background_cn</code> background copy number value (for circular amplicon), calculated as <code>(blood_cn_top5 + 3*blood_cn_top5_sd) * ploidy / 2</code>.</p></li>
-<li><p><code>background_cn2</code> a smaller background copy number value, calculated as <code>(pmax(blood_cn_top5 - 3*blood_cn_top5_sd, ploidy)) * ploidy / 2</code>.
+<li><p><code>background_cn</code> background copy number value (for circular amplicon), calculated as <code>pmax(blood_cn_top5 + tightness * blood_cn_top5_sd, 2) * ploidy / 2</code>. (<strong>Optional</strong>)
 At default, <code>blood_cn_top5(_sd)</code> is obtained from SNP array data of ~2000 TCGA diploidy blood samples,
 they are mean and sd of top 5% copy number values for each gene (in ~2000 samples);
 <code>ploidy</code> is tumor ploidy.</p></li>
@@ -147,7 +146,7 @@ a function will be called to update the sample summary.</p></dd>
 <p>Create a <code>fCNA</code> object.
 Typically, you can obtain this object from <code><a href="gcap.workflow.html">gcap.workflow()</a></code> or <code><a href="gcap.ASCNworkflow.html">gcap.ASCNworkflow()</a></code>.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/fCNA.html">fCNA</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">fcna</span>, <span class="va">pdata</span>, min_n <span class="op">=</span> <span class="fl">1L</span>, gap_cn <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/fCNA.html">fCNA</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">fcna</span>, <span class="va">pdata</span>, min_n <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -164,13 +163,6 @@ Typically, you can obtain this object from <code><a href="gcap.workflow.html">gc
 <dd><p>a minimal cytoband number (default is <code>1</code>) to determine
 sample class. e.g., sample with at least 1 cytoband harboring circular
 genes would be labelled as "circular". <strong>This only affect <code>sample_summary</code> field</strong>.</p></dd>
-
-
-<dt><code>gap_cn</code></dt>
-<dd><p>a gap copy number value, default is <code>4L</code> refer to Kim 2020 Nat.Gen.
-A gene with copy number above <code>ploidy + gap_cn</code> would be treated as amplicon.
-Smaller, more amplicons. <strong>If you have already run GCAP workflow, please
-keep consistent <code>gap_cn</code> value</strong>.</p></dd>
 
 
 </dl><p></p></div>

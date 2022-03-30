@@ -18,8 +18,7 @@ fCNA <- R6::R6Class(
     #' - `gene_id` gene ID, typically Ensembl ID. You can convert the ID with R package `IDConverter`.
     #' - `total_cn` total copy number value.
     #' - `minor_cn` copy number value for minor allele.
-    #' - `background_cn` background copy number value (for circular amplicon), calculated as `(blood_cn_top5 + 3*blood_cn_top5_sd) * ploidy / 2`.
-    #' - `background_cn2` a smaller background copy number value, calculated as `(pmax(blood_cn_top5 - 3*blood_cn_top5_sd, ploidy)) * ploidy / 2`.
+    #' - `background_cn` background copy number value (for circular amplicon), calculated as `pmax(blood_cn_top5 + tightness * blood_cn_top5_sd, 2) * ploidy / 2`. (**Optional**)
     #' At default, `blood_cn_top5(_sd)` is obtained from SNP array data of ~2000 TCGA diploidy blood samples,
     #' they are mean and sd of top 5% copy number values for each gene (in ~2000 samples);
     #' `ploidy` is tumor ploidy.
@@ -51,23 +50,18 @@ fCNA <- R6::R6Class(
     #' @param min_n a minimal cytoband number (default is `1`) to determine
     #' sample class. e.g., sample with at least 1 cytoband harboring circular
     #' genes would be labelled as "circular". **This only affect `sample_summary` field**.
-    #' @param gap_cn a gap copy number value, default is `4L` refer to Kim 2020 Nat.Gen.
-    #' A gene with copy number above `ploidy + gap_cn` would be treated as amplicon.
-    #' Smaller, more amplicons. **If you have already run GCAP workflow, please
-    #' keep consistent `gap_cn` value**.
-    initialize = function(fcna, pdata, min_n = 1L, gap_cn = 4L) {
+    initialize = function(fcna, pdata, min_n = 1L) {
       stopifnot(
         is.data.frame(fcna), is.data.frame(pdata),
         all(c(
           "sample", "band", "gene_id", "total_cn",
-          "background_cn2", "prob", "amplicon_type"
+          "prob", "amplicon_type"
         ) %in% colnames(fcna)),
         all(c("sample") %in% colnames(pdata)),
         !is.null(min_n) && min_n >= 1
       )
 
       private$n <- min_n
-      private$gap_cn <- gap_cn
 
       message("set fixed levels for 'amplicon_type'")
       amplvls <- c("noncircular", "possibly_circular", "circular")
@@ -100,8 +94,7 @@ fCNA <- R6::R6Class(
       message("  classifying samples with min_n=", private$n)
       self$data[
         , summarize_sample(.SD,
-          min_n = private$n,
-          gap_cn = private$gap_cn
+          min_n = private$n
         ),
         by = .(sample)
       ]
@@ -173,8 +166,7 @@ fCNA <- R6::R6Class(
     }
   ),
   private = list(
-    n = NULL,
-    gap_cn = NULL
+    n = NULL
   ),
   active = list(
     #' @field min_n check `$new()` method for details. If you updated this value,
@@ -201,9 +193,9 @@ fCNA <- R6::R6Class(
 
 # summarize sample --------------------------------------------------------
 
-summarize_sample <- function(data, min_n, gap_cn) {
+summarize_sample <- function(data, min_n) {
   ec_genes <- sum(data$amplicon_type == "circular", na.rm = TRUE)
-  ec_cytobands_detail <- unique(data$band[data$amplicon_type == "circular"])
+  ec_cytobands_detail <- na.omit(unique(data$band[data$amplicon_type == "circular"]))
   ec_cytobands <- length(ec_cytobands_detail)
   ec_cytobands_detail <- paste(sort(ec_cytobands_detail), collapse = ",")
   ec_possibly_genes <- sum(data$amplicon_type == "possibly_circular", na.rm = TRUE)
@@ -222,22 +214,26 @@ summarize_sample <- function(data, min_n, gap_cn) {
   # flags have priority
   # flag_ec <- ec_genes >= min_n
   flag_ec <- ec_cytobands >= min_n
-  flag_ec_possibly <- if (length(prob_possibly) > 0) {
+  flag_ec_possibly <- if (!flag_ec && length(prob_possibly) > 0) {
     calc_prob(prob_possibly, min_n) > 0.75
   } else {
     FALSE
   }
-  # For nonec Amplicons, use cytobands instead of genes to count
-  flag_amp <- length(unique(data$band[data$total_cn >= data$background_cn2 + gap_cn])) >= 1
 
   class <- if (flag_ec) {
     "circular"
   } else if (flag_ec_possibly) {
     "possibly_circular"
-  } else if (flag_amp) {
-    "noncircular"
   } else {
-    "nofocal"
+    # Use cytobands instead of genes to count
+    flag_amp <- length(na.omit(unique(
+      data$band[data$amplicon_type %in% c("noncircular", "possibly_circular", "circular")]
+    ))) >= 1
+    if (flag_amp) {
+      "noncircular"
+    } else {
+      "nofocal"
+    }
   }
 
   data.frame(
