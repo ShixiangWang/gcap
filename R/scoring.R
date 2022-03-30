@@ -102,7 +102,7 @@ gcap.runScoring <- function(data,
   data$blood_cn_top5 <- NULL
   data$blood_cn_top5_sd <- NULL
 
-  flag_amp <- data$total_cn >= data$background_cn + gap_cn * pmax(data$ploidy, 2, na.rm = TRUE) / 2
+  flag_amp <- data$total_cn >= data$background_cn + max(gap_cn, 4) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
   flag_amp <- ifelse(is.na(flag_amp), FALSE, flag_amp)
   flag_amp2 <- data$total_cn >= data$background_cn2 + gap_cn # A smaller threshold for nonec, same to fCNA code
   flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, 0.75, 1), include.lowest = TRUE))
