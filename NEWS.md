@@ -1,6 +1,6 @@
 # gcap 0.8.0
 
-- Added a `tightness` option.
+- Added options `tightness` and `gap_cn`.
 - Renamed `gcap-wes.R` script to `gcap-bam.R`.
 
 # gcap 0.7.0

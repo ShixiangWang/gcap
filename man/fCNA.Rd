@@ -74,7 +74,7 @@ a function will be called to update the sample summary.}
 Create a \code{fCNA} object.
 Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.workflow()}} or \code{\link[=gcap.ASCNworkflow]{gcap.ASCNworkflow()}}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(fcna, pdata, min_n = 1L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(fcna, pdata, min_n = 1L, gap_cn = 4L)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -87,6 +87,11 @@ Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.work
 \item{\code{min_n}}{a minimal cytoband number (default is \code{1}) to determine
 sample class. e.g., sample with at least 1 cytoband harboring circular
 genes would be labelled as "circular". \strong{This only affect \code{sample_summary} field}.}
+
+\item{\code{gap_cn}}{a gap copy number value, default is \code{4L} refer to Kim 2020 Nat.Gen.
+A gene with copy number above \code{ploidy + gap_cn} would be treated as amplicon.
+Smaller, more amplicons. \strong{If you have already run GCAP workflow, please
+keep consistent \code{gap_cn} value}.}
 }
 \if{html}{\out{</div>}}
 }

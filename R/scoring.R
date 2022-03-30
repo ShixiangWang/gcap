@@ -8,6 +8,9 @@
 #' @param tightness a value to control the tightness to be a circular amplicon.
 #' If the value is larger, it is more likely a fCNA assigned to `noncircular`
 #' instead of `circular`.
+#' @param gap_cn a gap copy number value, default is `4L` refer to Kim 2020 Nat.Gen.
+#' A gene with copy number above `ploidy + gap_cn` would be treated as amplicon.
+#' Smaller, more amplicons.
 #' @return a list of `data.table`.
 #' @export
 #'
@@ -22,7 +25,8 @@
 gcap.runScoring <- function(data,
                             genome_build = "hg38",
                             min_n = 1L,
-                            tightness = 1L) {
+                            tightness = 1L,
+                            gap_cn = 4L) {
   on.exit(invisible(gc()))
   stopifnot(is.data.frame(data))
   lg <- set_logger()
@@ -81,12 +85,16 @@ gcap.runScoring <- function(data,
 
   cytoband_cn <- data[
     , .(cytoband_cn_median = median(total_cn, na.rm = TRUE)),
-    by = .(sample, band)] # Currently, median is not used
+    by = .(sample, band)
+  ] # Currently, median is not used
   data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
 
-  # Mean + SD for large threshold (circular), Okay to use + 1/2SD, 1SD is looser
+  # Mean + SD for large threshold (circular), smaller is looser
   # Ploidy for small threshold (noncircular)
-  data$background_cn <- (data$blood_cn_top5 + tightness * data$blood_cn_top5_sd) * data$ploidy / 2
+  data$background_cn <- pmax(data$blood_cn_top5 + tightness * data$blood_cn_top5_sd,
+    data$ploidy,
+    na.rm = TRUE
+  ) * data$ploidy / 2
   data$background_cn <- ifelse(is.na(data$background_cn), 2, data$background_cn)
   data$background_cn2 <- data$ploidy * data$ploidy / 2
   data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)
@@ -94,9 +102,9 @@ gcap.runScoring <- function(data,
   data$blood_cn_top5 <- NULL
   data$blood_cn_top5_sd <- NULL
 
-  flag_amp <- data$total_cn >= data$background_cn + 4 * data$ploidy / 2
+  flag_amp <- data$total_cn >= data$background_cn + gap_cn * pmax(data$ploidy, 2, na.rm = TRUE) / 2
   flag_amp <- ifelse(is.na(flag_amp), FALSE, flag_amp)
-  flag_amp2 <- data$total_cn >= data$background_cn2 + 4  # A smaller threshold for nonec, same to fCNA code
+  flag_amp2 <- data$total_cn >= data$background_cn2 + gap_cn # A smaller threshold for nonec, same to fCNA code
   flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, 0.75, 1), include.lowest = TRUE))
   # Classify amplicon
   data$amplicon_type <- data.table::fcase(

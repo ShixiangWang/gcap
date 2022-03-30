@@ -51,7 +51,11 @@ fCNA <- R6::R6Class(
     #' @param min_n a minimal cytoband number (default is `1`) to determine
     #' sample class. e.g., sample with at least 1 cytoband harboring circular
     #' genes would be labelled as "circular". **This only affect `sample_summary` field**.
-    initialize = function(fcna, pdata, min_n = 1L) {
+    #' @param gap_cn a gap copy number value, default is `4L` refer to Kim 2020 Nat.Gen.
+    #' A gene with copy number above `ploidy + gap_cn` would be treated as amplicon.
+    #' Smaller, more amplicons. **If you have already run GCAP workflow, please
+    #' keep consistent `gap_cn` value**.
+    initialize = function(fcna, pdata, min_n = 1L, gap_cn = 4L) {
       stopifnot(
         is.data.frame(fcna), is.data.frame(pdata),
         all(c(
@@ -63,6 +67,7 @@ fCNA <- R6::R6Class(
       )
 
       private$n <- min_n
+      private$gap_cn <- gap_cn
 
       message("set fixed levels for 'amplicon_type'")
       amplvls <- c("noncircular", "possibly_circular", "circular")
@@ -93,7 +98,13 @@ fCNA <- R6::R6Class(
     getSampleSummary = function() {
       stopifnot(!is.null(private$n) && private$n >= 1L)
       message("  classifying samples with min_n=", private$n)
-      self$data[, summarize_sample(.SD, min_n = private$n), by = .(sample)]
+      self$data[
+        , summarize_sample(.SD,
+          min_n = private$n,
+          gap_cn = private$gap_cn
+        ),
+        by = .(sample)
+      ]
     },
     #' @description Get gene level summary of fCNA type
     #' @return a `data.table`
@@ -147,16 +158,23 @@ fCNA <- R6::R6Class(
       cat(sprintf("%8s: %s\n", "gene", cli::col_green(nrow(self$gene_summary))))
       cat(sprintf("%8s: %s\n", "fCNA", cli::col_green(nrow(self$data))))
       cat("     |__ ", cli::col_green(tbl[1]),
-          " (", cli::col_cyan(sum(ss$class == "noncircular", na.rm = TRUE)), ") noncircular\n", sep = "")
+        " (", cli::col_cyan(sum(ss$class == "noncircular", na.rm = TRUE)), ") noncircular\n",
+        sep = ""
+      )
       cat("     |__ ", cli::col_green(tbl[2]),
-          " (", cli::col_cyan(sum(ss$class == "possibly_circular", na.rm = TRUE)), ") possibly_circular\n", sep = "")
+        " (", cli::col_cyan(sum(ss$class == "possibly_circular", na.rm = TRUE)), ") possibly_circular\n",
+        sep = ""
+      )
       cat("     |__ ", cli::col_green(tbl[3]),
-          " (", cli::col_cyan(sum(ss$class == "circular", na.rm = TRUE)), ") circular\n", sep = "")
+        " (", cli::col_cyan(sum(ss$class == "circular", na.rm = TRUE)), ") circular\n",
+        sep = ""
+      )
       cat("======================\n")
     }
   ),
   private = list(
-    n = NULL
+    n = NULL,
+    gap_cn = NULL
   ),
   active = list(
     #' @field min_n check `$new()` method for details. If you updated this value,
@@ -183,7 +201,7 @@ fCNA <- R6::R6Class(
 
 # summarize sample --------------------------------------------------------
 
-summarize_sample <- function(data, min_n) {
+summarize_sample <- function(data, min_n, gap_cn) {
   ec_genes <- sum(data$amplicon_type == "circular", na.rm = TRUE)
   ec_cytobands_detail <- unique(data$band[data$amplicon_type == "circular"])
   ec_cytobands <- length(ec_cytobands_detail)
@@ -210,7 +228,7 @@ summarize_sample <- function(data, min_n) {
     FALSE
   }
   # For nonec Amplicons, use cytobands instead of genes to count
-  flag_amp <- length(unique(data$band[data$total_cn >= data$background_cn2 + 4])) >= 1
+  flag_amp <- length(unique(data$band[data$total_cn >= data$background_cn2 + gap_cn])) >= 1
 
   class <- if (flag_ec) {
     "circular"

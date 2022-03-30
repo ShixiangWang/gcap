@@ -9,6 +9,7 @@ gcap.ASCNworkflow(
   genome_build = c("hg38", "hg19"),
   model = "XGB32",
   tightness = 1L,
+  gap_cn = 4L,
   outdir = getwd(),
   result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE))
 )
@@ -43,6 +44,10 @@ from input. 'toy' can be used for test.}
 \item{tightness}{a value to control the tightness to be a circular amplicon.
 If the value is larger, it is more likely a fCNA assigned to \code{noncircular}
 instead of \code{circular}.}
+
+\item{gap_cn}{a gap copy number value, default is \code{4L} refer to Kim 2020 Nat.Gen.
+A gene with copy number above \code{ploidy + gap_cn} would be treated as amplicon.
+Smaller, more amplicons.}
 
 \item{outdir}{result output path.}
 

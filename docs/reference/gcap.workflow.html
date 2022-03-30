@@ -86,6 +86,7 @@
   genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span>,
   model <span class="op">=</span> <span class="st">"XGB32"</span>,
   tightness <span class="op">=</span> <span class="fl">1L</span>,
+  gap_cn <span class="op">=</span> <span class="fl">4L</span>,
   outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
   result_file_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"gcap_"</span>, <span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
   allelecounter_exe <span class="op">=</span> <span class="st">"~/miniconda3/envs/cancerit/bin/alleleCounter"</span>,
@@ -139,6 +140,10 @@ from input. 'toy' can be used for test.</p></dd>
 <dd><p>a value to control the tightness to be a circular amplicon.
 If the value is larger, it is more likely a fCNA assigned to <code>noncircular</code>
 instead of <code>circular</code>.</p></dd>
+<dt>gap_cn</dt>
+<dd><p>a gap copy number value, default is <code>4L</code> refer to Kim 2020 Nat.Gen.
+A gene with copy number above <code>ploidy + gap_cn</code> would be treated as amplicon.
+Smaller, more amplicons.</p></dd>
 <dt>outdir</dt>
 <dd><p>result output path.</p></dd>
 <dt>result_file_prefix</dt>

@@ -4,7 +4,13 @@
 \alias{gcap.runScoring}
 \title{Summarize prediction result into gene/sample-level}
 \usage{
-gcap.runScoring(data, genome_build = "hg38", min_n = 1L, tightness = 1L)
+gcap.runScoring(
+  data,
+  genome_build = "hg38",
+  min_n = 1L,
+  tightness = 1L,
+  gap_cn = 4L
+)
 }
 \arguments{
 \item{data}{a \code{data.table} containing result from \link{gcap.runPrediction}.}
@@ -19,6 +25,10 @@ genes would be labelled as "circular".}
 \item{tightness}{a value to control the tightness to be a circular amplicon.
 If the value is larger, it is more likely a fCNA assigned to \code{noncircular}
 instead of \code{circular}.}
+
+\item{gap_cn}{a gap copy number value, default is \code{4L} refer to Kim 2020 Nat.Gen.
+A gene with copy number above \code{ploidy + gap_cn} would be treated as amplicon.
+Smaller, more amplicons.}
 }
 \value{
 a list of \code{data.table}.
