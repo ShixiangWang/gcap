@@ -32,8 +32,8 @@ reference:
     contents:
     - gcap.extractFeatures
     - gcap.collapse2Genes
+    - gcap.extractComponents
     - get_auc
-    - convertID
   - title: Datasets
     desc: Builtin datasets
     contents:

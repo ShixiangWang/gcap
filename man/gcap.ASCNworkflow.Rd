@@ -75,8 +75,9 @@ data$minor_cn <- NA
 rv5 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
 
 # R6 class fCNA --------------------------------
-rv$data
-rv$sample_summary
-rv$gene_summary
-rv$cytoband_summary
+print(rv)
+print(rv$data)
+print(rv$sample_summary)
+print(rv$gene_summary)
+print(rv$cytoband_summary)
 }

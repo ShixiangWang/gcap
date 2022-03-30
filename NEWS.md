@@ -1,3 +1,8 @@
+# gcap 0.8.0
+
+- Added a `tightness` option.
+- Renamed `gcap-wes.R` script to `gcap-bam.R`.
+
 # gcap 0.7.0
 
 - Handled void result.

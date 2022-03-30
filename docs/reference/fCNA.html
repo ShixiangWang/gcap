@@ -30,7 +30,7 @@ fCNA information. Examples please see gcap.ASCNworkflow()."><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.8.0</span>
       </span>
     </div>
 
@@ -85,8 +85,10 @@ fCNA information. Examples please see <code><a href="gcap.ASCNworkflow.html">gca
 <li><p><code>gene_id</code> gene ID, typically Ensembl ID. You can convert the ID with R package <code>IDConverter</code>.</p></li>
 <li><p><code>total_cn</code> total copy number value.</p></li>
 <li><p><code>minor_cn</code> copy number value for minor allele.</p></li>
-<li><p><code>background_cn</code> background copy number value, calculated as <code>blood_cn_median * ploidy / 2</code>.
-<code>blood_cn_median</code> is obtained from SNP array data of ~4000 TCGA from blood samples,
+<li><p><code>background_cn</code> background copy number value (for circular amplicon), calculated as <code>(blood_cn_top5 + 3*blood_cn_top5_sd) * ploidy / 2</code>.</p></li>
+<li><p><code>background_cn2</code> a smaller background copy number value, calculated as <code>(pmax(blood_cn_top5 - 3*blood_cn_top5_sd, ploidy)) * ploidy / 2</code>.
+At default, <code>blood_cn_top5(_sd)</code> is obtained from SNP array data of ~2000 TCGA diploidy blood samples,
+they are mean and sd of top 5% copy number values for each gene (in ~2000 samples);
 <code>ploidy</code> is tumor ploidy.</p></li>
 <li><p><code>prob</code> the probability the gene located in circular DNA.</p></li>
 <li><p><code>amplicon_type</code> the type of DNA amplicon.</p></li>
@@ -95,7 +97,8 @@ fCNA information. Examples please see <code><a href="gcap.ASCNworkflow.html">gca
 
 <dt><code>sample_summary</code></dt>
 <dd><p>a <code>data.table</code> storing sample summary data, which typically contains
-at least the following columns:</p><ul><li><p><code>sample</code> sample or case ID.</p></li>
+at least the following columns:</p><ul><li><p><code>sample</code> sample or case ID. <strong>Should only include cases have been called with GCAP workflow,
+otherwise the extra cases would be automatically classified as 'nofocal' (i.e. <code>NA</code> in <code>sample_summary</code> field) class</strong>.</p></li>
 <li><p><code>purity</code>, <code>ploidy</code> for tumor purity or ploidy.</p></li>
 <li><p><code>AScore</code> aneuploidy score.</p></li>
 <li><p><code>pLOH</code> genome percentage harboring LOH events.</p></li>

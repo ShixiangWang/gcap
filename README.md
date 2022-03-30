@@ -53,7 +53,26 @@ Install **gcap** in R console from GitHub with:
 remotes::install_github("ShixiangWang/gcap")
 ```
 
+If you would like to use CLI program, run the following code in your R console:
+
+```r
+gcap::deploy()
+```
+
+Two scripts `gcap-bam.R` and `gcap-ascn.R` shall be linked to your path `/usr/local/bin/`.
+You can use one of them based on you input data.
+
 ## Example
+
+Run the following code to see a quick example:
+
+```r
+library(gcap)
+
+data("ascn")
+rv <- gcap.ASCNworkflow(ascn, outdir = tempdir(), model = "XGB11")
+rv
+```
 
 ### Pipeline (WES bam data only)
 

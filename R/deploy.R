@@ -11,14 +11,14 @@ deploy <- function() {
   if (.Platform$OS.type != "unix") stop("This is designed for Unix-like system.")
 
   dir <- system.file(package = "gcap")
-  cmd1 <- qq("ln -sf @{dir}/gcap-wes.R  /usr/local/bin/gcap-wes.R")
+  cmd1 <- qq("ln -sf @{dir}/gcap-bam.R  /usr/local/bin/gcap-bam.R")
   cmd2 <- qq("ln -sf @{dir}/gcap-ascn.R  /usr/local/bin/gcap-ascn.R")
 
-  message("Linking gcap-wes.R command")
+  message("Linking gcap-bam.R command")
   system(cmd1)
   message("Linking gcap-ascn.R command")
   system(cmd2)
   message("Done")
 
-  message("Now you shall run gcap-wes.R and gcap-ascn.R from anywhere.")
+  message("Now you shall run gcap-bam.R and gcap-ascn.R from anywhere.")
 }

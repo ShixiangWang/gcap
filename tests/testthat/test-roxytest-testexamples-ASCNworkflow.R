@@ -2,7 +2,7 @@
 
 # File R/ASCNworkflow.R: @testexamples
 
-test_that("Function gcap.ASCNworkflow() @ L58", {
+test_that("Function gcap.ASCNworkflow() @ L59", {
   
   data("ascn")
   data <- ascn
@@ -20,10 +20,11 @@ test_that("Function gcap.ASCNworkflow() @ L58", {
   rv5 <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
   
   # R6 class fCNA --------------------------------
-  rv$data
-  rv$sample_summary
-  rv$gene_summary
-  rv$cytoband_summary
+  print(rv)
+  print(rv$data)
+  print(rv$sample_summary)
+  print(rv$gene_summary)
+  print(rv$cytoband_summary)
   expect_equal(rv, rv2)
   expect_equal(length(rv3), 2L)
   expect_equal(length(rv4), 2L)
