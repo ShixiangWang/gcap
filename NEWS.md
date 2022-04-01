@@ -1,3 +1,8 @@
+# gcap 0.9.0
+
+- Supported `gcap` as main command, and previous two commands as subcommands if `GetoptLong` version `>=1.1.0`.
+Note: not test yet.
+
 # gcap 0.8.1
 
 - Cleaned logic.
