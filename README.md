@@ -55,7 +55,7 @@ Install **gcap** in R console from GitHub with:
 remotes::install_github("ShixiangWang/gcap")
 ```
 
-If you would like to use CLI program, run the following code in your R console:
+If you would like to use CLI program in Shell terminal, run the following code in your R console after installation:
 
 ```r
 gcap::deploy()
@@ -63,6 +63,28 @@ gcap::deploy()
 
 Two scripts `gcap-bam.R` and `gcap-ascn.R` shall be linked to your path `/usr/local/bin/`.
 You can use one of them based on you input data.
+
+**NOTE**
+
+For users with package **GetoptLong** version `>= 1.1.0`, a main command is implemented
+and also linked to `/usr/local/bin/` when calling `deploy()`. So you can type `gcap` as
+a unified interface.
+
+```sh
+$ gcap
+gcap (v0.9.0)
+Usage: gcap [command] [options]
+
+Commands:
+  bam     Run GCAP workflow with tumor-normal paired BAM files
+  ascn    Run GCAP workflow with curated allele-specific copy number data
+
+----------
+Citation:
+  GCAP
+URL:
+  https://github.com/ShixiangWang/gcap
+```
 
 ## Example
 
