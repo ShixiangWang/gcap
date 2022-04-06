@@ -86,6 +86,20 @@ if (require("ComplexHeatmap") && require("IDConverter")) {
 
   p2 <- gcap.plotKMcurve(rv, surv_data, genes = "MYC")
   p2
+
+  # ---------------
+  # Plot forest
+  # ---------------
+  p3 <- gcap.plotForest(rv, surv_data)
+
+  # Fake some data for gene analysis
+  rv$data[amplicon_type == "circular"]$gene_id[1:10] <- "MYC"
+  rv$data[amplicon_type == "circular"]$gene_id[11:20] <- "EGFR"
+  rv$data[amplicon_type == "circular"]$gene_id[31:35] <- "GSX2"
+  p4 <- gcap.plotForest(rv, surv_data,
+    x = c("TP53", "MYC", "ABC", "EGFR", "GSX2"), x_is_gene = TRUE,
+    ref_line = 1, xlim = c(0, 10)
+  )
 }
 }
 }

@@ -36,10 +36,11 @@ Suggests:
     ComplexHeatmap (>= 2.5.2),
     IDConverter (>= 0.3.0),
     PRROC,
-    testthat (>= 3.0.0),
-    utils,
+    regport (>= 0.2.0),
     survival,
-    survminer
+    survminer,
+    testthat (>= 3.0.0),
+    utils
 LinkingTo: 
     Rcpp
 Remotes: 

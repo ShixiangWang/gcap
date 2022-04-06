@@ -1,5 +1,6 @@
 # gcap 0.10.0
 
+- Added `gcap.plotForest()`.
 - Added `gcap.plotKMcurve()`.
 - Added `gcap.plotProfile()`.
 - Added method `convertGeneID()` to `fCNA` class.
