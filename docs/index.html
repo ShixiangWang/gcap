@@ -52,7 +52,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -138,17 +138,32 @@
 <p>Install <strong>gcap</strong> in R console from GitHub with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/gcap"</span><span class="op">)</span></code></pre></div>
-<p>If you would like to use CLI program, run the following code in your R console:</p>
+<p>If you would like to use CLI program in Shell terminal, run the following code in your R console after installation:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">gcap</span><span class="fu">::</span><span class="fu"><a href="reference/deploy.html">deploy</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Two scripts <code>gcap-bam.R</code> and <code>gcap-ascn.R</code> shall be linked to your path <code>/usr/local/bin/</code>. You can use one of them based on you input data.</p>
+<p><strong>NOTE</strong></p>
+<p>For users with package <strong>GetoptLong</strong> version <code>&gt;= 1.1.0</code>, a main command is implemented and also linked to <code>/usr/local/bin/</code> when calling <code><a href="reference/deploy.html">deploy()</a></code>. So you can type <code>gcap</code> as a unified interface.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gcap</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gcap</span> <span class="er">(</span><span class="ex">v0.9.0</span><span class="kw">)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Usage:</span> gcap [command] [options]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Commands:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">bam</span>     Run GCAP workflow with tumor-normal paired BAM files</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">ascn</span>    Run GCAP workflow with curated allele-specific copy number data</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">----------</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Citation:</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="ex">GCAP</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="ex">URL:</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">https://github.com/ShixiangWang/gcap</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <p>Run the following code to see a quick example:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ShixiangWang/gcap" class="external-link">gcap</a></span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ascn"</span><span class="op">)</span>
@@ -180,9 +195,9 @@
 <h2 id="logging">Logging<a class="anchor" aria-label="anchor" href="#logging"></a>
 </h2>
 <p>For better debugging and rechecking. The logging information of your operation with <strong>gcap</strong> would be saved into an independent file. You can use the following commands to get the file path and print logging message. Please note you have to use <code>:::</code> to access these functions as they are not exported from <strong>gcap</strong>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">get_log_file</span>()</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"~/Library/Logs/gcap/gcap.log"</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">cat_log_file</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">get_log_file</span>()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"~/Library/Logs/gcap/gcap.log"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">cat_log_file</span>()</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="related-tools">Related tools<a class="anchor" aria-label="anchor" href="#related-tools"></a>

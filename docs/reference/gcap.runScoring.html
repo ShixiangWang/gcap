@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -114,19 +114,31 @@ Smaller, more amplicons.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ec"</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ec2</span> <span class="op">&lt;-</span> <span class="va">ec</span></span>
 <span class="r-in"><span class="va">ec2</span><span class="op">$</span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="gcap.runPrediction.html">gcap.runPrediction</a></span><span class="op">(</span><span class="va">ec</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-01 10:36:40 info [gcap.runPrediction]: using model file XGB_NF32.rds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-01 10:36:40 info [gcap.runPrediction]: selecting necessary features from input data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-01 10:36:40 info [gcap.runPrediction]: running prediction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10:36:40] WARNING: amalgamation/../src/c_api/c_api.cc:718: `ntree_limit` is deprecated, use `iteration_range` instead.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-06 19:47:55 info [gcap.runPrediction]: using model file XGB_NF32.rds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-06 19:47:55 info [gcap.runPrediction]: selecting necessary features from input data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-06 19:47:55 info [gcap.runPrediction]: running prediction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19:47:55] WARNING: amalgamation/../src/c_api/c_api.cc:718: `ntree_limit` is deprecated, use `iteration_range` instead.</span>
 <span class="r-in"><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu">gcap.runScoring</span><span class="op">(</span><span class="va">ec2</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-01 10:36:40 info [gcap.runScoring]: checking input data type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-01 10:36:40 info [gcap.runScoring]: checking columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-01 10:36:40 info [gcap.runScoring]: No 'sample' column found, mutating one</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-01 10:36:40 info [gcap.runScoring]: filtering out records without prob result</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-01 10:36:40 info [gcap.runScoring]: joining extra annotation data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-01 10:36:42 info [gcap.runScoring]: summarizing in gene level</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-01 10:36:42 info [gcap.runScoring]: summarizing in sample level</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-01 10:36:42 info [gcap.runScoring]: done</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-06 19:47:55 info [gcap.runScoring]: checking input data type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-06 19:47:55 info [gcap.runScoring]: checking columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-06 19:47:55 info [gcap.runScoring]: No 'sample' column found, mutating one</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-06 19:47:55 info [gcap.runScoring]: filtering out records without prob result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-06 19:47:55 info [gcap.runScoring]: joining extra annotation data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> set fixed levels for 'amplicon_type'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> summarizing sample...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   classifying samples with min_n=1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> summarizing gene and cytoband...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> done</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A &lt;<span style="color: #55FFFF;">fCNA</span>&gt; object</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     case: <span style="color: #00BBBB;">1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     gene: <span style="color: #00BB00;">14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fCNA: <span style="color: #00BB00;">14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      |__ <span style="color: #00BB00;">8</span> (<span style="color: #00BBBB;">0</span>) noncircular</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      |__ <span style="color: #00BB00;">0</span> (<span style="color: #00BBBB;">0</span>) possibly_circular</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      |__ <span style="color: #00BB00;">6</span> (<span style="color: #00BBBB;">1</span>) circular</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2022-04-06 19:47:57 info [gcap.runScoring]: done</span>
 <span class="r-in"><span class="va">score</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       sample         band         gene_id total_cn minor_cn purity   ploidy</span>
@@ -225,70 +237,29 @@ Smaller, more amplicons.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2018:        0   1.8679950  0.3113325     2.4906600 2.8019925          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2019:        1   4.9813200 12.1419676     4.0473225 4.6699875          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2020:        0   0.3113325  2.4906600     0.6226650 2.1793275          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              prob background_cn amplicon_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1: 0.001358518      1.992596       nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2: 0.001366050      3.780270       nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3: 0.001358518      2.172488       nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4: 0.007997432      4.191208       nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5: 0.001366050      3.828760       nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2016: 0.001489777      3.335332       nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2017: 0.001358518      1.910773       nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2018: 0.001358518      3.516363       nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2019: 0.005260550      4.279899       nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2020: 0.014405195      4.102196       nofocal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              prob cytoband_cn_median background_cn background_cn2 amplicon_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1: 0.001358518                  2      3.425115       1.985220       nofocal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2: 0.001366050                  4      7.145221       7.145221       nofocal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3: 0.001358518                  4      4.533482       2.359851       nofocal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4: 0.007997432                  4      8.783112       8.783112       nofocal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5: 0.001366050                  3      7.329700       7.329700       nofocal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2016: 0.001489777                  3      5.850173       5.562220       nofocal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2017: 0.001358518                  3      3.567761       1.825527       nofocal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2018: 0.001358518                  3      6.275941       6.182406       nofocal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2019: 0.005260550                  3      9.158766       9.158766       nofocal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2020: 0.014405195                  3      8.414006       8.414006       nofocal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $gene</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             gene_id     amplicon_type N total_cn minor_cn cytoband_cn</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: ENSG00000166796          circular 1       26        4         3.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: ENSG00000162139 possibly_circular 1       15        3         4.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: ENSG00000023697          circular 1        8        2         4.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: ENSG00000111729          circular 1       12        2         2.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: ENSG00000175189          circular 1       31        2         3.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: ENSG00000125246 possibly_circular 1        9        3         4.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: ENSG00000103657          circular 1       10        2         2.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: ENSG00000197562          circular 1       11        2         2.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: ENSG00000090659          circular 1       12        2         3.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: ENSG00000065717          circular 1       17        3         3.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11: ENSG00000083817          circular 1       10        3         3.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12: ENSG00000184588          circular 1       19        2         4.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13: ENSG00000243749          circular 1       13        2         2.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14: ENSG00000159086          circular 1       14        3         3.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15: ENSG00000160799          circular 1       17        2         3.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16: ENSG00000205678 possibly_circular 1       11        2        11.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17: ENSG00000164610          circular 1       12        2         3.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18: ENSG00000266265 possibly_circular 1        8        1         5.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     support_IDs         band</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:      sample  chr11:p15.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:      sample  chr11:q13.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:      sample  chr12:p12.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:      sample chr12:p13.31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:      sample  chr12:q13.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:      sample  chr13:q32.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:      sample chr15:q22.31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:      sample  chr16:p13.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:      sample  chr19:p13.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:      sample  chr19:p13.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:      sample chr19:q13.43</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:      sample   chr1:p31.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:      sample   chr1:p34.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:      sample chr21:q22.11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:      sample  chr3:p21.31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:      sample   chr4:q13.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:      sample   chr7:p14.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:      sample   chr7:q32.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $sample</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    sample ec_genes ec_cytobands</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: sample       14           14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                                                                         ec_cytobands_detail</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: chr11:p15.1,chr12:p12.3,chr12:p13.31,chr12:q13.3,chr15:q22.31,chr16:p13.3,chr19:p13.2,chr19:p13.3,chr19:q13.43,chr1:p31.3,chr1:p34.3,chr21:q22.11,chr3:p21.31,chr7:p14.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ec_possibly_genes    class purity   ploidy AScore       pLOH cna_burden</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 4 circular   0.45 1.992596      7 0.09848282      0.159</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         CN1     CN2 CN3 CN4 CN5 CN6      CN7 CN8      CN9 CN10 CN11 CN12 CN13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 32.85578 5.23992   0   0   0   0 1.721568   0 1.182732    0    0    0    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    CN14 CN15 CN16 CN17 CN18 CN19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:    0    0    0    0    0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $fCNA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> A &lt;<span style="color: #55FFFF;">fCNA</span>&gt; object</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     case: <span style="color: #00BBBB;">1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     gene: <span style="color: #00BB00;">14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     fCNA: <span style="color: #00BB00;">14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      |__ <span style="color: #00BB00;">8</span> (<span style="color: #00BBBB;">0</span>) noncircular</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      |__ <span style="color: #00BB00;">0</span> (<span style="color: #00BBBB;">0</span>) possibly_circular</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      |__ <span style="color: #00BB00;">6</span> (<span style="color: #00BBBB;">1</span>) circular</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ======================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

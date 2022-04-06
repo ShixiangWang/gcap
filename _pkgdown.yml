@@ -19,6 +19,12 @@ reference:
     desc: Package builtin class
     contents:
     - fCNA
+  - title: Class based Analysis and Visualization
+    desc: Quickly analyze and visualze fCNA, some useful functions can be found at https://shixiangwang.github.io/sigminer/reference/index.html#signature-analysis-and-corresponding-visualization
+    contents:
+    - gcap.plotProfile
+    - gcap.plotKMcurve
+    - gcap.plotForest
   - title: Analysis Wrapper
     desc: Core build block for constructing pipeline
     contents:

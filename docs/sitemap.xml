@@ -46,6 +46,15 @@
     <loc>/reference/gcap.extractFeatures.html</loc>
   </url>
   <url>
+    <loc>/reference/gcap.plotForest.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gcap.plotKMcurve.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gcap.plotProfile.html</loc>
+  </url>
+  <url>
     <loc>/reference/gcap.runASCAT.html</loc>
   </url>
   <url>

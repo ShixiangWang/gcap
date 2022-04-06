@@ -30,7 +30,7 @@ fCNA information. Examples please see gcap.ASCNworkflow()."><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -140,13 +140,14 @@ a function will be called to update the sample summary.</p></dd>
 <li><p><a href="#method-getGeneSummary"><code>fCNA$getGeneSummary()</code></a></p></li>
 <li><p><a href="#method-getCytobandSummary"><code>fCNA$getCytobandSummary()</code></a></p></li>
 <li><p><a href="#method-saveToFiles"><code>fCNA$saveToFiles()</code></a></p></li>
+<li><p><a href="#method-convertGeneID"><code>fCNA$convertGeneID()</code></a></p></li>
 <li><p><a href="#method-print"><code>fCNA$print()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Create a <code>fCNA</code> object.
 Typically, you can obtain this object from <code><a href="gcap.workflow.html">gcap.workflow()</a></code> or <code><a href="gcap.ASCNworkflow.html">gcap.ASCNworkflow()</a></code>.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/fCNA.html">fCNA</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">fcna</span>, <span class="va">pdata</span>, min_n <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/fCNA.html">fCNA</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">fcna</span>, pdata <span class="op">=</span> <span class="va">fcna</span><span class="op">[</span>, <span class="st">"sample"</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>, min_n <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -156,7 +157,7 @@ Typically, you can obtain this object from <code><a href="gcap.workflow.html">gc
 
 
 <dt><code>pdata</code></dt>
-<dd><p>a <code>data.frame</code> storing phenotype or sample-level related data.</p></dd>
+<dd><p>a <code>data.frame</code> storing phenotype or sample-level related data. (Optional)</p></dd>
 
 
 <dt><code>min_n</code></dt>
@@ -224,15 +225,38 @@ genes would be labelled as "circular". <strong>This only affect <code>sample_sum
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-print"></a><div class="section">
-<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
-<p>print the fCNA object</p><div class="section">
+</div><p></p><hr><a id="method-convertGeneID"></a><div class="section">
+<h3 id="method-convertgeneid-">Method <code>convertGeneID()</code><a class="anchor" aria-label="anchor" href="#method-convertgeneid-"></a></h3>
+<p>Convert Gene IDs between Ensembl and Hugo Symbol System</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">convertGeneID</span><span class="op">(</span>
+  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ensembl"</span>, <span class="st">"symbol"</span><span class="op">)</span>,
+  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span>, <span class="st">"mm10"</span>, <span class="st">"mm9"</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>type</code></dt>
+<dd><p>type of input IDs, could be 'ensembl' or 'symbol'.</p></dd>
+
+
+<dt><code>genome_build</code></dt>
+<dd><p>reference genome build.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div><p></p><hr><a id="method-print"></a><div class="section">
+<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+<p>print the fCNA object</p><div class="section">
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>unused.</p></dd>
 
