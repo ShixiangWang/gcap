@@ -46,11 +46,11 @@ fCNA <- R6::R6Class(
     #' @description Create a `fCNA` object.
     #' Typically, you can obtain this object from [gcap.workflow()] or [gcap.ASCNworkflow()].
     #' @param fcna a `data.frame` storing focal copy number amplicon list.
-    #' @param pdata a `data.frame` storing phenotype or sample-level related data.
+    #' @param pdata a `data.frame` storing phenotype or sample-level related data. (Optional)
     #' @param min_n a minimal cytoband number (default is `1`) to determine
     #' sample class. e.g., sample with at least 1 cytoband harboring circular
     #' genes would be labelled as "circular". **This only affect `sample_summary` field**.
-    initialize = function(fcna, pdata, min_n = 1L) {
+    initialize = function(fcna, pdata = fcna[, "sample", drop = FALSE], min_n = 1L) {
       stopifnot(
         is.data.frame(fcna), is.data.frame(pdata),
         all(c(
@@ -138,6 +138,32 @@ fCNA <- R6::R6Class(
 
       data.table::fwrite(self$data, file = fl_records)
       data.table::fwrite(self$sample_summary, file = fl_sample)
+    },
+    #' @description Convert Gene IDs between Ensembl and Hugo Symbol System
+    #' @param type type of input IDs, could be 'ensembl' or 'symbol'.
+    #' @param genome_build reference genome build.
+    convertGeneID = function(type = c("ensembl", "symbol"),
+                             genome_build = c("hg38", "hg19", "mm10", "mm9")) {
+      if (!require("IDConverter")) {
+        message("package 'IDConverter' is required to convert IDs")
+        return(NULL)
+      }
+      opts = getOption("IDConverter.datapath", default = system.file("extdata", package = "IDConverter"))
+      options(IDConverter.datapath = opts)
+
+      type = match.arg(type)
+      genome_build = match.arg(genome_build)
+      message("converting gene IDs, will update 'data' and 'gene_summary' fields")
+      self$data$gene_id = IDConverter::convert_hm_genes(
+        self$data$gene_id,
+        type = type,
+        genome_build = genome_build
+      )
+      self$gene_summary$gene_id = IDConverter::convert_hm_genes(
+        self$gene_summary$gene_id,
+        type = type,
+        genome_build = genome_build
+      )
     },
     #' @description print the fCNA object
     #' @param ... unused.

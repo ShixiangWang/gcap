@@ -1,3 +1,10 @@
+# gcap 0.10.0
+
+- Added `gcap.plotKMcurve()`.
+- Added `gcap.plotProfile()`.
+- Added method `convertGeneID()` to `fCNA` class.
+- Set a default value for `pdata` option in `fCNA$new()`.
+
 # gcap 0.9.0
 
 - Supported `gcap` as main command, and previous two commands as subcommands if `GetoptLong` version `>=1.1.0`.

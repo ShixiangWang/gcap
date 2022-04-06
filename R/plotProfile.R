@@ -1,0 +1,139 @@
+#' Draw Oncoprint for fCNA Profile Visualization
+#'
+#' See [oncoprint](https://jokergoo.github.io/ComplexHeatmap-reference/book/oncoprint.html)
+#' and [heatmap](https://jokergoo.github.io/ComplexHeatmap-reference/book/a-single-heatmap.html#size-of-the-heatmap)
+#' to modify the result plot in depth.
+#'
+#' @param fCNA a [fCNA] object.
+#' @param genes a list of genes. Must be subsets of `fCNA$data$gene_id`.
+#' @param samples a vector to subset samples.
+#' @param merge_circular if `TRUE`, merge 'possibly_circular' into 'circular' type.
+#' @param show_column_names see `?ComplexHeatmap::oncoPrint`.
+#' @param remove_empty_columns see `?ComplexHeatmap::oncoPrint`.
+#' @param remove_empty_rows see `?ComplexHeatmap::oncoPrint`.
+#' @param heatmap_legend_param see `?ComplexHeatmap::oncoPrint`.
+#' @param col see `?ComplexHeatmap::oncoPrint`.
+#' @param ... Other parameters passing to `ComplexHeatmap::oncoPrint`.
+#'
+#' @return a `Heatmap` object, you can go further modify it.
+#' @export
+#' @seealso [fCNA] for building object.
+#'
+#' @examples
+#' \donttest{
+#' if (require("ComplexHeatmap") && require("IDConverter")) {
+#'   data("ascn")
+#'   data <- ascn
+#'
+#'   # Create fake data
+#'   set.seed(1234)
+#'   data$sample <- sample(LETTERS[1:10], nrow(data), replace = TRUE)
+#'   rv <- gcap.ASCNworkflow(data, outdir = tempdir(), model = "XGB11")
+#'
+#'   gcap.plotProfile(rv, samples = c("B", "A", "C"))
+#'
+#'   rv$convertGeneID()
+#'   ht <- gcap.plotProfile(rv,
+#'     samples = c("B", "A", "C", "D", "F"),
+#'     genes = unique(rv$data$gene_id)[1:10],
+#'     top_annotation = ComplexHeatmap::HeatmapAnnotation(
+#'       cbar = ComplexHeatmap::anno_oncoprint_barplot(),
+#'       foo1 = c("g1", "g1", "g2", "g2", "g3"),
+#'       bar1 = ComplexHeatmap::anno_points(1:5)
+#'     )
+#'   )
+#'   ht
+#'   ComplexHeatmap::draw(ht, merge_legends = TRUE)
+#'
+#'   #----------------
+#'   # Plot KM curve
+#'   #----------------
+#'   surv_data <- data.frame(
+#'     sample = rv$sample_summary$sample,
+#'     time = 3000 * abs(rnorm(nrow(rv$sample_summary))),
+#'     status = sample(c(0, 1), nrow(rv$sample_summary), replace = TRUE)
+#'   )
+#'   surv_data
+#'   p <- gcap.plotKMcurve(rv, surv_data)
+#'   p
+#'
+#'   p2 <- gcap.plotKMcurve(rv, surv_data, genes = "MYC")
+#'   p2
+#' }
+#' }
+#' @testexamples
+#' expect_is(ht, "Heatmap")
+#' expect_is(p, "ggsurvplot")
+#' if (!is.null(p2)) {
+#'   expect_is(p2, "ggsurvplot")
+#' }
+gcap.plotProfile <- function(fCNA,
+                             genes = NULL,
+                             samples = NULL,
+                             merge_circular = FALSE,
+                             show_column_names = TRUE,
+                             remove_empty_columns = FALSE,
+                             remove_empty_rows = TRUE,
+                             heatmap_legend_param = list(title = "fCNA"),
+                             col = c(
+                               "noncircular" = "blue",
+                               "circular" = "red",
+                               "possibly_circular" = "magenta"
+                             ),
+                             ...) {
+  stopifnot(inherits(fCNA, "fCNA"))
+  if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
+    message("'ComplexHeatmap' package is required to plot.")
+    return(NULL)
+  }
+  if (nrow(fCNA$data) == 0) {
+    warning("No data to plot", immediate. = TRUE)
+    return(NULL)
+  }
+
+  data <- data.table::copy(fCNA$data)
+  if (merge_circular) {
+    data[, amplicon_type := data.table::fcase(
+      amplicon_type %in% c("circular", "possibly_circular"), "circular",
+      amplicon_type == "noncircular", "noncircular",
+      default = NA
+    )]
+    data <- data[!is.na(amplicon_type)]
+    data[, amplicon_type := factor(amplicon_type, c("noncircular", "circular"))]
+  }
+  data <- data.table::dcast(
+    data,
+    gene_id ~ sample,
+    value.var = "amplicon_type", fill = NA,
+    drop = FALSE
+  )
+
+  data <- data.frame(data[, -1], row.names = data[[1]])
+  if (!is.null(genes)) {
+    data <- data[genes, ]
+    if (nrow(data) == 0) {
+      warning("No gene left to plot", immediate. = TRUE)
+      return(NULL)
+    }
+  }
+  if (!is.null(samples)) {
+    data <- data[, samples, drop = FALSE]
+  }
+
+  alter_fun <- list(
+    background = ComplexHeatmap::alter_graphic("rect", fill = "#CCCCCC"),
+    circular = ComplexHeatmap::alter_graphic("rect", fill = col["circular"]),
+    noncircular = ComplexHeatmap::alter_graphic("rect", fill = col["noncircular"]),
+    possibly_circular = ComplexHeatmap::alter_graphic("rect", fill = col["possibly_circular"])
+  )
+
+  ht <- ComplexHeatmap::oncoPrint(data,
+    alter_fun = alter_fun, col = col,
+    heatmap_legend_param = heatmap_legend_param,
+    remove_empty_columns = remove_empty_columns,
+    remove_empty_rows = remove_empty_rows,
+    show_column_names = show_column_names,
+    ...
+  )
+  return(ht)
+}

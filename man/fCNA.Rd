@@ -63,6 +63,7 @@ a function will be called to update the sample summary.}
 \item \href{#method-getGeneSummary}{\code{fCNA$getGeneSummary()}}
 \item \href{#method-getCytobandSummary}{\code{fCNA$getCytobandSummary()}}
 \item \href{#method-saveToFiles}{\code{fCNA$saveToFiles()}}
+\item \href{#method-convertGeneID}{\code{fCNA$convertGeneID()}}
 \item \href{#method-print}{\code{fCNA$print()}}
 }
 }
@@ -73,7 +74,7 @@ a function will be called to update the sample summary.}
 Create a \code{fCNA} object.
 Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.workflow()}} or \code{\link[=gcap.ASCNworkflow]{gcap.ASCNworkflow()}}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(fcna, pdata, min_n = 1L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(fcna, pdata = fcna[, "sample", drop = FALSE], min_n = 1L)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -81,7 +82,7 @@ Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.work
 \describe{
 \item{\code{fcna}}{a \code{data.frame} storing focal copy number amplicon list.}
 
-\item{\code{pdata}}{a \code{data.frame} storing phenotype or sample-level related data.}
+\item{\code{pdata}}{a \code{data.frame} storing phenotype or sample-level related data. (Optional)}
 
 \item{\code{min_n}}{a minimal cytoband number (default is \code{1}) to determine
 sample class. e.g., sample with at least 1 cytoband harboring circular
@@ -144,6 +145,28 @@ Save the key data to local files
 \item{\code{dirpath}}{directory path storing output files.}
 
 \item{\code{fileprefix}}{file prefix. Two result files shall be generated.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-convertGeneID"></a>}}
+\if{latex}{\out{\hypertarget{method-convertGeneID}{}}}
+\subsection{Method \code{convertGeneID()}}{
+Convert Gene IDs between Ensembl and Hugo Symbol System
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$convertGeneID(
+  type = c("ensembl", "symbol"),
+  genome_build = c("hg38", "hg19", "mm10", "mm9")
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{type}}{type of input IDs, could be 'ensembl' or 'symbol'.}
+
+\item{\code{genome_build}}{reference genome build.}
 }
 \if{html}{\out{</div>}}
 }
