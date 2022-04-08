@@ -23,12 +23,17 @@
 #' @export
 gcap.plotForest <- function(fCNA,
                             response_data,
-                            f = c("coxph", "binomial", "gaussian", "Gamma", "inverse.gaussian", "poisson",
-                                  "quasi", "quasibinomial", "quasipoisson"),
+                            f = c(
+                              "coxph", "binomial", "gaussian", "Gamma", "inverse.gaussian", "poisson",
+                              "quasi", "quasibinomial", "quasipoisson"
+                            ),
                             x = "class",
                             covars = NULL,
-                            y = if (is.data.frame(response_data))
-                              colnames(response_data)[-1] else response_data,
+                            y = if (is.data.frame(response_data)) {
+                              colnames(response_data)[-1]
+                            } else {
+                              response_data
+                            },
                             merge_circular = TRUE,
                             x_is_gene = FALSE,
                             gene_focus = c("fCNA", "circular"),
@@ -38,6 +43,7 @@ gcap.plotForest <- function(fCNA,
                             ref_line = NULL,
                             xlim = NULL,
                             ...) {
+  stopifnot(inherits(fCNA, "fCNA"))
   if (!requireNamespace("regport", quietly = TRUE)) {
     message("'regport' package is required to plot.")
     return(NULL)
@@ -75,60 +81,63 @@ gcap.plotForest <- function(fCNA,
     } else {
       types <- "circular"
     }
-    labels = c("-", "+")
+    labels <- c("-", "+")
 
     if (length(x) == 1) {
       amp_samples <- unique(fCNA$data[gene_id %in% x & amplicon_type %in% types]$sample)
-      data = create_label_dt(amp_samples, all_samples, labels)
+      data <- create_label_dt(amp_samples, all_samples, labels)
     } else {
-      dt_list = list()
-      xc = x
+      dt_list <- list()
+      xc <- x
       for (gene in xc) {
         message("Classifying based on gene ", gene)
         amp_samples <- unique(fCNA$data[gene_id %in% gene & amplicon_type %in% types]$sample)
-        dt = create_label_dt(amp_samples, all_samples, labels)
+        dt <- create_label_dt(amp_samples, all_samples, labels)
         if (is.null(dt)) {
           message("No proper data for gene ", gene, " skipping.")
-          x = setdiff(x, gene)
+          x <- setdiff(x, gene)
           next()
         }
-        colnames(dt)[2] = gene
-        dt_list[[gene]] = dt
+        colnames(dt)[2] <- gene
+        dt_list[[gene]] <- dt
       }
-      data = mergeDTs(dt_list, by = "sample")
+      data <- mergeDTs(dt_list, by = "sample")
     }
   }
 
-  response_data = data.table::as.data.table(response_data)
+  response_data <- data.table::as.data.table(response_data)
   if (!is.null(ending_time)) {
     # Assume the 2nd is time and 3rd is status
-    response_data[[2]] = ifelse(response_data[[2]] >= ending_time, ending_time, response_data[[2]])
-    response_data[[3]] = ifelse(response_data[[2]] >= ending_time, 0, response_data[[3]])
+    response_data[[2]] <- ifelse(response_data[[2]] >= ending_time, ending_time, response_data[[2]])
+    response_data[[3]] <- ifelse(response_data[[2]] >= ending_time, 0, response_data[[3]])
   }
 
   data <- merge(data, response_data,
-                by = "sample",
-                all.x = TRUE)
+    by = "sample",
+    all.x = TRUE
+  )
 
-  ml = regport::REGModelList$new(data, y = y, x = x, covars = covars)
+  ml <- regport::REGModelList$new(data, y = y, x = x, covars = covars)
   ml$build(f, exp = exp, parallel = parallel)
   ml$print()
 
-  p = tryCatch(
-      ml$plot_forest(ref_line = ref_line,
-                     xlim = xlim,
-                     ...),
-      error = function(e) {
-        message("\nPlotting failed. Check error message and model result for details")
-        message(e$message)
-        NULL
-      }
+  p <- tryCatch(
+    ml$plot_forest(
+      ref_line = ref_line,
+      xlim = xlim,
+      ...
+    ),
+    error = function(e) {
+      message("\nPlotting failed. Check error message and model result for details")
+      message(e$message)
+      NULL
+    }
   )
   if (!is.null(p)) print(p)
   invisible(list(model = ml, plot = p))
 }
 
-create_label_dt = function(amp_samples, all_samples, labels) {
+create_label_dt <- function(amp_samples, all_samples, labels) {
   if (length(amp_samples) == 0L) {
     warning("No sample amplified based on input genes and options", immediate. = TRUE)
     return(NULL)

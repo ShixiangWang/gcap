@@ -59,6 +59,7 @@ a function will be called to update the sample summary.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{fCNA$new()}}
+\item \href{#method-subset}{\code{fCNA$subset()}}
 \item \href{#method-getSampleSummary}{\code{fCNA$getSampleSummary()}}
 \item \href{#method-getGeneSummary}{\code{fCNA$getGeneSummary()}}
 \item \href{#method-getCytobandSummary}{\code{fCNA$getCytobandSummary()}}
@@ -89,6 +90,29 @@ sample class. e.g., sample with at least 1 cytoband harboring circular
 genes would be labelled as "circular". \strong{This only affect \code{sample_summary} field}.}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-subset"></a>}}
+\if{latex}{\out{\hypertarget{method-subset}{}}}
+\subsection{Method \code{subset()}}{
+Return a subset \code{fCNA} object
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$subset(..., on = c("data", "sample_summary"))}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{subset expressions on \code{fCNA$data} or \code{fCNA$sample_summary}.}
+
+\item{\code{on}}{if it is "data", subset operations are on data field of \code{fCNA} object,
+same for "sample_summary".}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+a \code{fCNA}
 }
 }
 \if{html}{\out{<hr>}}

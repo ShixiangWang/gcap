@@ -85,4 +85,13 @@ print(rv$data)
 print(rv$sample_summary)
 print(rv$gene_summary)
 print(rv$cytoband_summary)
+
+# Create a subset fCNA
+rv_subset <- rv$subset(total_cn > 10)
+nrow(rv$data)
+nrow(rv_subset$data)
+
+rv_subset2 <- rv$subset(sample == "TCGA-02-2485-01")
+nrow(rv_subset2$data)
+unique(rv_subset2$data$sample)
 }

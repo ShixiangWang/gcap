@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0</span>
       </span>
     </div>
 
@@ -121,34 +121,10 @@ keep only the solution with maximum likelihood.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2021</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">gcap.extractComponents</span><span class="op">(</span><span class="va">x</span>, max_comp <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 : * * * * *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 : * * * * *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 : * * * * *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 : * * * * *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 : * * * * *</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Select 2 according to BIC.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Finally, select 2 after passing threshold 0.4.</span>
-<span class="r-in"><span class="va">y</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stepFlexmix_v2(dat ~ 1, model = flexmix::FLXMCnorm1(), control = control, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     k = 2, nrep = nrep)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Cluster sizes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1  2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5 80 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> convergence after 82 iterations</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $params</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        mean       sd  n</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 9.480160 1.022848  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 1.516025 1.727538 80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2021</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">gcap.extractComponents</span><span class="op">(</span><span class="va">x</span>, max_comp <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
+<span class="va">y</span>
 </code></pre></div>
     </div>
   </div>

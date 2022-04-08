@@ -11,7 +11,8 @@ gcap.plotForest(
     "quasi", "quasibinomial", "quasipoisson"),
   x = "class",
   covars = NULL,
-  y = if (is.data.frame(response_data)) colnames(response_data)[-1] else response_data,
+  y = if (is.data.frame(response_data)) {     colnames(response_data)[-1] } else {    
+    response_data },
   merge_circular = TRUE,
   x_is_gene = FALSE,
   gene_focus = c("fCNA", "circular"),

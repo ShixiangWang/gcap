@@ -13,7 +13,7 @@ gcap.plotProfile(
   remove_empty_columns = FALSE,
   remove_empty_rows = TRUE,
   heatmap_legend_param = list(title = "fCNA"),
-  col = c(noncircular = "blue", circular = "red", possibly_circular = "magenta"),
+  col = c(noncircular = "#0066CC", circular = "#CC0033", possibly_circular = "#FFCCCC"),
   ...
 )
 }
@@ -100,6 +100,19 @@ if (require("ComplexHeatmap") && require("IDConverter")) {
     x = c("TP53", "MYC", "ABC", "EGFR", "GSX2"), x_is_gene = TRUE,
     ref_line = 1, xlim = c(0, 10)
   )
+
+  # -----------------
+  # Plot distribution
+  # -----------------
+  gcap.plotDistribution(rv)
+  p5 <- gcap.plotDistribution(rv,
+    x = c("MYC", "EGFR", "CDK4", "AKT3"),
+    width = 0.5, x_size = 5, fill = FALSE
+  )
+  p5
+  rv$sample_summary[, ploidy_class := ifelse(ploidy > 2.5, "2+", "2")]
+  p6 <- gcap.plotDistribution(rv, x = "ploidy_class", by = "sample")
+  p6
 }
 }
 }

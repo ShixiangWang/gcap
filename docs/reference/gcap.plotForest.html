@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0</span>
       </span>
     </div>
 
@@ -82,7 +82,8 @@
     <span class="st">"quasi"</span>, <span class="st">"quasibinomial"</span>, <span class="st">"quasipoisson"</span><span class="op">)</span>,
   x <span class="op">=</span> <span class="st">"class"</span>,
   covars <span class="op">=</span> <span class="cn">NULL</span>,
-  y <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">is.data.frame</a></span><span class="op">(</span><span class="va">response_data</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">response_data</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="kw">else</span> <span class="va">response_data</span>,
+  y <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">is.data.frame</a></span><span class="op">(</span><span class="va">response_data</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>     <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">response_data</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>    
+    <span class="va">response_data</span> <span class="op">}</span>,
   merge_circular <span class="op">=</span> <span class="cn">TRUE</span>,
   x_is_gene <span class="op">=</span> <span class="cn">FALSE</span>,
   gene_focus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fCNA"</span>, <span class="st">"circular"</span><span class="op">)</span>,

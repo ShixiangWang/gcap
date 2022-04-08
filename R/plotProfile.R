@@ -73,6 +73,19 @@
 #'     x = c("TP53", "MYC", "ABC", "EGFR", "GSX2"), x_is_gene = TRUE,
 #'     ref_line = 1, xlim = c(0, 10)
 #'   )
+#'
+#'   # -----------------
+#'   # Plot distribution
+#'   # -----------------
+#'   gcap.plotDistribution(rv)
+#'   p5 <- gcap.plotDistribution(rv,
+#'     x = c("MYC", "EGFR", "CDK4", "AKT3"),
+#'     width = 0.5, x_size = 5, fill = FALSE
+#'   )
+#'   p5
+#'   rv$sample_summary[, ploidy_class := ifelse(ploidy > 2.5, "2+", "2")]
+#'   p6 <- gcap.plotDistribution(rv, x = "ploidy_class", by = "sample")
+#'   p6
 #' }
 #' }
 #' @testexamples
@@ -81,6 +94,10 @@
 #' if (!is.null(p2)) {
 #'   expect_is(p2, "ggsurvplot")
 #' }
+#' expect_is(p3, "list")
+#' expect_is(p4, "list")
+#' expect_is(p5, "ggplot")
+#' expect_is(p6, "ggplot")
 gcap.plotProfile <- function(fCNA,
                              genes = NULL,
                              samples = NULL,
@@ -90,9 +107,9 @@ gcap.plotProfile <- function(fCNA,
                              remove_empty_rows = TRUE,
                              heatmap_legend_param = list(title = "fCNA"),
                              col = c(
-                               "noncircular" = "blue",
-                               "circular" = "red",
-                               "possibly_circular" = "magenta"
+                               "noncircular" = "#0066CC",
+                               "circular" = "#CC0033",
+                               "possibly_circular" = "#FFCCCC"
                              ),
                              ...) {
   stopifnot(inherits(fCNA, "fCNA"))
@@ -119,7 +136,7 @@ gcap.plotProfile <- function(fCNA,
     data,
     gene_id ~ sample,
     value.var = "amplicon_type", fill = NA,
-    drop = FALSE
+    drop = FALSE, fun.aggregate = function(x) x[1]
   )
 
   data <- data.frame(data[, -1], row.names = data[[1]])

@@ -87,6 +87,19 @@ fCNA <- R6::R6Class(
       self$cytoband_summary <- self$getCytobandSummary()
       message("done")
     },
+    #' @description Return a subset `fCNA` object
+    #' @param ... subset expressions on `fCNA$data` or `fCNA$sample_summary`.
+    #' @param on if it is "data", subset operations are on data field of `fCNA` object,
+    #' same for "sample_summary".
+    #' @return a `fCNA`
+    subset = function(..., on = c("data", "sample_summary")) {
+      on <- match.arg(on)
+      data <- if (on == "data") self$data else self$sample_summary
+      subs <- unique(subset(data, ...)$sample)
+      fcna <- if (on == "data") subset(data, ...) else self$data[sample %in% subs]
+      pdata <- self$sample_summary[sample %in% subs]
+      fCNA$new(fcna, pdata, min_n = private$n)
+    },
     #' @description Get sample summary of fCNA
     #' @return a `data.table`
     getSampleSummary = function() {
@@ -148,18 +161,18 @@ fCNA <- R6::R6Class(
         message("package 'IDConverter' is required to convert IDs")
         return(NULL)
       }
-      opts = getOption("IDConverter.datapath", default = system.file("extdata", package = "IDConverter"))
+      opts <- getOption("IDConverter.datapath", default = system.file("extdata", package = "IDConverter"))
       options(IDConverter.datapath = opts)
 
-      type = match.arg(type)
-      genome_build = match.arg(genome_build)
+      type <- match.arg(type)
+      genome_build <- match.arg(genome_build)
       message("converting gene IDs, will update 'data' and 'gene_summary' fields")
-      self$data$gene_id = IDConverter::convert_hm_genes(
+      self$data$gene_id <- IDConverter::convert_hm_genes(
         self$data$gene_id,
         type = type,
         genome_build = genome_build
       )
-      self$gene_summary$gene_id = IDConverter::convert_hm_genes(
+      self$gene_summary$gene_id <- IDConverter::convert_hm_genes(
         self$gene_summary$gene_id,
         type = type,
         genome_build = genome_build

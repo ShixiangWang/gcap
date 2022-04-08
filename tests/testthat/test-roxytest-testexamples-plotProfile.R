@@ -2,7 +2,7 @@
 
 # File R/plotProfile.R: @testexamples
 
-test_that("Function gcap.plotProfile() @ L84", {
+test_that("Function gcap.plotProfile() @ L101", {
   
   
   if (require("ComplexHeatmap") && require("IDConverter")) {
@@ -57,6 +57,19 @@ test_that("Function gcap.plotProfile() @ L84", {
       x = c("TP53", "MYC", "ABC", "EGFR", "GSX2"), x_is_gene = TRUE,
       ref_line = 1, xlim = c(0, 10)
     )
+  
+    # -----------------
+    # Plot distribution
+    # -----------------
+    gcap.plotDistribution(rv)
+    p5 <- gcap.plotDistribution(rv,
+      x = c("MYC", "EGFR", "CDK4", "AKT3"),
+      width = 0.5, x_size = 5, fill = FALSE
+    )
+    p5
+    rv$sample_summary[, ploidy_class := ifelse(ploidy > 2.5, "2+", "2")]
+    p6 <- gcap.plotDistribution(rv, x = "ploidy_class", by = "sample")
+    p6
   }
   
   expect_is(ht, "Heatmap")
@@ -64,5 +77,9 @@ test_that("Function gcap.plotProfile() @ L84", {
   if (!is.null(p2)) {
     expect_is(p2, "ggsurvplot")
   }
+  expect_is(p3, "list")
+  expect_is(p4, "list")
+  expect_is(p5, "ggplot")
+  expect_is(p6, "ggplot")
 })
 

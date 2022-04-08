@@ -50,12 +50,23 @@
 #' print(rv$sample_summary)
 #' print(rv$gene_summary)
 #' print(rv$cytoband_summary)
+#'
+#' # Create a subset fCNA
+#' rv_subset <- rv$subset(total_cn > 10)
+#' nrow(rv$data)
+#' nrow(rv_subset$data)
+#'
+#' rv_subset2 <- rv$subset(sample == "TCGA-02-2485-01")
+#' nrow(rv_subset2$data)
+#' unique(rv_subset2$data$sample)
 #' @testexamples
 #' expect_equal(rv, rv2)
 #' expect_equal(length(rv3), 2L)
 #' expect_equal(length(rv4), 2L)
 #' expect_equal(length(rv5), 2L)
 #' expect_error(gcap.ASCNworkflow(data, outdir = tempdir()))
+#' expect_is(rv_subset, "fCNA")
+#' expect_is(rv_subset2, "fCNA")
 gcap.ASCNworkflow <- function(data,
                               genome_build = c("hg38", "hg19"),
                               model = "XGB32",

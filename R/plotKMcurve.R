@@ -25,9 +25,10 @@ gcap.plotKMcurve <- function(fCNA,
                              merge_circular = TRUE,
                              genes = NULL,
                              gene_focus = c("fCNA", "circular"),
-                             palette = c("grey", "blue", "red"),
+                             palette = c("grey", "#0066CC", "#CC0033"),
                              ending_time = NULL,
                              ...) {
+  stopifnot(inherits(fCNA, "fCNA"))
   if (!requireNamespace("survminer", quietly = TRUE)) {
     message("'survminer' package is required to plot.")
     return(NULL)
@@ -93,8 +94,8 @@ gcap.plotKMcurve <- function(fCNA,
   fit <- survminer::surv_fit(survival::Surv(time, status) ~ class, data = data)
   print(survminer::surv_pvalue(fit = fit))
 
-  cls_lvls <- levels(data$class)
-  if (identical(palette, c("grey", "blue", "red"))) {
+  cls_lvls <- sub("class=", "", names(fit$strata))
+  if (identical(palette, c("grey", "#0066CC", "#CC0033"))) {
     if (length(cls_lvls) == 2) palette <- palette[2:3]
   }
 

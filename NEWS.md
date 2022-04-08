@@ -1,3 +1,8 @@
+# gcap 0.11.0
+
+- Added `fCNA$subset()` method.
+- Added `gcap.plotDistribution()` function.
+
 # gcap 0.10.0
 
 - Added `gcap.plotForest()`.

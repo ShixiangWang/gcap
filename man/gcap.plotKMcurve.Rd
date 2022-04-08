@@ -10,7 +10,7 @@ gcap.plotKMcurve(
   merge_circular = TRUE,
   genes = NULL,
   gene_focus = c("fCNA", "circular"),
-  palette = c("grey", "blue", "red"),
+  palette = c("grey", "#0066CC", "#CC0033"),
   ending_time = NULL,
   ...
 )
