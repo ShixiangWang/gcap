@@ -5,20 +5,25 @@
 #' and [gcap.ASCNworkflow()].
 #' @importFrom GetoptLong qq
 #' @importFrom utils packageVersion
-#'
+#' @param target the target path to deploy the CLI.
 #' @return Nothing.
 #' @export
-deploy <- function() {
+deploy <- function(target = "/usr/local/bin") {
+  stopifnot(length(target) == 1L, dir.exists(target))
+  if (file.access(target, 2) != 0) {
+    stop("Cannot link to a target path without write permission")
+  }
+
   if (.Platform$OS.type != "unix") stop("This is designed for Unix-like system.")
 
   dir <- system.file(package = "gcap", mustWork = TRUE)
   if (packageVersion("GetoptLong") >= "1.1.0") {
-    cmd <- qq("ln -sf @{dir}/gcap.R  /usr/local/bin/gcap")
+    cmd <- qq("ln -sf @{dir}/gcap.R @{target}/gcap")
   } else {
     cmd <- NULL
   }
-  cmd1 <- qq("ln -sf @{dir}/gcap-bam.R  /usr/local/bin/gcap-bam.R")
-  cmd2 <- qq("ln -sf @{dir}/gcap-ascn.R  /usr/local/bin/gcap-ascn.R")
+  cmd1 <- qq("ln -sf @{dir}/gcap-bam.R  @{target}/gcap-bam.R")
+  cmd2 <- qq("ln -sf @{dir}/gcap-ascn.R  @{target}/gcap-ascn.R")
 
   message("Linking gcap-bam.R command")
   system(cmd1)

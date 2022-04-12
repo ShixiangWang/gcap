@@ -4,7 +4,10 @@
 \alias{deploy}
 \title{Deploy Command Line Interface to System Local Path}
 \usage{
-deploy()
+deploy(target = "/usr/local/bin")
+}
+\arguments{
+\item{target}{the target path to deploy the CLI.}
 }
 \value{
 Nothing.
