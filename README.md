@@ -114,6 +114,16 @@ In our practice, when we want to process multiple cases, set `nthread = 22` and
 directly let **gcap** handle multiple cases (instead of writing a loop yourself) is
 good enough.
 
+A recommended setting for Slurm is given as:
+
+```bash
+#!/bin/bash
+#SBATCH -N 1
+#SBATCH -o output-%J.o
+#SBATCH -n 22
+#SBATCH --mem=102400
+```
+
 ### Pipeline (Allele specific or absolute copy number data)
 
 Please refer to [`?gcap.ASCNworkflow()`](https://shixiangwang.github.io/gcap/reference/gcap.ASCNworkflow.html).
