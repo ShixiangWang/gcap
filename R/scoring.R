@@ -5,9 +5,10 @@
 #' @param min_n a minimal cytoband number (default is `1`) to determine
 #' sample class. e.g., sample with at least 1 cytoband harboring circular
 #' genes would be labelled as "circular".
-#' @param tightness a value to control the tightness to be a circular amplicon.
+#' @param tightness a coefficient to times to TCGA blood CN to set a more strict threshold
+#' as a circular amplicon.
 #' If the value is larger, it is more likely a fCNA assigned to `noncircular`
-#' instead of `circular`.
+#' instead of `circular`. **When it is `NA`, we don't use CN data from TCGA blood.**
 #' @param gap_cn a gap copy number value, default is `4L` refer to Kim 2020 Nat.Gen.
 #' A gene with copy number above `ploidy + gap_cn` would be treated as amplicon.
 #' Smaller, more amplicons.
@@ -104,6 +105,10 @@ gcap.runScoring <- function(data,
 
   flag_amp <- data$total_cn >= data$background_cn + max(gap_cn, 4) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
   flag_amp2 <- data$total_cn >= data$background_cn2 + gap_cn
+  if (is.na(tightness)) {
+    # In such case, remove limit from blood CN
+    flag_amp <- flag_amp2
+  }
   flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, 0.75, 1), include.lowest = TRUE))
   # Classify amplicon
   data$amplicon_type <- data.table::fcase(

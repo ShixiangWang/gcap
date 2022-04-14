@@ -63,9 +63,10 @@ one of 'hg38', 'hg19'.}
 \item{model}{model name ("XGB11", "XGB32", "XGB56") or a custom model
 from input. 'toy' can be used for test.}
 
-\item{tightness}{a value to control the tightness to be a circular amplicon.
+\item{tightness}{a coefficient to times to TCGA blood CN to set a more strict threshold
+as a circular amplicon.
 If the value is larger, it is more likely a fCNA assigned to \code{noncircular}
-instead of \code{circular}.}
+instead of \code{circular}. \strong{When it is \code{NA}, we don't use CN data from TCGA blood.}}
 
 \item{gap_cn}{a gap copy number value, default is \code{4L} refer to Kim 2020 Nat.Gen.
 A gene with copy number above \code{ploidy + gap_cn} would be treated as amplicon.

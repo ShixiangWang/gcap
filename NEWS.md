@@ -1,3 +1,8 @@
+# gcap 0.11.1
+
+- Supported a `NA` passing as tightness to remove the use of TCGA blood summary data
+as a more strict threshold for circular amplicon.
+
 # gcap 0.11.0
 
 - Added `fCNA$subset()` method.
