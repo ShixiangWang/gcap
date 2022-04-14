@@ -108,6 +108,7 @@ gcap.runScoring <- function(data,
   if (is.na(tightness)) {
     # In such case, remove limit from blood CN
     flag_amp <- flag_amp2
+    data$background_cn <- data$background_cn2
   }
   flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, 0.75, 1), include.lowest = TRUE))
   # Classify amplicon
