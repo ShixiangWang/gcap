@@ -9,7 +9,8 @@ gcap.runScoring(
   genome_build = "hg38",
   min_n = 1L,
   tightness = 1L,
-  gap_cn = 4L
+  gap_cn = 4L,
+  circ_prob = 0.95
 )
 }
 \arguments{
@@ -22,14 +23,14 @@ one of 'hg38', 'hg19'.}
 sample class. e.g., sample with at least 1 cytoband harboring circular
 genes would be labelled as "circular".}
 
-\item{tightness}{a coefficient to times to TCGA blood CN to set a more strict threshold
-as a circular amplicon.
-If the value is larger, it is more likely a fCNA assigned to \code{noncircular}
-instead of \code{circular}. \strong{When it is \code{NA}, we don't use CN data from TCGA blood.}}
+\item{tightness}{If the value is larger, it is more likely a fCNA assigned to \code{noncircular}
+instead of \code{circular}. Range from 1 to Inf.}
 
 \item{gap_cn}{a gap copy number value, default is \code{4L} refer to Kim 2020 Nat.Gen.
 A gene with copy number above \code{ploidy + gap_cn} would be treated as amplicon.
 Smaller, more amplicons.}
+
+\item{circ_prob}{a prob cutoff value to treat a gene as located at circular amplicon.}
 }
 \value{
 a list of \code{data.table}.

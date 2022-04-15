@@ -5,13 +5,12 @@
 #' @param min_n a minimal cytoband number (default is `1`) to determine
 #' sample class. e.g., sample with at least 1 cytoband harboring circular
 #' genes would be labelled as "circular".
-#' @param tightness a coefficient to times to TCGA blood CN to set a more strict threshold
-#' as a circular amplicon.
-#' If the value is larger, it is more likely a fCNA assigned to `noncircular`
-#' instead of `circular`. **When it is `NA`, we don't use CN data from TCGA blood.**
+#' @param tightness If the value is larger, it is more likely a fCNA assigned to `noncircular`
+#' instead of `circular`. Range from 1 to Inf.
 #' @param gap_cn a gap copy number value, default is `4L` refer to Kim 2020 Nat.Gen.
 #' A gene with copy number above `ploidy + gap_cn` would be treated as amplicon.
 #' Smaller, more amplicons.
+#' @param circ_prob a prob cutoff value to treat a gene as located at circular amplicon.
 #' @return a list of `data.table`.
 #' @export
 #'
@@ -27,9 +26,10 @@ gcap.runScoring <- function(data,
                             genome_build = "hg38",
                             min_n = 1L,
                             tightness = 1L,
-                            gap_cn = 4L) {
+                            gap_cn = 4L,
+                            circ_prob = 0.95) {
   on.exit(invisible(gc()))
-  stopifnot(is.data.frame(data))
+  stopifnot(is.data.frame(data), circ_prob > 0.15, circ_prob <= 1)
   lg <- set_logger()
 
   lg$info("checking input data type")
@@ -51,9 +51,6 @@ gcap.runScoring <- function(data,
   data <- data[!is.na(data$prob)]
 
   lg$info("joining extra annotation data")
-  blood_cn <- readRDS(system.file("extdata", "blood_gene_cn.rds", package = "gcap"))
-  colnames(blood_cn)[2:3] <- c("blood_cn_top5", "blood_cn_top5_sd")
-
   cytobands <- as.data.table(
     sigminer::get_genome_annotation("cytobands", genome_build = genome_build)
   )[chrom %in% paste0("chr", 1:22)]
@@ -70,17 +67,6 @@ gcap.runScoring <- function(data,
   gene_cytobands <- gene_cytobands[, .SD[which.max(intersect_ratio)], by = .(gene_id)][order(chr, i.start)]
   gene_cytobands <- gene_cytobands[, .(gene_id, band = paste(chr, band, sep = ":"))]
 
-  all_ids <- unique(data$gene_id)
-  df_ids <- setdiff(all_ids, blood_cn$gene_id)
-  if (length(df_ids) > 0) {
-    blood_cn <- rbind(blood_cn, data.table::data.table(
-      gene_id = df_ids,
-      blood_cn_top5 = blood_cn$blood_cn_top5[1],
-      blood_cn_top5_sd = blood_cn$blood_cn_top5_sd[1]
-    ))
-  } # Fill with smallest value
-  data <- merge(data, blood_cn, by = "gene_id", all.x = TRUE)
-
   if ("band" %in% colnames(data)) data$band <- NULL
   data <- merge(data, gene_cytobands, by = "gene_id", all.x = TRUE)
 
@@ -90,27 +76,22 @@ gcap.runScoring <- function(data,
   ] # Currently, median is not used
   data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
 
-  # (background_cn) Mean + SD for large threshold (circular), smaller is looser
-  # (background_cn2) Ploidy for small threshold (noncircular)
-  data$background_cn <- pmax(data$blood_cn_top5 + tightness * data$blood_cn_top5_sd,
-    data$ploidy,
-    na.rm = TRUE
-  ) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
+  # (background_cn) large threshold (circular)
+  # (background_cn2) small threshold (noncircular)
+  data$background_cn <- pmax(pmax(data$ploidy * tightness, 2, na.rm = TRUE),
+                             data$ploidy, na.rm = TRUE) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
   data$background_cn <- ifelse(is.na(data$background_cn), 2, data$background_cn)
   data$background_cn2 <- data$ploidy * data$ploidy / 2
   data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)
 
-  data$blood_cn_top5 <- NULL
-  data$blood_cn_top5_sd <- NULL
-
-  flag_amp <- data$total_cn >= data$background_cn + max(gap_cn, 4) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
+  flag_amp <- data$total_cn >= data$background_cn + gap_cn * pmax(data$ploidy, 2, na.rm = TRUE) / 2
   flag_amp2 <- data$total_cn >= data$background_cn2 + gap_cn
   if (is.na(tightness)) {
     # In such case, remove limit from blood CN
     flag_amp <- flag_amp2
     data$background_cn <- data$background_cn2
   }
-  flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, 0.75, 1), include.lowest = TRUE))
+  flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, circ_prob, 1), include.lowest = TRUE))
   # Classify amplicon
   data$amplicon_type <- data.table::fcase(
     flag_amp & flag_circle == 3, "circular",
