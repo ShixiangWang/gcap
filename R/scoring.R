@@ -78,19 +78,14 @@ gcap.runScoring <- function(data,
 
   # (background_cn) large threshold (circular)
   # (background_cn2) small threshold (noncircular)
-  data$background_cn <- pmax(pmax(data$ploidy * tightness, 2, na.rm = TRUE),
-                             data$ploidy, na.rm = TRUE) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
+  data$background_cn <- data$ploidy * max(tightness, 1, na.rm = TRUE)
   data$background_cn <- ifelse(is.na(data$background_cn), 2, data$background_cn)
-  data$background_cn2 <- data$ploidy * data$ploidy / 2
+  data$background_cn2 <- data$ploidy
   data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)
 
   flag_amp <- data$total_cn >= data$background_cn + gap_cn * pmax(data$ploidy, 2, na.rm = TRUE) / 2
   flag_amp2 <- data$total_cn >= data$background_cn2 + gap_cn
-  if (is.na(tightness)) {
-    # In such case, remove limit from blood CN
-    flag_amp <- flag_amp2
-    data$background_cn <- data$background_cn2
-  }
+
   flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, circ_prob, 1), include.lowest = TRUE))
   # Classify amplicon
   data$amplicon_type <- data.table::fcase(
