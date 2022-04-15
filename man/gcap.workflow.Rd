@@ -16,6 +16,7 @@ gcap.workflow(
   model = "XGB32",
   tightness = 1L,
   gap_cn = 4L,
+  circ_prob = 0.5,
   outdir = getwd(),
   result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE)),
   allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
@@ -69,6 +70,8 @@ instead of \code{circular}. Range from 1 to Inf.}
 \item{gap_cn}{a gap copy number value, default is \code{4L} refer to Kim 2020 Nat.Gen.
 A gene with copy number above \code{ploidy + gap_cn} would be treated as amplicon.
 Smaller, more amplicons.}
+
+\item{circ_prob}{a prob cutoff value to treat a gene as located at circular amplicon.}
 
 \item{outdir}{result output path.}
 

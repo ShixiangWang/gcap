@@ -254,7 +254,7 @@ summarize_sample <- function(data, min_n) {
   # flag_ec <- ec_genes >= min_n
   flag_ec <- ec_cytobands >= min_n
   flag_ec_possibly <- if (!flag_ec && length(prob_possibly) > 0) {
-    calc_prob(prob_possibly, min_n) > 0.75
+    calc_prob(prob_possibly, min_n) > 0.5
   } else {
     FALSE
   }

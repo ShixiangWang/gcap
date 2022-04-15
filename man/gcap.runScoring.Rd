@@ -10,7 +10,7 @@ gcap.runScoring(
   min_n = 1L,
   tightness = 1L,
   gap_cn = 4L,
-  circ_prob = 0.95
+  circ_prob = 0.75
 )
 }
 \arguments{

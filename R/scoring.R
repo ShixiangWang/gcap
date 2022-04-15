@@ -27,7 +27,7 @@ gcap.runScoring <- function(data,
                             min_n = 1L,
                             tightness = 1L,
                             gap_cn = 4L,
-                            circ_prob = 0.95) {
+                            circ_prob = 0.75) {
   on.exit(invisible(gc()))
   stopifnot(is.data.frame(data), circ_prob > 0.15, circ_prob <= 1)
   lg <- set_logger()
@@ -83,10 +83,10 @@ gcap.runScoring <- function(data,
   data$background_cn2 <- data$ploidy
   data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)
 
-  flag_amp <- data$total_cn >= data$background_cn + gap_cn * pmax(data$ploidy, 2, na.rm = TRUE) / 2
-  flag_amp2 <- data$total_cn >= data$background_cn2 + gap_cn
+  flag_amp <- (data$total_cn >= data$background_cn + gap_cn) & data$total_cn > 2 * data$ploidy
+  flag_amp2 <- (data$total_cn >= data$background_cn2 + gap_cn) | data$total_cn > 2 * data$ploidy
 
-  flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, circ_prob, 1), include.lowest = TRUE))
+  flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.45, circ_prob, 1), include.lowest = TRUE))
   # Classify amplicon
   data$amplicon_type <- data.table::fcase(
     flag_amp & flag_circle == 3, "circular",
