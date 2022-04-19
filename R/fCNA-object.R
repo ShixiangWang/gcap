@@ -267,7 +267,7 @@ summarize_sample <- function(data, min_n) {
     # Use cytobands instead of genes to count
     flag_amp <- length(na.omit(unique(
       data$band[data$amplicon_type %in% c("noncircular", "possibly_circular", "circular")]
-    ))) >= 1
+    ))) >= min_n
     if (flag_amp) {
       "noncircular"
     } else {
