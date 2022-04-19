@@ -1,3 +1,7 @@
+# gcap 0.12
+
+- Fixed default settings.
+
 # gcap 0.11.1
 
 - Supported a `NA` passing as tightness to remove the use of TCGA blood summary data

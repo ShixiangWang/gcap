@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12</span>
       </span>
     </div>
 
@@ -80,7 +80,8 @@
   genome_build <span class="op">=</span> <span class="st">"hg38"</span>,
   min_n <span class="op">=</span> <span class="fl">1L</span>,
   tightness <span class="op">=</span> <span class="fl">1L</span>,
-  gap_cn <span class="op">=</span> <span class="fl">4L</span>
+  gap_cn <span class="op">=</span> <span class="fl">4L</span>,
+  circ_prob <span class="op">=</span> <span class="fl">0.75</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -96,13 +97,14 @@ one of 'hg38', 'hg19'.</p></dd>
 sample class. e.g., sample with at least 1 cytoband harboring circular
 genes would be labelled as "circular".</p></dd>
 <dt>tightness</dt>
-<dd><p>a value to control the tightness to be a circular amplicon.
-If the value is larger, it is more likely a fCNA assigned to <code>noncircular</code>
-instead of <code>circular</code>.</p></dd>
+<dd><p>If the value is larger, it is more likely a fCNA assigned to <code>noncircular</code>
+instead of <code>circular</code>. Range from 1 to Inf.</p></dd>
 <dt>gap_cn</dt>
 <dd><p>a gap copy number value, default is <code>4L</code> refer to Kim 2020 Nat.Gen.
 A gene with copy number above <code>ploidy + gap_cn</code> would be treated as amplicon.
 Smaller, more amplicons.</p></dd>
+<dt>circ_prob</dt>
+<dd><p>a prob cutoff value to treat a gene as located at circular amplicon.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

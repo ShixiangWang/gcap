@@ -52,7 +52,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.12</span>
       </span>
     </div>
 
@@ -179,6 +179,12 @@
 <p>To run <strong>gcap</strong> from bam files, a machine with <strong>at least 80GB RAM</strong> is required for the <code>allelecount</code> process. If you set multiple threads, please note the parallel computation is used in part of the workflow. You should balance the <code>nthread</code> setting and the computing power your machine provides by yourself.</p>
 <p>It generally takes <code>~0.5h</code> to finish one case (tumor-normal pair).</p>
 <p>In our practice, when we want to process multiple cases, set <code>nthread = 22</code> and directly let <strong>gcap</strong> handle multiple cases (instead of writing a loop yourself) is good enough.</p>
+<p>A recommended setting for Slurm is given as:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -N 1</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -o output-%J.o</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -n 22</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=102400</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="pipeline-allele-specific-or-absolute-copy-number-data">Pipeline (Allele specific or absolute copy number data)<a class="anchor" aria-label="anchor" href="#pipeline-allele-specific-or-absolute-copy-number-data"></a>
@@ -195,9 +201,9 @@
 <h2 id="logging">Logging<a class="anchor" aria-label="anchor" href="#logging"></a>
 </h2>
 <p>For better debugging and rechecking. The logging information of your operation with <strong>gcap</strong> would be saved into an independent file. You can use the following commands to get the file path and print logging message. Please note you have to use <code>:::</code> to access these functions as they are not exported from <strong>gcap</strong>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">get_log_file</span>()</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"~/Library/Logs/gcap/gcap.log"</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">cat_log_file</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">get_log_file</span>()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"~/Library/Logs/gcap/gcap.log"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">cat_log_file</span>()</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="related-tools">Related tools<a class="anchor" aria-label="anchor" href="#related-tools"></a>
