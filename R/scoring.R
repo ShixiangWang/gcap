@@ -91,26 +91,23 @@ gcap.runScoring <- function(data,
   data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
 
   # (background_cn) Mean + SD for large threshold (circular), smaller is looser
-  # (background_cn2) Ploidy for small threshold (noncircular)
-  data$background_cn <- pmax(data$blood_cn_top5 + tightness * data$blood_cn_top5_sd,
-    data$ploidy,
-    na.rm = TRUE
-  ) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
+  # (background_cn2) Ploidy for basic threshold (above noncircular)
+  data$background_cn <- pmax((data$blood_cn_top5 + data$blood_cn_top5_sd) * tightness, data$ploidy, na.rm = TRUE)
   data$background_cn <- ifelse(is.na(data$background_cn), 2, data$background_cn)
-  data$background_cn2 <- data$ploidy * data$ploidy / 2
+  data$background_cn2 <- data$ploidy
   data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)
 
   data$blood_cn_top5 <- NULL
   data$blood_cn_top5_sd <- NULL
 
-  flag_amp <- data$total_cn >= data$background_cn + max(gap_cn, 4) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
+  flag_amp <- data$total_cn >= (data$background_cn + gap_cn) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
   flag_amp2 <- data$total_cn >= data$background_cn2 + gap_cn
   if (is.na(tightness)) {
     # In such case, remove limit from blood CN
     flag_amp <- flag_amp2
     data$background_cn <- data$background_cn2
   }
-  flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.15, 0.75, 1), include.lowest = TRUE))
+  flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.45, 0.75, 1), include.lowest = TRUE))
   # Classify amplicon
   data$amplicon_type <- data.table::fcase(
     flag_amp & flag_circle == 3, "circular",
