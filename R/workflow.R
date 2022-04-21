@@ -48,7 +48,7 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
                           penalty = 70,
                           skip_finished_ASCAT = TRUE,
                           skip_ascat_call = FALSE) {
-  stopifnot(length(duplicated(jobname)) == 0L)
+  stopifnot(sum(duplicated(jobname), na.rm = TRUE) == 0L, sum(is.na(jobname)) == 0)
   genome_build <- match.arg(genome_build)
   check_model(model)
 
