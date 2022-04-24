@@ -10,7 +10,7 @@
 #' If the value is larger, it is more likely a fCNA assigned to `noncircular`
 #' instead of `circular`. **When it is `NA`, we don't use CN data from TCGA blood.**
 #' @param gap_cn a gap copy number value, default is `4L` refer to Kim 2020 Nat.Gen.
-#' A gene with copy number above `ploidy + gap_cn` would be treated as amplicon.
+#' A gene with copy number above `ploidy + gap_cn` would be treated as focal amplicon.
 #' Smaller, more amplicons.
 #' @return a list of `data.table`.
 #' @export

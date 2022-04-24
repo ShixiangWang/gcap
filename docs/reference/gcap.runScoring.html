@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.13.0</span>
       </span>
     </div>
 
@@ -96,12 +96,13 @@ one of 'hg38', 'hg19'.</p></dd>
 sample class. e.g., sample with at least 1 cytoband harboring circular
 genes would be labelled as "circular".</p></dd>
 <dt>tightness</dt>
-<dd><p>a value to control the tightness to be a circular amplicon.
+<dd><p>a coefficient to times to TCGA blood CN to set a more strict threshold
+as a circular amplicon.
 If the value is larger, it is more likely a fCNA assigned to <code>noncircular</code>
-instead of <code>circular</code>.</p></dd>
+instead of <code>circular</code>. <strong>When it is <code>NA</code>, we don't use CN data from TCGA blood.</strong></p></dd>
 <dt>gap_cn</dt>
 <dd><p>a gap copy number value, default is <code>4L</code> refer to Kim 2020 Nat.Gen.
-A gene with copy number above <code>ploidy + gap_cn</code> would be treated as amplicon.
+A gene with copy number above <code>ploidy + gap_cn</code> would be treated as focal amplicon.
 Smaller, more amplicons.</p></dd>
 </dl></div>
     <div id="value">
@@ -126,11 +127,13 @@ Smaller, more amplicons.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
+Wang</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

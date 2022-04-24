@@ -1,3 +1,11 @@
+# gcap 0.13
+
+- Updated inital setting and CLI.
+
+# gcap 0.12
+
+This version has been discarded from git history.
+
 # gcap 0.11.1
 
 - Supported a `NA` passing as tightness to remove the use of TCGA blood summary data

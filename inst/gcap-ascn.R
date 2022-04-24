@@ -7,6 +7,7 @@ VERSION = as.character(packageVersion("gcap"))
 model = "XGB32"
 genome = "hg38"
 tightness = 1L
+gapCN = 4L
 outdir = getwd()
 
 GetoptLong(
@@ -18,7 +19,8 @@ GetoptLong(
   "outdir=s", "Result output path.",
   "genome=s",  "Genome build version, should be hg38 or hg19.",
   "model=s", "Trained model name, should be one of XGB11, XGB32, XGB56.",
-  "tightness=i", "Control the tightness to be a circular amplicon. If the value is larger, it is more likely a fCNA assigned to 'noncircular' instead of 'circular'."
+  "tightness=i", "Control the tightness to be a circular amplicon. If the value is larger, it is more likely a fCNA assigned to 'noncircular' instead of 'circular'.",
+  "gcapCN=i", "A gene with copy number above ploidy + gapCN would be treated as focal amplicon. Smaller, more amplicons."
 )
 
 suppressMessages(library(data.table))
@@ -32,5 +34,6 @@ gcap.ASCNworkflow(
   genome_build = genome,
   model = model,
   tightness = tightness,
+  gap_cn = gapCN,
   outdir = outdir
 )

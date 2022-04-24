@@ -47,7 +47,7 @@ If the value is larger, it is more likely a fCNA assigned to \code{noncircular}
 instead of \code{circular}. \strong{When it is \code{NA}, we don't use CN data from TCGA blood.}}
 
 \item{gap_cn}{a gap copy number value, default is \code{4L} refer to Kim 2020 Nat.Gen.
-A gene with copy number above \code{ploidy + gap_cn} would be treated as amplicon.
+A gene with copy number above \code{ploidy + gap_cn} would be treated as focal amplicon.
 Smaller, more amplicons.}
 
 \item{outdir}{result output path.}
@@ -63,6 +63,10 @@ a list of invisible \code{data.table} and corresponding files saved to local mac
 Unlike \link{gcap.workflow}, this function directly uses the allele-specific
 copy number data along with some extra sample information to infer
 ecDNA genes.
+}
+\details{
+(tigntness, gap_cn) => (2, 3) or (1, 4) are the most common setting.
+You can adapt them based on your requirement.
 }
 \examples{
 data("ascn")

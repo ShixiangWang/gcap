@@ -7,6 +7,7 @@ VERSION = as.character(packageVersion("gcap"))
 model = "XGB32"
 genome = "hg38"
 tightness = 1L
+gapCN = 4L
 outdir = getwd()
 extra = NULL
 bed = NULL
@@ -36,6 +37,7 @@ GetoptLong(
   "genome=s",  "Genome build version, should be hg38 or hg19.",
   "model=s", "Trained model name, should be one of XGB11, XGB32, XGB56.",
   "tightness=i", "Control the tightness to be a circular amplicon. If the value is larger, it is more likely a fCNA assigned to 'noncircular' instead of 'circular'.",
+  "gcapCN=i", "A gene with copy number above ploidy + gapCN would be treated as focal amplicon. Smaller, more amplicons.",
   "allelecounter=s", "Path to the allele counter executable.",
   "g1000allelesprefix=s", "Prefix path to the 1000 Genomes alleles reference files.",
   "g1000lociprefix=s", "Prefix path to the 1000 Genomes SNP reference files.",
@@ -64,6 +66,7 @@ gcap.workflow(
   genome_build = genome,
   model = model,
   tightness = tightness,
+  gap_cn = gapCN,
   outdir = outdir,
   nthreads = nthreads,
   BED_file = bed,

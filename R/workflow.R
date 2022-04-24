@@ -1,5 +1,8 @@
 #' GCAP workflow for gene-level amplicon prediction
 #'
+#' (tigntness, gap_cn) => (2, 3) or (1, 4) are the most common setting.
+#' You can adapt them based on your requirement.
+#'
 #' @inheritParams gcap.runASCAT
 #' @inheritParams gcap.extractFeatures
 #' @inheritParams gcap.collapse2Genes
