@@ -2,7 +2,7 @@
 
 # File R/plotProfile.R: @testexamples
 
-test_that("Function gcap.plotProfile() @ L101", {
+test_that("Function gcap.plotProfile() @ L103", {
   
   
   if (require("ComplexHeatmap") && require("IDConverter")) {

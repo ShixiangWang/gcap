@@ -6,6 +6,8 @@
 #'
 #' @param fCNA a [fCNA] object.
 #' @param genes a list of genes. Must be subsets of `fCNA$data$gene_id`.
+#' @param top_n top N genes to show.
+#' @param top_n_by how to order the genes in `gene_summary` to get top N genes.
 #' @param samples a vector to subset samples.
 #' @param merge_circular if `TRUE`, merge 'possibly_circular' into 'circular' type.
 #' @param show_column_names see `?ComplexHeatmap::oncoPrint`.
@@ -101,6 +103,8 @@
 gcap.plotProfile <- function(fCNA,
                              genes = NULL,
                              samples = NULL,
+                             top_n = NULL,
+                             top_n_by = c("circular", "Total", "noncircular"),
                              merge_circular = FALSE,
                              show_column_names = TRUE,
                              remove_empty_columns = FALSE,
@@ -122,7 +126,7 @@ gcap.plotProfile <- function(fCNA,
     return(NULL)
   }
 
-  data <- data.table::copy(fCNA$data)
+  data <- data.table::copy(fCNA$data)[!is.na(gene_id)]
   if (merge_circular) {
     data[, amplicon_type := data.table::fcase(
       amplicon_type %in% c("circular", "possibly_circular"), "circular",
@@ -139,6 +143,12 @@ gcap.plotProfile <- function(fCNA,
     drop = FALSE, fun.aggregate = function(x) x[1]
   )
 
+  if (!is.null(top_n)) {
+    gene_info = fCNA$gene_summary[!is.na(gene_id)]
+    orders = do.call("order", args = c(lapply(top_n_by, function(x) gene_info[[x]]), decreasing = TRUE))
+    genes = gene_info[orders]$gene_id[seq_len(top_n)]
+  }
+
   data <- data.frame(data[, -1], row.names = data[[1]])
   if (!is.null(genes)) {
     data <- data[genes, ]
@@ -147,6 +157,7 @@ gcap.plotProfile <- function(fCNA,
       return(NULL)
     }
   }
+
   if (!is.null(samples)) {
     data <- data[, samples, drop = FALSE]
   }
