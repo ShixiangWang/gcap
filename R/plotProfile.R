@@ -9,6 +9,7 @@
 #' @param top_n top N genes to show.
 #' @param top_n_by how to order the genes in `gene_summary` to get top N genes.
 #' @param samples a vector to subset samples.
+#' @param only_circular only show circular amplicon.
 #' @param merge_circular if `TRUE`, merge 'possibly_circular' into 'circular' type.
 #' @param show_column_names see `?ComplexHeatmap::oncoPrint`.
 #' @param remove_empty_columns see `?ComplexHeatmap::oncoPrint`.
@@ -105,6 +106,7 @@ gcap.plotProfile <- function(fCNA,
                              samples = NULL,
                              top_n = NULL,
                              top_n_by = c("circular", "Total", "noncircular"),
+                             only_circular = FALSE,
                              merge_circular = FALSE,
                              show_column_names = TRUE,
                              remove_empty_columns = FALSE,
@@ -127,10 +129,16 @@ gcap.plotProfile <- function(fCNA,
   }
 
   data <- data.table::copy(fCNA$data)[!is.na(gene_id)]
+  if (only_circular) {
+    data[, amplicon_type := data.table::fcase(
+      amplicon_type %in% c("circular", "possibly_circular"), amplicon_type,
+      default = NA
+    )]
+  }
   if (merge_circular) {
     data[, amplicon_type := data.table::fcase(
       amplicon_type %in% c("circular", "possibly_circular"), "circular",
-      amplicon_type == "noncircular", "noncircular",
+      amplicon_type %in% "noncircular", "noncircular",
       default = NA
     )]
     data <- data[!is.na(amplicon_type)]

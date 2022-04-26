@@ -10,6 +10,7 @@ gcap.plotProfile(
   samples = NULL,
   top_n = NULL,
   top_n_by = c("circular", "Total", "noncircular"),
+  only_circular = FALSE,
   merge_circular = FALSE,
   show_column_names = TRUE,
   remove_empty_columns = FALSE,
@@ -29,6 +30,8 @@ gcap.plotProfile(
 \item{top_n}{top N genes to show.}
 
 \item{top_n_by}{how to order the genes in \code{gene_summary} to get top N genes.}
+
+\item{only_circular}{only show circular amplicon.}
 
 \item{merge_circular}{if \code{TRUE}, merge 'possibly_circular' into 'circular' type.}
 
