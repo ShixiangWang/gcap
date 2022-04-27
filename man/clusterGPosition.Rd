@@ -4,15 +4,28 @@
 \alias{clusterGPosition}
 \title{Cluster genomic regions by distance from region center}
 \usage{
-clusterGPosition(dt, distance = 10000000)
+clusterGPosition(
+  dt,
+  distance = 10000000,
+  no_annotation = FALSE,
+  genome_build = c("hg38", "hg19"),
+  simplify = TRUE
+)
 }
 \arguments{
 \item{dt}{a genomic region data with first 3 columns for
 chromosome, start and end.}
 
 \item{distance}{a distance value for clustering,
-regions with average distance lower than this value would be clusetered
+regions with average distance lower than this value would be clustered
 into one. Should not greater than 1e8.}
+
+\item{no_annotation}{if \code{TRUE}, use builtin data for annotation. This is
+useful when input a list of genes.}
+
+\item{genome_build}{genome build version.}
+
+\item{simplify}{if \code{FALSE}, return a \code{data.table} instead of a vector.}
 }
 \value{
 cluster list.
@@ -28,4 +41,10 @@ region <- data.table(
 )
 clusterGPosition(region, distance = 1000)
 clusterGPosition(region)
+clusterGPosition(data.table(gene_id = c("KRAS", "EGFR", "MYC", "ERBB2", "GRB7")),
+  no_annotation = TRUE, simplify = FALSE
+)
+clusterGPosition(data.table(gene_id = c("KRAS", "EGFR", "MYC", "ERBB2", "GRB7")),
+  no_annotation = TRUE, simplify = TRUE
+)
 }

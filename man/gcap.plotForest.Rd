@@ -15,7 +15,8 @@ gcap.plotForest(
     response_data },
   merge_circular = TRUE,
   x_is_gene = FALSE,
-  gene_focus = c("fCNA", "circular"),
+  gene_focus = c("fCNA", "circular", "vs"),
+  optimize_model = FALSE,
   ending_time = NULL,
   parallel = FALSE,
   exp = NULL,
@@ -33,7 +34,7 @@ regression modeling, default is CoxPH model, you can use same data as \link{gcap
 \item{f}{a length-1 string specifying modeling function or family of \code{\link[=glm]{glm()}}, default is 'coxph'. Other options are members of GLM family, see \code{\link[stats:family]{stats::family()}}.
 'binomial' is logistic, and 'gaussian' is linear.}
 
-\item{x}{focal variables (terms), the column names of \code{fCNA$sample_summary} or a list of genes.}
+\item{x}{focal variables (terms), the column names of \code{fCNA$sample_summary} or a list of genes (vector).}
 
 \item{covars}{covariables in \code{fCNA$sample_summary}.}
 
@@ -45,8 +46,12 @@ e.g., \code{"sex"} or \code{"factor(sex)"} is acceptable.}
 \item{x_is_gene}{if \code{TRUE}, treat \code{x} as a list of genes.}
 
 \item{gene_focus}{focal amplication type you focus on.
-Can be 'fCNA' or 'circular'. If 'fCNA' selected,
-noncircular and circular genes are included to classify samples.}
+Can be 'fCNA' or 'circular' and 'vs'. If 'fCNA' selected,
+noncircular and circular genes are included to classify samples.
+'vs' for comparing circular and noncircular. (at least 2 samples in each group)}
+
+\item{optimize_model}{if \code{TRUE}, optimize the variable list with \code{stepAIC} in
+'both' direction.}
 
 \item{ending_time}{survival analysis ending time. If a numeric ending
 is typed, all survival data longer than the ending time will be rewritten.}

@@ -33,7 +33,7 @@ gcap.plotCircos <- function(fCNA,
     target_genes$gene_id <- IDConverter::convert_hm_genes(target_genes$gene_id, genome_build = genome_build)
     target_genes <- target_genes[!is.na(target_genes$gene_id), ]
   }
-  data_bed <- merge(fCNA$data, target_genes, by = "gene_id", all.x = TRUE)
+  data_bed <- merge(fCNA$data, target_genes, by = "gene_id", all.x = TRUE, sort = FALSE)
   data_bed$amplicon_type <- ifelse(data_bed$amplicon_type %in% c("circular", "possibly_circular"), "circular", "noncircular")
   data_bed <- data_bed[!is.na(data_bed$gene_id) & data_bed$chrom %in% chrs,
     c(

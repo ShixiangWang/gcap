@@ -7,11 +7,17 @@
 #' regression modeling, default is CoxPH model, you can use same data as [gcap.plotKMcurve].
 #' @param f a length-1 string specifying modeling function or family of [glm()], default is 'coxph'. Other options are members of GLM family, see [stats::family()].
 #' 'binomial' is logistic, and 'gaussian' is linear.
-#' @param x focal variables (terms), the column names of `fCNA$sample_summary` or a list of genes.
+#' @param x focal variables (terms), the column names of `fCNA$sample_summary` or a list of genes (vector).
 #' @param covars covariables in `fCNA$sample_summary`.
 #' @param y predicted variables or expression in string format,
 #' e.g., `"sex"` or `"factor(sex)"` is acceptable.
 #' @param x_is_gene if `TRUE`, treat `x` as a list of genes.
+#' @param gene_focus focal amplication type you focus on.
+#' Can be 'fCNA' or 'circular' and 'vs'. If 'fCNA' selected,
+#' noncircular and circular genes are included to classify samples.
+#' 'vs' for comparing circular and noncircular. (at least 2 samples in each group)
+#' @param optimize_model if `TRUE`, optimize the variable list with `stepAIC` in
+#' 'both' direction.
 #' @param parallel if `TRUE`, use N-1 cores to run the task.
 #' @param exp logical, indicating whether or not to exponentiate the the coefficients.
 #' @param ref_line reference line, default is 1 for HR.
@@ -36,7 +42,8 @@ gcap.plotForest <- function(fCNA,
                             },
                             merge_circular = TRUE,
                             x_is_gene = FALSE,
-                            gene_focus = c("fCNA", "circular"),
+                            gene_focus = c("fCNA", "circular", "vs"),
+                            optimize_model = FALSE,
                             ending_time = NULL,
                             parallel = FALSE,
                             exp = NULL,
@@ -80,24 +87,48 @@ gcap.plotForest <- function(fCNA,
     }
     labels <- c("-", "+")
 
-    if (length(x) == 1) {
-      amp_samples <- unique(fCNA$data[gene_id %in% x & amplicon_type %in% types]$sample)
-      data <- create_label_dt(amp_samples, all_samples, labels)
-    } else {
-      dt_list <- list()
-      xc <- x
-      for (gene in xc) {
-        message("Classifying based on gene ", gene)
-        amp_samples <- unique(fCNA$data[gene_id %in% gene & amplicon_type %in% types]$sample)
-        dt <- create_label_dt(amp_samples, all_samples, labels)
-        if (is.null(dt)) {
-          message("No proper data for gene ", gene, " skipping.")
-          x <- setdiff(x, gene)
-          next()
-        }
-        colnames(dt)[2] <- gene
-        dt_list[[gene]] <- dt
+    data <- fCNA$data
+    # If input a gene cluster instead of a gene list
+    if (is.data.frame(x)) {
+      message("found input a data.frame when x is gene, treat as gene clusters")
+      colnames(x)[1:2] <- c("cluster", "gene_id")
+      cMap <- x$cluster
+      names(cMap) <- x$gene_id
+      print(head(data))
+      data$gene_id <- cMap[data$gene_id]
+      data$gene_id <- ifelse(is.na(data$gene_id), ".others", data$gene_id)
+      print(head(data))
+      x <- unique(x$cluster)
+    }
+
+    dt_list <- list()
+    xc <- x
+    for (gene in xc) {
+      message("Classifying based on gene/cluster ", gene)
+      amp_samples <- unique(data[gene_id %in% gene & amplicon_type %in% types]$sample)
+      if (gene_focus == "vs") {
+        all_samples <- unique(
+          data[
+            gene_id %in% gene & amplicon_type %in% c("noncircular", types)
+          ]$sample
+        )
       }
+      dt <- create_label_dt(amp_samples, all_samples, labels)
+      if (is.null(dt) || (gene_focus == "vs" && min(table(dt[[2]])) < 2) || min(table(dt[[2]])) < 1) {
+        message("No proper data for gene ", gene, " skipping.")
+        x <- setdiff(x, gene)
+        next()
+      }
+      colnames(dt)[2] <- gene
+      dt_list[[gene]] <- dt
+    }
+
+    if (length(dt_list) == 0) {
+      message("no data left to analyze, for type 'vs', at least 2 for each group, other at least 1")
+      return(invisible(NULL))
+    } else if (length(x) == 1) {
+      data <- dt_list[[1]]
+    } else {
       data <- mergeDTs(dt_list, by = "sample")
     }
   }
@@ -113,6 +144,25 @@ gcap.plotForest <- function(fCNA,
     by = "sample",
     all.x = TRUE
   )
+
+  # 这里聚合的数据可以做任意合适的分析
+  if (optimize_model) {
+    optmodel <- tryCatch(
+      {
+        mo <- regport::REGModel$new(data, recipe = list(
+          x = x, y = y
+        ))
+        stats::step(mo$model, direction = "both", steps = 1e4)
+      },
+      error = function(e) {
+        message("Failed in building the optimized model, error:")
+        message(e$mess)
+        NULL
+      }
+    )
+  } else {
+    optmodel = NULL
+  }
 
   ml <- regport::REGModelList$new(data, y = y, x = x, covars = covars)
   ml$build(f, exp = exp, parallel = parallel)
@@ -130,8 +180,7 @@ gcap.plotForest <- function(fCNA,
       NULL
     }
   )
-  if (!is.null(p)) print(p)
-  invisible(list(model = ml, plot = p))
+  invisible(list(plot = p, model = ml, optmodel = optmodel))
 }
 
 create_label_dt <- function(amp_samples, all_samples, labels) {

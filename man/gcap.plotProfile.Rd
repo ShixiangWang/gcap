@@ -110,6 +110,16 @@ if (require("ComplexHeatmap") && require("IDConverter")) {
     ref_line = 1, xlim = c(0, 10)
   )
 
+  # Plot on gene clusters
+  gcap.plotForest(rv, surv_data,
+    x = data.frame(
+      cluster = paste0("cluster", c(1, 3, 2, 1, 3)),
+      gene_id = c("TP53", "MYC", "ABC", "EGFR", "GSX2")
+    ), x_is_gene = TRUE,
+    ref_line = 1, xlim = c(0, 10), optimize_model = TRUE
+  ) -> zz
+  # zz$plot
+
   # -----------------
   # Plot distribution
   # -----------------
