@@ -29,10 +29,7 @@ gcap.plotKMcurve <- function(fCNA,
                              ending_time = NULL,
                              ...) {
   stopifnot(inherits(fCNA, "fCNA"))
-  if (!requireNamespace("survminer", quietly = TRUE)) {
-    message("'survminer' package is required to plot.")
-    return(NULL)
-  }
+  .check_install("survminer")
   gene_focus <- match.arg(gene_focus)
 
   if (is.character(surv_data)) {

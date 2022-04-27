@@ -119,10 +119,7 @@ gcap.plotProfile <- function(fCNA,
                              ),
                              ...) {
   stopifnot(inherits(fCNA, "fCNA"))
-  if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
-    message("'ComplexHeatmap' package is required to plot.")
-    return(NULL)
-  }
+  .check_install("ComplexHeatmap")
   if (nrow(fCNA$data) == 0) {
     warning("No data to plot", immediate. = TRUE)
     return(NULL)

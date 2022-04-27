@@ -44,10 +44,7 @@ gcap.plotForest <- function(fCNA,
                             xlim = NULL,
                             ...) {
   stopifnot(inherits(fCNA, "fCNA"))
-  if (!requireNamespace("regport", quietly = TRUE)) {
-    message("'regport' package is required to plot.")
-    return(NULL)
-  }
+  .check_install("regport")
   force(y)
   f <- f[1]
   gene_focus <- match.arg(gene_focus)

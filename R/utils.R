@@ -10,6 +10,15 @@
   }
 }
 
+clusterGPosition = function(dt, distance = 1e7) {
+  dt = data.table::copy(dt)
+  colnames(dt)[1:3] = c("chr", "start", "end")
+  dt[, `:=`(x = as.integer(factor(chr)), y = (start + end) / 2)]
+  dst = stats::as.dist(calc_dist(as.matrix(dt[, .(x, y)])))
+  cls = stats::cutree(stats::hclust(dst, method = "average"), h = distance)
+  cls
+}
+
 mergeDTs <- function(dt_list, by = NULL, sort = FALSE) {
   dt_list <- dt_list[lengths(dt_list) != 0]
   Reduce(

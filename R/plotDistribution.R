@@ -23,10 +23,7 @@ gcap.plotDistribution <- function(fCNA,
                                   palette = c("#CCCCCC", "#0066CC", "#FFCCCC", "#CC0033"),
                                   ...) {
   stopifnot(inherits(fCNA, "fCNA"))
-  if (!requireNamespace("ggplot2", quietly = TRUE)) {
-    message("'ggplot2' package is required to plot.")
-    return(NULL)
-  }
+  .check_install("ggplot2")
 
   by <- match.arg(by)
   nsamples <- nrow(fCNA$sample_summary)

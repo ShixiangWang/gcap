@@ -11,13 +11,13 @@
 #' @export
 gcap.plotCircos <- function(fCNA,
                             highlight_genes = NULL,
+                            clust_distance = 1e7,
                             col = c("#FF000080", "#0000FF80"),
                             genome_build = c("hg38", "hg19"),
                             chrs = paste0("chr", 1:22),
                             ideogram_height = 1) {
-  if (!requireNamespace("circlize", quietly = TRUE)) {
-    stop("Please install 'circlize' package firstly.")
-  }
+                              
+  .check_install("circlize")
   genome_build <- match.arg(genome_build)
   target_genes <- readRDS(file.path(
     system.file("extdata", package = "gcap"),
@@ -46,10 +46,10 @@ gcap.plotCircos <- function(fCNA,
   }
 
   cnrange <- range(data_bed$total_cn, na.rm = TRUE)
-  nsamples <- nrow(fCNA$sample_summary)
+  #nsamples <- nrow(fCNA$sample_summary)
   bed_list <- split(data_bed, data_bed$amplicon_type)
   bed_list <- lapply(bed_list, function(x) {
-    x[, .(freq = .N / nsamples), by = .(chr, start, end, gene_id)]
+    x[, .(freq = .N), by = .(chr, start, end, gene_id)]
   })
   bed_cn <- data.table::dcast(data_bed[, .(total_cn = mean(total_cn, na.rm = T)),
     by = .(chr, start, end, gene_id, amplicon_type)
@@ -95,14 +95,22 @@ gcap.plotCircos <- function(fCNA,
       message("no data for your selected genes, please check")
       return(invisible(NULL))
     }
+    if (is.null(clust_distance)) {
+      bed_col = as.numeric(factor(bed$gene_id))
+    } else {
+      message("clustering highlight genes by 'hclust' average method with distance data from gene centers")
+      message("distance cutoff: ", clust_distance)
+      bed_col = clusterGPosition(bed, clust_distance)
+      message("done")
+    }
+
     ssize <- max(nchar(highlight_genes)) / 8
     circlize::circos.genomicLabels(bed,
       labels = bed$gene_id, side = "outside",
       cex = 0.5 / (ssize),
       connection_height = circlize::mm_h(5 / ssize),
-      col = as.numeric(factor(bed$gene_id)),
-      line_col = as.numeric(factor(bed$gene_id))
-    )
+      col = bed_col,
+      line_col = bed_col)
     circlize::circos.genomicIdeogram(
       species = genome_build,
       track.height = 0.02 * ideogram_height
@@ -120,7 +128,7 @@ gcap.plotCircos <- function(fCNA,
   draw_freq_track(bed_list$noncircular, col[2])
   draw_track_y_axis(chrs)
   draw_bi_track(bed_cn, col)
-  draw_track_y_axis(chrs, at = scales::breaks_pretty(4)(c(0, cnrange[2])))
+  draw_track_y_axis(chrs, at = scales::breaks_pretty(5)(c(0, cnrange[2])))
 }
 
 draw_track_y_axis <- function(chrs, at = NULL) {
@@ -142,12 +150,13 @@ draw_freq_track <- function(data, col) {
     data,
     ylim = c(0, max(data$freq, na.rm = TRUE)),
     panel.fun = function(region, value, ...) {
-      circlize::circos.genomicRect(region, value,
-        ytop.column = 1,
-        ybottom = 0,
-        col = col,
-        border = NA
-      )
+      # circlize::circos.genomicRect(region, value,
+      #   ytop.column = 1,
+      #   ybottom = 0,
+      #   col = col,
+      #   border = NA
+      # )
+      circlize::circos.genomicPoints(region, value, pch = 16, cex = 0.3, col = col, border = NA)
     }
   )
 }
@@ -158,12 +167,14 @@ draw_bi_track <- function(data, col) {
     # track.height = if (!is.null(highlight_genes)) 0.2 else 0.3, # ylim = c(0, 0.1),
     panel.fun = function(region,
                          value, ...) {
-      circlize::circos.genomicRect(
-        region, value,
-        ytop = value$circular,
-        ybottom = value$noncircular,
-        col = ifelse(value$circular > 0, col[1], col[2]), border = NA
-      )
+      circlize::circos.genomicPoints(region, value, pch = 16, cex = 0.3, col = col, border = NA)
+
+      # circlize::circos.genomicRect(
+      #   region, value,
+      #   ytop = value$circular,
+      #   ybottom = value$noncircular,
+      #   col = ifelse(value$circular > 0, col[1], col[2]), border = NA
+      # )
       circlize::circos.lines(circlize::CELL_META$cell.xlim, c(0, 0), lty = 2, col = "#000040")
     }
   )
