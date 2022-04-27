@@ -30,7 +30,9 @@ Imports:
     Rcpp,
     stats,
     uuid,
-    xgboost
+    xgboost,
+    circlize,
+    scales
 Suggests: 
     BiocManager,
     ComplexHeatmap (>= 2.5.2),

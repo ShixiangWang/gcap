@@ -1,7 +1,10 @@
 #' Plot Circos for GCAP object
 #'
 #' @inheritParams gcap.plotProfile
-#' @param highlight_genes gene list to highlight
+#' @param highlight_genes gene list to highlight.
+#' @param clust_distance a distance as cutoff for different clusters.
+#' Default is 1e7, i.e. 10Mb. Note 100 Mb is set to genes on different
+#' chromosomes, so please don't set value larger than that.
 #' @param col length-2 colors for circular and noncircular.
 #' @param genome_build genome version.
 #' @param chrs chromosome names.
@@ -16,8 +19,8 @@ gcap.plotCircos <- function(fCNA,
                             genome_build = c("hg38", "hg19"),
                             chrs = paste0("chr", 1:22),
                             ideogram_height = 1) {
-                              
   .check_install("circlize")
+  .check_install("scales")
   genome_build <- match.arg(genome_build)
   target_genes <- readRDS(file.path(
     system.file("extdata", package = "gcap"),
@@ -46,7 +49,7 @@ gcap.plotCircos <- function(fCNA,
   }
 
   cnrange <- range(data_bed$total_cn, na.rm = TRUE)
-  #nsamples <- nrow(fCNA$sample_summary)
+  # nsamples <- nrow(fCNA$sample_summary)
   bed_list <- split(data_bed, data_bed$amplicon_type)
   bed_list <- lapply(bed_list, function(x) {
     x[, .(freq = .N), by = .(chr, start, end, gene_id)]
@@ -96,11 +99,11 @@ gcap.plotCircos <- function(fCNA,
       return(invisible(NULL))
     }
     if (is.null(clust_distance)) {
-      bed_col = as.numeric(factor(bed$gene_id))
+      bed_col <- as.numeric(factor(bed$gene_id))
     } else {
       message("clustering highlight genes by 'hclust' average method with distance data from gene centers")
       message("distance cutoff: ", clust_distance)
-      bed_col = clusterGPosition(bed, clust_distance)
+      bed_col <- clusterGPosition(bed, clust_distance)
       message("done")
     }
 
@@ -110,7 +113,8 @@ gcap.plotCircos <- function(fCNA,
       cex = 0.5 / (ssize),
       connection_height = circlize::mm_h(5 / ssize),
       col = bed_col,
-      line_col = bed_col)
+      line_col = bed_col
+    )
     circlize::circos.genomicIdeogram(
       species = genome_build,
       track.height = 0.02 * ideogram_height

@@ -10,12 +10,12 @@
   }
 }
 
-clusterGPosition = function(dt, distance = 1e7) {
-  dt = data.table::copy(dt)
-  colnames(dt)[1:3] = c("chr", "start", "end")
+clusterGPosition <- function(dt, distance = 1e7) {
+  dt <- data.table::copy(dt)
+  colnames(dt)[1:3] <- c("chr", "start", "end")
   dt[, `:=`(x = as.integer(factor(chr)), y = (start + end) / 2)]
-  dst = stats::as.dist(calc_dist(as.matrix(dt[, .(x, y)])))
-  cls = stats::cutree(stats::hclust(dst, method = "average"), h = distance)
+  dst <- stats::as.dist(calc_dist(as.matrix(dt[, .(x, y)])))
+  cls <- stats::cutree(stats::hclust(dst, method = "average"), h = distance)
   cls
 }
 
@@ -73,6 +73,6 @@ utils::globalVariables(
     "eval_aucpr", "prob", "train_aucpr", "background_cn",
     "band", "chrom", "cytoband_cn_median", "status",
     "N_pos", "amplicon_type", "ec_genes", "total_cn_neg", "total_cn_pos",
-    "N"
+    "N", "x", "y", "circular", "noncircular"
   )
 )

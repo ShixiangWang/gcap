@@ -149,9 +149,9 @@ gcap.plotProfile <- function(fCNA,
   )
 
   if (!is.null(top_n)) {
-    gene_info = fCNA$gene_summary[!is.na(gene_id)]
-    orders = do.call("order", args = c(lapply(top_n_by, function(x) gene_info[[x]]), decreasing = TRUE))
-    genes = gene_info[orders]$gene_id[seq_len(top_n)]
+    gene_info <- fCNA$gene_summary[!is.na(gene_id)]
+    orders <- do.call("order", args = c(lapply(top_n_by, function(x) gene_info[[x]]), decreasing = TRUE))
+    genes <- gene_info[orders]$gene_id[seq_len(top_n)]
   }
 
   data <- data.frame(data[, -1], row.names = data[[1]])

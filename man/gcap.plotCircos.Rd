@@ -7,6 +7,7 @@
 gcap.plotCircos(
   fCNA,
   highlight_genes = NULL,
+  clust_distance = 10000000,
   col = c("#FF000080", "#0000FF80"),
   genome_build = c("hg38", "hg19"),
   chrs = paste0("chr", 1:22),
@@ -16,7 +17,11 @@ gcap.plotCircos(
 \arguments{
 \item{fCNA}{a \link{fCNA} object.}
 
-\item{highlight_genes}{gene list to highlight}
+\item{highlight_genes}{gene list to highlight.}
+
+\item{clust_distance}{a distance as cutoff for different clusters.
+Default is 1e7, i.e. 10Mb. Note 100 Mb is set to genes on different
+chromosomes, so please don't set value larger than that.}
 
 \item{col}{length-2 colors for circular and noncircular.}
 
