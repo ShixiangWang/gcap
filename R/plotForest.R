@@ -94,10 +94,8 @@ gcap.plotForest <- function(fCNA,
       colnames(x)[1:2] <- c("cluster", "gene_id")
       cMap <- x$cluster
       names(cMap) <- x$gene_id
-      print(head(data))
       data$gene_id <- cMap[data$gene_id]
       data$gene_id <- ifelse(is.na(data$gene_id), ".others", data$gene_id)
-      print(head(data))
       x <- unique(x$cluster)
     }
 
@@ -146,13 +144,17 @@ gcap.plotForest <- function(fCNA,
   )
 
   # 这里聚合的数据可以做任意合适的分析
+
   if (optimize_model) {
+    # 按照影响的样本大小排序，然后使用forward
+    message("try constructing an optimized model")
+    x2 = x[order(sapply(data[, x, with = FALSE], function(x) sum(table(x)[-1], na.rm = TRUE)), decreasing = TRUE)] # 有2级以上的因子的数目
     optmodel <- tryCatch(
       {
         mo <- regport::REGModel$new(data, recipe = list(
           x = x, y = y
         ))
-        stats::step(mo$model, direction = "both", steps = 1e4)
+        stats::step(mo$model, steps = 1e4)
       },
       error = function(e) {
         message("Failed in building the optimized model, error:")
@@ -180,7 +182,7 @@ gcap.plotForest <- function(fCNA,
       NULL
     }
   )
-  invisible(list(plot = p, model = ml, optmodel = optmodel))
+  invisible(list(data = data, plot = p, model = ml, optmodel = optmodel))
 }
 
 create_label_dt <- function(amp_samples, all_samples, labels) {
