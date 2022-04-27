@@ -10,6 +10,22 @@
   }
 }
 
+#' Cluster genomic regions by distance from region center
+#' @param dt a genomic region data with first 3 columns for
+#' chromosome, start and end.
+#' @param distance a distance value for clustering,
+#' regions with average distance lower than this value would be clusetered
+#' into one. Should not greater than 1e8.
+#' @return cluster list.
+#' @export
+#' @examples
+#' library(data.table)
+#' region <- data.table(
+#'   chr = c("chr1", "chr2", "chr1"),
+#'   start = c(1032, 992, 10000), end = c(4242, 1e6, 400023)
+#' )
+#' clusterGPosition(region, distance = 1000)
+#' clusterGPosition(region)
 clusterGPosition <- function(dt, distance = 1e7) {
   dt <- data.table::copy(dt)
   colnames(dt)[1:3] <- c("chr", "start", "end")
@@ -19,6 +35,12 @@ clusterGPosition <- function(dt, distance = 1e7) {
   cls
 }
 
+#' Merge a list of data.table
+#' @param dt_list a list of `data.table`s.
+#' @param by which column used for merging.
+#' @param sort should sort the result?
+#' @return a `data.table`
+#' @export
 mergeDTs <- function(dt_list, by = NULL, sort = FALSE) {
   dt_list <- dt_list[lengths(dt_list) != 0]
   Reduce(
@@ -38,6 +60,11 @@ check_model <- function(m) {
   }
 }
 
+#' Get overlaps of two genomic regions
+#' @param x,y a genemic region with data.frame format, the first 3 columns
+#' should representing chromosome, start and end position.
+#' @return a `data.table`
+#' @export
 overlaps <- function(x, y) {
   ## Overlaps genome regions from x and y
   if (!is.data.frame(x)) {
