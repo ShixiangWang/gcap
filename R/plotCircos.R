@@ -90,21 +90,44 @@ gcap.plotCircos <- function(fCNA,
     #   circlize::read.cytoband(species = genome_build, chromosome.index = chrs)$df,
     #   plotType = "labels"
     # )
+    if (is.data.frame(highlight_genes)) {
+      message("found input a data.frame for highlight genes")
+      stopifnot("gene_id" %in% colnames(highlight_genes))
+      data <- data.table::as.data.table(highlight_genes)
+      highlight_genes <- data$gene_id
+    } else {
+      data <- data.table::data.table()
+    }
+
     bed <- unique(data_bed[
       data_bed$gene_id %in% highlight_genes,
       c("chr", "start", "end", "gene_id")
     ])
+    if (ncol(data) > 0) {
+      bed <- merge(bed, data, by = "gene_id", all.x = TRUE, sort = FALSE)
+      data.table::setcolorder(bed, c("chr", "start", "end", "gene_id"))
+    }
+
     if (nrow(bed) < 1) {
       message("no data for your selected genes, please check")
       return(invisible(NULL))
     }
-    if (is.null(clust_distance)) {
+
+    if (is.null(clust_distance) & ncol(data) == 0) {
       bed_col <- as.numeric(factor(bed$gene_id))
+    } else if ("cluster" %in% colnames(bed)) {
+      message("found 'cluster' column, use it for color mapping")
+      bed_col <- as.numeric(factor(bed$cluster))
     } else {
       message("clustering highlight genes by 'hclust' average method with distance data from gene centers")
       message("distance cutoff: ", clust_distance)
       bed_col <- clusterGPosition(bed, clust_distance)
       message("done")
+    }
+
+    if ("label" %in% colnames(bed)) {
+      message("label detected, add it to gene id")
+      bed$gene_id <- paste0(bed$gene_id, " (", bed$label, ")")
     }
 
     ssize <- max(nchar(highlight_genes)) / 8
