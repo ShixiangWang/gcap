@@ -45,6 +45,9 @@ Install **ASCAT** v3.0 (modified and adapted for GCAP workflow in HPC) in R cons
 ```r
 # This is a forked version ASCAT
 remotes::install_github("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT")
+# A ASCAT version with loose SAM flag, useful sometimes
+# remotes::install_github("ShixiangWang/ascat@v3-f1", subdir = "ASCAT")
+# See https://github.com/ShixiangWang/gcap/issues/27
 ```
 
 ### Install GCAP (required)
