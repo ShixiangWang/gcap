@@ -148,7 +148,7 @@ gcap.plotForest <- function(fCNA,
   if (optimize_model) {
     # 按照影响的样本大小排序，然后使用forward
     message("try constructing an optimized model")
-    x2 = x[order(sapply(data[, x, with = FALSE], function(x) sum(table(x)[-1], na.rm = TRUE)), decreasing = TRUE)] # 有2级以上的因子的数目
+    x2 <- x[order(sapply(data[, x, with = FALSE], function(x) sum(table(x)[-1], na.rm = TRUE)), decreasing = TRUE)] # 有2级以上的因子的数目
     optmodel <- tryCatch(
       {
         mo <- regport::REGModel$new(data, recipe = list(
@@ -163,7 +163,7 @@ gcap.plotForest <- function(fCNA,
       }
     )
   } else {
-    optmodel = NULL
+    optmodel <- NULL
   }
 
   ml <- regport::REGModelList$new(data, y = y, x = x, covars = covars)
