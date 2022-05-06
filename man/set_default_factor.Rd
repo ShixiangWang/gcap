@@ -4,10 +4,12 @@
 \alias{set_default_factor}
 \title{Set default factor level for fCNA class}
 \usage{
-set_default_factor(class)
+set_default_factor(class, ref_level = "nofocal")
 }
 \arguments{
-\item{class}{a vector of fCNA class}
+\item{class}{a vector of fCNA class.}
+
+\item{ref_level}{the reference level of factor.}
 }
 \value{
 a vector.

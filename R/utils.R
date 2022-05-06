@@ -126,19 +126,20 @@ overlaps <- function(x, y) {
 
 #' Set default factor level for fCNA class
 #'
-#' @param class a vector of fCNA class
+#' @param class a vector of fCNA class.
+#' @param ref_level the reference level of factor.
 #'
 #' @return a vector.
 #' @export
 #'
 #' @examples
 #' set_default_factor(c("nofocal", "noncircular", "circular", "nofocal", "possibly_circular"))
-set_default_factor <- function(class) {
+set_default_factor <- function(class, ref_level = "nofocal") {
   class <- fcase(class %in% c("circular", "possibly_circular"), "circular",
     class == "noncircular", "noncircular",
     default = "nofocal"
   )
-  factor(class, levels = c("nofocal", "noncircular", "circular"))
+  factor(class, levels = c(ref_level, setdiff(c("nofocal", "noncircular", "circular"), ref_level)))
 }
 
 # Global variables
