@@ -13,6 +13,10 @@
 #' Can be 'fCNA' or 'circular'. If 'fCNA' selected,
 #' noncircular and circular genes are included to classify samples.
 #' @param palette plot color palette.
+#' @param class_col column name in `sample_summary` field for classification.
+#' If you set to other column (you want to run survival analysis with custom column),
+#' parameters like `merge_circular`, `genes`, `gene_focus`
+#' etc. will be omitted.
 #' @param ending_time survival analysis ending time. If a numeric ending
 #' is typed, all survival data longer than the ending time will be rewritten.
 #' @param ... other parameters passing to `survminer::ggsurvplot`.
@@ -26,6 +30,7 @@ gcap.plotKMcurve <- function(fCNA,
                              genes = NULL,
                              gene_focus = c("fCNA", "circular"),
                              palette = c("grey", "#0066CC", "#CC0033"),
+                             class_col = "class",
                              ending_time = NULL,
                              ...) {
   stopifnot(inherits(fCNA, "fCNA"))
@@ -38,15 +43,16 @@ gcap.plotKMcurve <- function(fCNA,
   colnames(surv_data)[2:3] <- c("time", "status")
 
   if (is.null(genes)) {
-    data <- fCNA$sample_summary[, c("sample", "class")]
-    if (merge_circular) {
+    data <- fCNA$sample_summary[, c("sample", class_col), with = FALSE]
+    colnames(data)[2] = "class"
+    if (merge_circular & class_col == "class") {
       data[, class := data.table::fcase(
         class %in% c("circular", "possibly_circular"), "circular",
         class == "noncircular", "noncircular",
         default = "nofocal"
       )]
       data[, class := factor(class, c("nofocal", "noncircular", "circular"))]
-    } else {
+    } else if (class_col == "class") {
       data[, class := factor(class, c("nofocal", "noncircular", "possibly_circular", "circular"))]
     }
   } else {
