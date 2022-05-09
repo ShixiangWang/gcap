@@ -37,14 +37,18 @@ gcap.enrich <- function(data,
   msigdbr_df <- msigdbr_df[, cols, with = FALSE]
   colnames(msigdbr_df) <- c("term", "gene")
 
-  ref_file <- system.file(
-    "extdata", paste0(genome_build, "_target_genes.rds"),
-    package = "gcap", mustWork = TRUE
-  )
-  y <- readRDS(ref_file)$gene_id
+  # ref_file <- system.file(
+  #   "extdata", paste0(genome_build, "_target_genes.rds"),
+  #   package = "gcap", mustWork = TRUE
+  # )
+  # y <- readRDS(ref_file)$gene_id
 
   target <- match.arg(target)
   if (inherits(data, "fCNA")) {
+    if (analysis_func == "gsea") message("")
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # The gene rank is useless currently
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     data <- data.table::copy(data$data)
     data[, amplicon_type := set_default_factor(amplicon_type)]
     dt_summary <- data[, .(
@@ -77,27 +81,29 @@ gcap.enrich <- function(data,
         geneCluster = lapply(geneList, names),
         fun = clusterProfiler::enricher,
         TERM2GENE = msigdbr_df,
-        universe = y,
+        #universe = y,
         pvalueCutoff = 1,
         qvalueCutoff = 1,
         ...
       )
     } else {
       clusterProfiler::enricher(
-        gene = names(geneList), TERM2GENE = msigdbr_df, universe = y,
+        gene = names(geneList), TERM2GENE = msigdbr_df, 
+        #universe = y,
         pvalueCutoff = 1, qvalueCutoff = 1, ...
       )
     }
   } else {
     # 需要全部基因有个rank值
-    # msigdbr_list <- split(msigdbr_df$gene, f = msigdbr_df$term)
-    # if (is.list(geneList)) {
-    #   lapply(geneList, function(x) {
-    #     fgsea::fgsea(msigdbr_list, x, ...)
-    #   })
-    # } else {
-    #   fgsea::fgsea(msigdbr_list, geneList, ...)
-    # }
+    msigdbr_list <- split(msigdbr_df$gene, f = msigdbr_df$term)
+    message("NOTE: check https://bioconductor.org/packages/devel/bioc/vignettes/fgsea/inst/doc/fgsea-tutorial.html for visualization")
+    if (is.list(geneList)) {
+      lapply(geneList, function(x) {
+        fgsea::fgsea(msigdbr_list, x, ...)
+      })
+    } else {
+      fgsea::fgsea(msigdbr_list, geneList, ...)
+    }
   }
 }
 
