@@ -11,6 +11,7 @@ gcap.plotKMcurve(
   genes = NULL,
   gene_focus = c("fCNA", "circular"),
   palette = c("grey", "#0066CC", "#CC0033"),
+  class_col = "class",
   ending_time = NULL,
   ...
 )
@@ -36,6 +37,11 @@ Can be 'fCNA' or 'circular'. If 'fCNA' selected,
 noncircular and circular genes are included to classify samples.}
 
 \item{palette}{plot color palette.}
+
+\item{class_col}{column name in \code{sample_summary} field for classification.
+If you set to other column (you want to run survival analysis with custom column),
+parameters like \code{merge_circular}, \code{genes}, \code{gene_focus}
+etc. will be omitted.}
 
 \item{ending_time}{survival analysis ending time. If a numeric ending
 is typed, all survival data longer than the ending time will be rewritten.}

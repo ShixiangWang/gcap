@@ -19,6 +19,9 @@
     <loc>/reference/ascn.html</loc>
   </url>
   <url>
+    <loc>/reference/clusterGPosition.html</loc>
+  </url>
+  <url>
     <loc>/reference/convertID.html</loc>
   </url>
   <url>
@@ -40,10 +43,16 @@
     <loc>/reference/gcap.collapse2Genes.html</loc>
   </url>
   <url>
+    <loc>/reference/gcap.enrich.html</loc>
+  </url>
+  <url>
     <loc>/reference/gcap.extractComponents.html</loc>
   </url>
   <url>
     <loc>/reference/gcap.extractFeatures.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gcap.plotCircos.html</loc>
   </url>
   <url>
     <loc>/reference/gcap.plotDistribution.html</loc>
@@ -82,6 +91,15 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/mergeDTs.html</loc>
+  </url>
+  <url>
+    <loc>/reference/overlaps.html</loc>
+  </url>
+  <url>
     <loc>/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>/reference/set_default_factor.html</loc>
   </url>
 </urlset>

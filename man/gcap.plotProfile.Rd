@@ -11,7 +11,7 @@ gcap.plotProfile(
   top_n = NULL,
   top_n_by = c("circular", "Total", "noncircular"),
   only_circular = FALSE,
-  merge_circular = FALSE,
+  merge_circular = TRUE,
   show_column_names = TRUE,
   remove_empty_columns = FALSE,
   remove_empty_rows = TRUE,

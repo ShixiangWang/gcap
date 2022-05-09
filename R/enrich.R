@@ -9,6 +9,21 @@
 # plotGseaTable(examplePathways[mainPathways], exampleRanks, fgseaRes,
 #               gseaParam = 0.5)
 
+#' Enrich analysis
+#'
+#' @param data a [fCNA] object, or a vector (list) of genes.
+#' @param target `NA` for general, and "circular" or "noncircular" for specific fCNA type.
+#' @param analysis_func analysis function to run.
+#' @param gene_encode gene ID type from input.
+#' @param species species, not to change.
+#' @param category gene set main category name.
+#' @param subcategory gene set sub-category name.
+#' @param genome_build genome version.
+#' @param ... other parameters passing to `clusterProfiler::enricher()`
+#' or `fgsea::fgsea`.
+#'
+#' @return depends on `data` and `analysis_func`.
+#' @export
 gcap.enrich <- function(data,
                         target = c(NA, "circular", "noncircular"),
                         analysis_func = c("enricher", "fgsea"),
@@ -88,7 +103,7 @@ gcap.enrich <- function(data,
       )
     } else {
       clusterProfiler::enricher(
-        gene = names(geneList), TERM2GENE = msigdbr_df, 
+        gene = names(geneList), TERM2GENE = msigdbr_df,
         #universe = y,
         pvalueCutoff = 1, qvalueCutoff = 1, ...
       )

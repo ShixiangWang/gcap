@@ -1,7 +1,7 @@
 Type: Package
 Package: gcap
 Title: Gene-level Circular Amplicon Prediction
-Version: 0.13.1
+Version: 0.14.0
 Authors@R: 
     person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357"))
@@ -43,7 +43,10 @@ Suggests:
     survival,
     survminer,
     testthat (>= 3.0.0),
-    utils
+    utils,
+    clusterProfiler,
+    fgsea,
+    msigdbr
 LinkingTo: 
     Rcpp
 Remotes: 

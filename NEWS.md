@@ -1,6 +1,10 @@
+# gcap 0.14
+
+- Added some utils functions and visualization functions.
+
 # gcap 0.13
 
-- Updated inital setting and CLI.
+- Updated initial setting and CLI.
 
 # gcap 0.12
 

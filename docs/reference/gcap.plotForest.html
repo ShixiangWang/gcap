@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.13.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.14.0</span>
       </span>
     </div>
 
@@ -86,7 +86,8 @@
     <span class="va">response_data</span> <span class="op">}</span>,
   merge_circular <span class="op">=</span> <span class="cn">TRUE</span>,
   x_is_gene <span class="op">=</span> <span class="cn">FALSE</span>,
-  gene_focus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fCNA"</span>, <span class="st">"circular"</span><span class="op">)</span>,
+  gene_focus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fCNA"</span>, <span class="st">"circular"</span>, <span class="st">"vs"</span><span class="op">)</span>,
+  optimize_model <span class="op">=</span> <span class="cn">FALSE</span>,
   ending_time <span class="op">=</span> <span class="cn">NULL</span>,
   parallel <span class="op">=</span> <span class="cn">FALSE</span>,
   exp <span class="op">=</span> <span class="cn">NULL</span>,
@@ -107,7 +108,7 @@ regression modeling, default is CoxPH model, you can use same data as <a href="g
 <dd><p>a length-1 string specifying modeling function or family of <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code>, default is 'coxph'. Other options are members of GLM family, see <code><a href="https://rdrr.io/r/stats/family.html" class="external-link">stats::family()</a></code>.
 'binomial' is logistic, and 'gaussian' is linear.</p></dd>
 <dt>x</dt>
-<dd><p>focal variables (terms), the column names of <code>fCNA$sample_summary</code> or a list of genes.</p></dd>
+<dd><p>focal variables (terms), the column names of <code>fCNA$sample_summary</code> or a list of genes (vector).</p></dd>
 <dt>covars</dt>
 <dd><p>covariables in <code>fCNA$sample_summary</code>.</p></dd>
 <dt>y</dt>
@@ -119,8 +120,12 @@ e.g., <code>"sex"</code> or <code>"factor(sex)"</code> is acceptable.</p></dd>
 <dd><p>if <code>TRUE</code>, treat <code>x</code> as a list of genes.</p></dd>
 <dt>gene_focus</dt>
 <dd><p>focal amplication type you focus on.
-Can be 'fCNA' or 'circular'. If 'fCNA' selected,
-noncircular and circular genes are included to classify samples.</p></dd>
+Can be 'fCNA' or 'circular' and 'vs'. If 'fCNA' selected,
+noncircular and circular genes are included to classify samples.
+'vs' for comparing circular and noncircular. (at least 2 samples in each group)</p></dd>
+<dt>optimize_model</dt>
+<dd><p>if <code>TRUE</code>, optimize the variable list with <code>stepAIC</code> in
+'both' direction.</p></dd>
 <dt>ending_time</dt>
 <dd><p>survival analysis ending time. If a numeric ending
 is typed, all survival data longer than the ending time will be rewritten.</p></dd>

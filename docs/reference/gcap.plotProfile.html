@@ -31,7 +31,7 @@ to modify the result plot in depth."><!-- mathjax --><script src="https://cdnjs.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.13.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.14.0</span>
       </span>
     </div>
 
@@ -83,7 +83,10 @@ to modify the result plot in depth.</p>
   <span class="va">fCNA</span>,
   genes <span class="op">=</span> <span class="cn">NULL</span>,
   samples <span class="op">=</span> <span class="cn">NULL</span>,
-  merge_circular <span class="op">=</span> <span class="cn">FALSE</span>,
+  top_n <span class="op">=</span> <span class="cn">NULL</span>,
+  top_n_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"circular"</span>, <span class="st">"Total"</span>, <span class="st">"noncircular"</span><span class="op">)</span>,
+  only_circular <span class="op">=</span> <span class="cn">FALSE</span>,
+  merge_circular <span class="op">=</span> <span class="cn">TRUE</span>,
   show_column_names <span class="op">=</span> <span class="cn">TRUE</span>,
   remove_empty_columns <span class="op">=</span> <span class="cn">FALSE</span>,
   remove_empty_rows <span class="op">=</span> <span class="cn">TRUE</span>,
@@ -101,6 +104,12 @@ to modify the result plot in depth.</p>
 <dd><p>a list of genes. Must be subsets of <code>fCNA$data$gene_id</code>.</p></dd>
 <dt>samples</dt>
 <dd><p>a vector to subset samples.</p></dd>
+<dt>top_n</dt>
+<dd><p>top N genes to show.</p></dd>
+<dt>top_n_by</dt>
+<dd><p>how to order the genes in <code>gene_summary</code> to get top N genes.</p></dd>
+<dt>only_circular</dt>
+<dd><p>only show circular amplicon.</p></dd>
 <dt>merge_circular</dt>
 <dd><p>if <code>TRUE</code>, merge 'possibly_circular' into 'circular' type.</p></dd>
 <dt>show_column_names</dt>
@@ -142,7 +151,7 @@ to modify the result plot in depth.</p>
   <span class="va">rv</span><span class="op">$</span><span class="fu">convertGeneID</span><span class="op">(</span><span class="op">)</span>
   <span class="va">ht</span> <span class="op">&lt;-</span> <span class="fu">gcap.plotProfile</span><span class="op">(</span><span class="va">rv</span>,
     samples <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"F"</span><span class="op">)</span>,
-    genes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">rv</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">gene_id</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,
+    genes <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">rv</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">gene_id</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>,
     top_annotation <span class="op">=</span> <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/HeatmapAnnotation.html" class="external-link">HeatmapAnnotation</a></span><span class="op">(</span>
       cbar <span class="op">=</span> <span class="fu">ComplexHeatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ComplexHeatmap/man/anno_oncoprint_barplot.html" class="external-link">anno_oncoprint_barplot</a></span><span class="op">(</span><span class="op">)</span>,
       foo1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"g1"</span>, <span class="st">"g1"</span>, <span class="st">"g2"</span>, <span class="st">"g2"</span>, <span class="st">"g3"</span><span class="op">)</span>,
@@ -181,6 +190,16 @@ to modify the result plot in depth.</p>
     ref_line <span class="op">=</span> <span class="fl">1</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>
   <span class="op">)</span>
 
+  <span class="co"># Plot on gene clusters</span>
+  <span class="fu"><a href="gcap.plotForest.html">gcap.plotForest</a></span><span class="op">(</span><span class="va">rv</span>, <span class="va">surv_data</span>,
+    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>
+      cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"cluster"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,
+      gene_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"MYC"</span>, <span class="st">"ABC"</span>, <span class="st">"EGFR"</span>, <span class="st">"GSX2"</span><span class="op">)</span>
+    <span class="op">)</span>, x_is_gene <span class="op">=</span> <span class="cn">TRUE</span>,
+    ref_line <span class="op">=</span> <span class="fl">1</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, optimize_model <span class="op">=</span> <span class="cn">TRUE</span>
+  <span class="op">)</span> <span class="op">-&gt;</span> <span class="va">zz</span>
+  <span class="co"># zz$plot</span>
+
   <span class="co"># -----------------</span>
   <span class="co"># Plot distribution</span>
   <span class="co"># -----------------</span>
@@ -190,7 +209,7 @@ to modify the result plot in depth.</p>
     width <span class="op">=</span> <span class="fl">0.5</span>, x_size <span class="op">=</span> <span class="fl">5</span>, fill <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span>
   <span class="va">p5</span>
-  <span class="va">rv</span><span class="op">$</span><span class="va">sample_summary</span><span class="op">[</span>, <span class="va">ploidy_class</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">ploidy</span> <span class="op">&gt;</span> <span class="fl">2.5</span>, <span class="st">"2+"</span>, <span class="st">"2"</span><span class="op">)</span><span class="op">]</span>
+  <span class="va">rv</span><span class="op">$</span><span class="va">sample_summary</span><span class="op">[</span>, <span class="va">ploidy_class</span> <span class="op">:=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">ploidy</span> <span class="op">&gt;</span> <span class="fl">2.5</span>, <span class="st">"2+"</span>, <span class="st">"2"</span><span class="op">)</span><span class="op">]</span>
   <span class="va">p6</span> <span class="op">&lt;-</span> <span class="fu"><a href="gcap.plotDistribution.html">gcap.plotDistribution</a></span><span class="op">(</span><span class="va">rv</span>, x <span class="op">=</span> <span class="st">"ploidy_class"</span>, by <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span>
   <span class="va">p6</span>
 <span class="op">}</span>

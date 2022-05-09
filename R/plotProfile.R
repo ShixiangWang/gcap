@@ -118,7 +118,7 @@ gcap.plotProfile <- function(fCNA,
                              top_n = NULL,
                              top_n_by = c("circular", "Total", "noncircular"),
                              only_circular = FALSE,
-                             merge_circular = FALSE,
+                             merge_circular = TRUE,
                              show_column_names = TRUE,
                              remove_empty_columns = FALSE,
                              remove_empty_rows = TRUE,
@@ -149,7 +149,7 @@ gcap.plotProfile <- function(fCNA,
       amplicon_type %in% "noncircular", "noncircular",
       default = NA
     )]
-    data <- data[!is.na(amplicon_type)]
+    #data <- data[!is.na(amplicon_type)]
     data[, amplicon_type := factor(amplicon_type, c("noncircular", "circular"))]
   }
   data <- data.table::dcast(
