@@ -87,7 +87,18 @@ gcap.enrich <- function(data,
     }
   } else {
     # A list/vector of (ranked) gene list
-    geneList <- data
+    genList = function(x) {
+      if (is.null(names(x))) {
+        y = seq_along(x)
+        names(y) = x
+      } else y = x
+      y
+    }
+    if (is.list(data)) {
+      geneList = lapply(data, genList)
+    } else {
+      geneList = genList(data)
+    }
   }
 
   if (analysis_func == "enricher") {
