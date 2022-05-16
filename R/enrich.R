@@ -12,7 +12,10 @@
 #' Enrich analysis
 #'
 #' @param data a [fCNA] object, or a vector (list) of genes.
+#' If the vector is named, the names must be genes and values must numeric.
 #' @param target `NA` for general, and "circular" or "noncircular" for specific fCNA type.
+#' @param class_by if a [fCNA] object provided, this specify a column name in `fCNA$sample_summary` to
+#' classify genes into different sample groups for enrichment. NOTE: any group with <10 genes is ignored.
 #' @param analysis_func analysis function to run.
 #' @param gene_encode gene ID type from input.
 #' @param species species, not to change.
@@ -26,6 +29,7 @@
 #' @export
 gcap.enrich <- function(data,
                         target = c(NA, "circular", "noncircular"),
+                        class_by = NULL,
                         analysis_func = c("enricher", "fgsea"),
                         gene_encode = c("ensembl", "symbol"),
                         species = "Homo sapiens", category = "H", subcategory = "",
@@ -52,53 +56,45 @@ gcap.enrich <- function(data,
   msigdbr_df <- msigdbr_df[, cols, with = FALSE]
   colnames(msigdbr_df) <- c("term", "gene")
 
-  # ref_file <- system.file(
-  #   "extdata", paste0(genome_build, "_target_genes.rds"),
-  #   package = "gcap", mustWork = TRUE
-  # )
-  # y <- readRDS(ref_file)$gene_id
-
   target <- match.arg(target)
   if (inherits(data, "fCNA")) {
-    if (analysis_func == "gsea") message("")
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # The gene rank is useless currently
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    if (analysis_func == "gsea") stop("gsea is not supported for fCNA object, please input a ranked list")
+    dts <- data$sample_summary
     data <- data.table::copy(data$data)
     data[, amplicon_type := set_default_factor(amplicon_type)]
-    dt_summary <- data[, .(
-      cn = mean(total_cn, na.rm = TRUE),
-      prob = mean(prob, na.rm = TRUE),
-      N = .N
-    ), by = .(gene_id, amplicon_type)][!is.na(gene_id)]
 
-    geneList <- lapply(split(dt_summary, f = dt_summary$amplicon_type, drop = TRUE), function(dt) {
-      if (dt$amplicon_type[1] == "circular") {
-        rv <- dt[order(prob, N, cn, decreasing = TRUE)]
-      } else {
-        rv <- dt[order(cn, N)]
-      }
-      r <- seq_len(nrow(rv))
-      names(r) <- rv$gene_id
-      r
-    })
     if (!is.na(target)) {
-      geneList <- geneList[[target]]
+      data <- data[data$amplicon_type %in% target]
     }
+
+    if (!is.null(class_by)) {
+      dts <- dts[, c("sample", class_by), with = FALSE]
+      colnames(dts)[2] <- "class"
+      data <- merge(data, dts, by = "sample", all.x = TRUE)
+      geneList <- lapply(split(data, f = data$class, drop = TRUE), function(dt) {
+        na.omit(unique(dt$gene_id))
+      })
+      # Only keep gene list with >=10 genes
+      geneList <- geneList[sapply(geneList, length) >= 10]
+      if (length(geneList) < 1) {
+        warning("No gene list left to run enrichment analysis", immediate. = TRUE)
+        return(invisible(NULL))
+      }
+    } else {
+      geneList <- lapply(split(data, f = data$amplicon_type, drop = TRUE), function(dt) {
+        na.omit(unique(dt$gene_id))
+      })
+    }
+    if (is.list(geneList) && length(geneList) == 1) geneList <- geneList[[1]]
   } else {
     # A list/vector of (ranked) gene list
-    genList = function(x) {
-      if (is.null(names(x))) {
-        y = seq_along(x)
-        names(y) = x
-      } else y = x
-      y
-    }
-    if (is.list(data)) {
-      geneList = lapply(data, genList)
-    } else {
-      geneList = genList(data)
-    }
+    geneList <- data
+  }
+
+  if (is.list(geneList)) {
+    geneList <- lapply(geneList, genList)
+  } else {
+    geneList <- genList(geneList)
   }
 
   if (analysis_func == "enricher") {
@@ -107,7 +103,7 @@ gcap.enrich <- function(data,
         geneCluster = lapply(geneList, names),
         fun = clusterProfiler::enricher,
         TERM2GENE = msigdbr_df,
-        #universe = y,
+        # universe = y,
         pvalueCutoff = 1,
         qvalueCutoff = 1,
         ...
@@ -115,7 +111,7 @@ gcap.enrich <- function(data,
     } else {
       clusterProfiler::enricher(
         gene = names(geneList), TERM2GENE = msigdbr_df,
-        #universe = y,
+        # universe = y,
         pvalueCutoff = 1, qvalueCutoff = 1, ...
       )
     }
@@ -131,6 +127,16 @@ gcap.enrich <- function(data,
       fgsea::fgsea(msigdbr_list, geneList, ...)
     }
   }
+}
+
+genList <- function(x) {
+  if (is.null(names(x))) {
+    y <- seq_along(x)
+    names(y) <- x
+  } else {
+    y <- x
+  }
+  y
 }
 
 # gcap.plotEnrichment <- function() {
