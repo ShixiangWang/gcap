@@ -27,6 +27,7 @@ reference:
     - gcap.plotKMcurve
     - gcap.plotForest
     - gcap.plotDistribution
+    - gcap.dotplot
     - gcap.enrich
   - title: Analysis Wrapper
     desc: Core build block for constructing pipeline
