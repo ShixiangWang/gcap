@@ -33,7 +33,7 @@ gcap.dotplot <- function(fCNA, by = c("gene_id", "band", "chr"), filter = cn > 5
       data = subset(genes_summary, eval(e)),
       ...
     ) +
-    labs(x = "Frequency", y = "Copy number mean") +
+    ggplot2::labs(x = "Frequency", y = "Copy number mean") +
     cowplot::theme_cowplot()
   p
 }
