@@ -62,6 +62,17 @@
 #' rv_subset2 <- rv$subset(sample == "TCGA-02-2485-01")
 #' nrow(rv_subset2$data)
 #' unique(rv_subset2$data$sample)
+#'
+#' sum_gene = rv$getGeneSummary()
+#' sum_gene
+#' mat_gene = rv$getGeneSummary(return_mat = TRUE)
+#' mat_gene
+#'
+#' sum_cytoband = rv$getCytobandSummary()
+#' sum_cytoband
+#' mat_cytoband = rv$getCytobandSummary(return_mat = TRUE)
+#' mat_cytoband
+#'
 #' @testexamples
 #' expect_equal(rv, rv2)
 #' expect_equal(length(rv3), 2L)
@@ -70,6 +81,10 @@
 #' expect_error(gcap.ASCNworkflow(data, outdir = tempdir()))
 #' expect_is(rv_subset, "fCNA")
 #' expect_is(rv_subset2, "fCNA")
+#' expect_is(sum_gene, "data.frame")
+#' expect_is(mat_gene, "data.frame")
+#' expect_is(sum_cytoband, "data.frame")
+#' expect_is(mat_cytoband, "data.frame")
 gcap.ASCNworkflow <- function(data,
                               genome_build = c("hg38", "hg19"),
                               model = "XGB32",

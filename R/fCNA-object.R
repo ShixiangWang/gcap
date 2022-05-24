@@ -109,9 +109,10 @@ fCNA <- R6::R6Class(
       ]
     },
     #' @description Get gene level summary of fCNA type
-    #' @param prob_cutoff,gap_cn thresholds for classify 'circular' and 'noncircular'
+    #' @param prob_cutoff,gap_cn thresholds for classify 'circular' and 'noncircular'.
+    #' @param return_mat if `TRUE`, return a cytoband by sample matrix instead of a summary.
     #' @return a `data.table`
-    getGeneSummary = function(prob_cutoff = 0.5, gap_cn = 4L) {
+    getGeneSummary = function(prob_cutoff = 0.5, gap_cn = 4L, return_mat = FALSE) {
       stopifnot(gap_cn >= 2)
       data <- data.table::copy(self$data)[total_cn > ploidy + gap_cn]
       data$amplicon_type <- data.table::fifelse(
@@ -126,39 +127,82 @@ fCNA <- R6::R6Class(
           drop = FALSE
         )
         rv$Total <- rowSums(rv[, -1])
+        rv <- rv[order(rv$circular, rv$Total, decreasing = TRUE), ]
       } else {
         rv <- data.table::data.table()
       }
-      rv
+      if (!return_mat) {
+        return(rv)
+      }
+      if (nrow(rv) == 0) {
+        message("No data")
+        return(NULL)
+      }
+
+      allsamps <- self$sample_summary$sample
+      data$sample <- factor(data$sample, allsamps)
+      data <- data.table::dcast(
+        data,
+        gene_id ~ sample,
+        value.var = "amplicon_type", fill = NA,
+        drop = FALSE, fun.aggregate = function(x) x[1]
+      )
+      data <- data.frame(data[, -1], row.names = data[[1]])
+      # Reorder data
+      data <- data[rv$gene_id, ]
+      return(data)
     },
     #' @description Get cytoband level summary of fCNA type
     #' @param prob_cutoff,gap_cn thresholds for classify 'circular' and 'noncircular'
     #' @param unique if `TRUE`, count sample frequency instead of gene frequency.
+    #' @param return_mat if `TRUE`, return a cytoband by sample matrix instead of a summary.
     #' @return a `data.table`
-    getCytobandSummary = function(prob_cutoff = 0.5, gap_cn = 4L, unique = FALSE) {
+    getCytobandSummary = function(prob_cutoff = 0.5, gap_cn = 4L, unique = FALSE,
+                                  return_mat = FALSE) {
       stopifnot(gap_cn >= 2)
       data <- data.table::copy(self$data)[total_cn > ploidy + gap_cn]
       data$amplicon_type <- data.table::fifelse(
         data$prob > prob_cutoff, "circular", "noncircular"
       )
       data$amplicon_type <- factor(data$amplicon_type, c("noncircular", "circular"))
-      if (unique) {
-        data <- data[, .(N = length(unique(sample))), by = .(band, amplicon_type)]
-      } else {
-        data <- data[, .N, by = .(band, amplicon_type)]
-      }
 
       if (nrow(self$data) > 0) {
-        rv <- data.table::dcast(data,
+        if (unique) {
+          data2 <- data[, .(N = length(unique(sample))), by = .(band, amplicon_type)]
+        } else {
+          data2 <- data[, .N, by = .(band, amplicon_type)]
+        }
+
+        rv <- data.table::dcast(data2,
           band ~ amplicon_type,
           value.var = "N", fill = 0L,
           drop = FALSE
         )
         rv$Total <- rowSums(rv[, -1])
+        rv <- rv[order(rv$circular, rv$Total, decreasing = TRUE), ]
       } else {
         rv <- data.table::data.table()
       }
-      rv
+      if (!return_mat) {
+        return(rv)
+      }
+      if (nrow(rv) == 0) {
+        message("No data")
+        return(NULL)
+      }
+
+      allsamps <- self$sample_summary$sample
+      data$sample <- factor(data$sample, allsamps)
+      data <- data.table::dcast(
+        data,
+        band ~ sample,
+        value.var = "amplicon_type", fill = NA,
+        drop = FALSE, fun.aggregate = function(x) names(sort(table(x), decreasing = TRUE)[1])
+      )
+      data <- data.frame(data[, -1], row.names = data[[1]])
+      # Reorder data
+      data <- data[rv$band, ]
+      return(data)
     },
     #' @description Save the key data to local files
     #' @param dirpath directory path storing output files.

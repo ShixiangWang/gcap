@@ -1,3 +1,7 @@
+# gcap 0.20.1
+
+- Enhance the `getGeneSummary()` and `getCytobandSummary()` methods to return mutation matrix.
+
 # gcap 0.20.0
 
 - This version is not compatible with previous versions, as the analysis and

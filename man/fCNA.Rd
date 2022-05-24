@@ -130,13 +130,15 @@ a \code{data.table}
 \subsection{Method \code{getGeneSummary()}}{
 Get gene level summary of fCNA type
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$getGeneSummary(prob_cutoff = 0.5, gap_cn = 4L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$getGeneSummary(prob_cutoff = 0.5, gap_cn = 4L, return_mat = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{prob_cutoff, gap_cn}}{thresholds for classify 'circular' and 'noncircular'}
+\item{\code{prob_cutoff, gap_cn}}{thresholds for classify 'circular' and 'noncircular'.}
+
+\item{\code{return_mat}}{if \code{TRUE}, return a cytoband by sample matrix instead of a summary.}
 }
 \if{html}{\out{</div>}}
 }
@@ -150,7 +152,12 @@ a \code{data.table}
 \subsection{Method \code{getCytobandSummary()}}{
 Get cytoband level summary of fCNA type
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$getCytobandSummary(prob_cutoff = 0.5, gap_cn = 4L, unique = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$getCytobandSummary(
+  prob_cutoff = 0.5,
+  gap_cn = 4L,
+  unique = FALSE,
+  return_mat = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -159,6 +166,8 @@ Get cytoband level summary of fCNA type
 \item{\code{prob_cutoff, gap_cn}}{thresholds for classify 'circular' and 'noncircular'}
 
 \item{\code{unique}}{if \code{TRUE}, count sample frequency instead of gene frequency.}
+
+\item{\code{return_mat}}{if \code{TRUE}, return a cytoband by sample matrix instead of a summary.}
 }
 \if{html}{\out{</div>}}
 }
