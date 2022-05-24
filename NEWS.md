@@ -1,6 +1,6 @@
-# gcap 0.2.0
+# gcap 0.20.0
 
-- This versio is not compatible with previous versions, as the analysis and
+- This version is not compatible with previous versions, as the analysis and
 visualization functions are moved to an independent package 'gcaputils'.
 
 # gcap 0.14
