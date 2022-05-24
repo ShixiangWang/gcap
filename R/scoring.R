@@ -125,7 +125,7 @@ gcap.runScoring <- function(data,
   sel_cols <- sel_cols[sel_cols %in% colnames(data)]
   pdata <- data[match(unique(data$sample), sample), sel_cols, with = FALSE]
   lg$info("only keep genes with copy number >= ploidy+2 in result fCNA object")
-  fcna <- data[!thlevel %in% NA & total_cn > ploidy + 2,
+  fcna <- data[!thlevel %in% NA & total_cn >= ploidy + 2,
     c(
       "sample", "band", "gene_id", "total_cn",
       "minor_cn", "ploidy", "prob", "thlevel"
