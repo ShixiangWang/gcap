@@ -109,15 +109,13 @@ gcap.runScoring <- function(data,
   }
   flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.45, 0.75, 1), include.lowest = TRUE))
   # Classify amplicon
-  data$amplicon_type <- data.table::fcase(
-    flag_amp & flag_circle == 3, "circular",
-    flag_amp & flag_circle == 2, "possibly_circular",
-    flag_amp | flag_amp2, "noncircular",
-    default = "nofocal"
+  data$thlevel <- data.table::fcase(
+    flag_amp & flag_circle == 3, "l3",
+    flag_amp & flag_circle == 2, "l2",
+    flag_amp | flag_amp2, "l1",
+    default = "l0"
   )
-  data$amplicon_type <- factor(data$amplicon_type, levels = c(
-    "nofocal", "noncircular", "possibly_circular", "circular"
-  ))
+  data$thlevel <- factor(data$thlevel, levels = paste0("l", 0:3))
 
   # Generate input of fCNA class
   sel_cols <- c(
@@ -126,10 +124,11 @@ gcap.runScoring <- function(data,
   )
   sel_cols <- sel_cols[sel_cols %in% colnames(data)]
   pdata <- data[match(unique(data$sample), sample), sel_cols, with = FALSE]
-  fcna <- data[!amplicon_type %in% c(NA, "nofocal"),
+  lg$info("only keep genes with copy number >= ploidy+2 in result fCNA object")
+  fcna <- data[!thlevel %in% NA & total_cn > ploidy + 2,
     c(
       "sample", "band", "gene_id", "total_cn",
-      "minor_cn", "background_cn", "prob", "amplicon_type"
+      "minor_cn", "ploidy", "prob", "thlevel"
     ),
     with = FALSE
   ] # Only treat nofocal as (focal) variants

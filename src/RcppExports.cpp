@@ -10,17 +10,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// calc_dist
-NumericMatrix calc_dist(NumericMatrix x);
-RcppExport SEXP _gcap_calc_dist(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(calc_dist(x));
-    return rcpp_result_gen;
-END_RCPP
-}
 // vec_shift
 NumericVector vec_shift(NumericVector arr);
 RcppExport SEXP _gcap_vec_shift(SEXP arrSEXP) {
@@ -45,7 +34,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_gcap_calc_dist", (DL_FUNC) &_gcap_calc_dist, 1},
     {"_gcap_vec_shift", (DL_FUNC) &_gcap_vec_shift, 1},
     {"_gcap_conv_binomial", (DL_FUNC) &_gcap_conv_binomial, 1},
     {NULL, NULL, 0}

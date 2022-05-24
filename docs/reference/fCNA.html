@@ -30,7 +30,7 @@ fCNA information. Examples please see gcap.ASCNworkflow()."><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.14.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@ At default, <code>blood_cn_top5(_sd)</code> is obtained from SNP array data of ~
 they are mean and sd of top 5% copy number values for each gene (in ~2000 samples);
 <code>ploidy</code> is tumor ploidy.</p></li>
 <li><p><code>prob</code> the probability the gene located in circular DNA.</p></li>
-<li><p><code>amplicon_type</code> the type of DNA amplicon.</p></li>
+<li><p><code>thlevel</code> the type of DNA amplicon.</p></li>
 </ul></dd>
 
 
@@ -108,14 +108,6 @@ otherwise the extra cases would be automatically classified as 'nofocal' (i.e. <
 <li><p><code>ec_cytobands</code> number of cytobands predicted as located on circular DNA.
 (the regions of <code>ec_possibly_genes</code> are not included in computation)</p></li>
 </ul></dd>
-
-
-<dt><code>gene_summary</code></dt>
-<dd><p>a <code>data.table</code> storing gene summary data.</p></dd>
-
-
-<dt><code>cytoband_summary</code></dt>
-<dd><p>a <code>data.table</code> storing cytoband summary data.</p></dd>
 
 
 </dl><p></p></div>
@@ -171,7 +163,7 @@ genes would be labelled as "circular". <strong>This only affect <code>sample_sum
 </div>
 
 </div><p></p><hr><a id="method-subset"></a><div class="section">
-<h3 id="method-subset-">Method <code><a href="https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html" class="external-link">subset()</a></code><a class="anchor" aria-label="anchor" href="#method-subset-"></a></h3>
+<h3 id="method-subset-">Method <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code><a class="anchor" aria-label="anchor" href="#method-subset-"></a></h3>
 <p>Return a subset <code>fCNA</code> object</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">subset</span><span class="op">(</span><span class="va">...</span>, on <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sample_summary"</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
@@ -211,9 +203,17 @@ same for "sample_summary".</p></dd>
 <h3 id="method-getgenesummary-">Method <code>getGeneSummary()</code><a class="anchor" aria-label="anchor" href="#method-getgenesummary-"></a></h3>
 <p>Get gene level summary of fCNA type</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">getGeneSummary</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">getGeneSummary</span><span class="op">(</span>prob_cutoff <span class="op">=</span> <span class="fl">0.5</span>, gap_cn <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>prob_cutoff, gap_cn</code></dt>
+<dd><p>thresholds for classify 'circular' and 'noncircular'</p></dd>
+
+
+</dl><p></p></div>
+</div>
 <div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>a <code>data.table</code></p>
@@ -223,9 +223,21 @@ same for "sample_summary".</p></dd>
 <h3 id="method-getcytobandsummary-">Method <code>getCytobandSummary()</code><a class="anchor" aria-label="anchor" href="#method-getcytobandsummary-"></a></h3>
 <p>Get cytoband level summary of fCNA type</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">getCytobandSummary</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">getCytobandSummary</span><span class="op">(</span>prob_cutoff <span class="op">=</span> <span class="fl">0.5</span>, gap_cn <span class="op">=</span> <span class="fl">4L</span>, unique <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>prob_cutoff, gap_cn</code></dt>
+<dd><p>thresholds for classify 'circular' and 'noncircular'</p></dd>
+
+
+<dt><code>unique</code></dt>
+<dd><p>if <code>TRUE</code>, count sample frequency instead of gene frequency.</p></dd>
+
+
+</dl><p></p></div>
+</div>
 <div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>a <code>data.table</code></p>
@@ -239,7 +251,7 @@ same for "sample_summary".</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>dirpath</code></dt>
 <dd><p>directory path storing output files.</p></dd>
 
@@ -262,7 +274,7 @@ same for "sample_summary".</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>type</code></dt>
 <dd><p>type of input IDs, could be 'ensembl' or 'symbol'.</p></dd>
 
@@ -282,7 +294,7 @@ same for "sample_summary".</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>unused.</p></dd>
 
@@ -302,13 +314,11 @@ same for "sample_summary".</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

@@ -22,7 +22,7 @@ At default, \verb{blood_cn_top5(_sd)} is obtained from SNP array data of ~2000 T
 they are mean and sd of top 5\% copy number values for each gene (in ~2000 samples);
 \code{ploidy} is tumor ploidy.
 \item \code{prob} the probability the gene located in circular DNA.
-\item \code{amplicon_type} the type of DNA amplicon.
+\item \code{thlevel} the type of DNA amplicon.
 }}
 
 \item{\code{sample_summary}}{a \code{data.table} storing sample summary data, which typically contains
@@ -40,10 +40,6 @@ otherwise the extra cases would be automatically classified as 'nofocal' (i.e. \
 \item \code{ec_cytobands} number of cytobands predicted as located on circular DNA.
 (the regions of \code{ec_possibly_genes} are not included in computation)
 }}
-
-\item{\code{gene_summary}}{a \code{data.table} storing gene summary data.}
-
-\item{\code{cytoband_summary}}{a \code{data.table} storing cytoband summary data.}
 }
 \if{html}{\out{</div>}}
 }
@@ -134,9 +130,16 @@ a \code{data.table}
 \subsection{Method \code{getGeneSummary()}}{
 Get gene level summary of fCNA type
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$getGeneSummary()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$getGeneSummary(prob_cutoff = 0.5, gap_cn = 4L)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{prob_cutoff, gap_cn}}{thresholds for classify 'circular' and 'noncircular'}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 a \code{data.table}
 }
@@ -147,9 +150,18 @@ a \code{data.table}
 \subsection{Method \code{getCytobandSummary()}}{
 Get cytoband level summary of fCNA type
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$getCytobandSummary()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$getCytobandSummary(prob_cutoff = 0.5, gap_cn = 4L, unique = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{prob_cutoff, gap_cn}}{thresholds for classify 'circular' and 'noncircular'}
+
+\item{\code{unique}}{if \code{TRUE}, count sample frequency instead of gene frequency.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 a \code{data.table}
 }

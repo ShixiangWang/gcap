@@ -19,12 +19,6 @@
     <loc>/reference/ascn.html</loc>
   </url>
   <url>
-    <loc>/reference/clusterGPosition.html</loc>
-  </url>
-  <url>
-    <loc>/reference/convertID.html</loc>
-  </url>
-  <url>
     <loc>/reference/deploy.html</loc>
   </url>
   <url>
@@ -43,31 +37,7 @@
     <loc>/reference/gcap.collapse2Genes.html</loc>
   </url>
   <url>
-    <loc>/reference/gcap.dotplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gcap.enrich.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gcap.extractComponents.html</loc>
-  </url>
-  <url>
     <loc>/reference/gcap.extractFeatures.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gcap.plotCircos.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gcap.plotDistribution.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gcap.plotForest.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gcap.plotKMcurve.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gcap.plotProfile.html</loc>
   </url>
   <url>
     <loc>/reference/gcap.runASCAT.html</loc>
@@ -101,8 +71,5 @@
   </url>
   <url>
     <loc>/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_default_factor.html</loc>
   </url>
 </urlset>

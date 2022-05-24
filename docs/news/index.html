@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.14.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
@@ -70,6 +70,10 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.0" id="gcap-020">gcap 0.2.0<a class="anchor" aria-label="anchor" href="#gcap-020"></a></h2>
+<ul><li>This versio is not compatible with previous versions, as the analysis and visualization functions are moved to an independent package ‘gcaputils’.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.14" id="gcap-014">gcap 0.14<a class="anchor" aria-label="anchor" href="#gcap-014"></a></h2>
 <ul><li>Added some utils functions and visualization functions.</li>
 </ul></div>
@@ -83,30 +87,24 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.11.1" id="gcap-0111">gcap 0.11.1<a class="anchor" aria-label="anchor" href="#gcap-0111"></a></h2>
-<ul><li>Supported a <code>NA</code> passing as tightness to remove the use
-of TCGA blood summary data as a more strict threshold for circular
-amplicon.</li>
+<ul><li>Supported a <code>NA</code> passing as tightness to remove the use of TCGA blood summary data as a more strict threshold for circular amplicon.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.11.0" id="gcap-0110">gcap 0.11.0<a class="anchor" aria-label="anchor" href="#gcap-0110"></a></h2>
 <ul><li>Added <code>fCNA$subset()</code> method.</li>
-<li>Added <code><a href="../reference/gcap.plotDistribution.html">gcap.plotDistribution()</a></code> function.</li>
+<li>Added <code>gcap.plotDistribution()</code> function.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.10.0" id="gcap-0100">gcap 0.10.0<a class="anchor" aria-label="anchor" href="#gcap-0100"></a></h2>
-<ul><li>Added <code><a href="../reference/gcap.plotForest.html">gcap.plotForest()</a></code>.</li>
-<li>Added <code><a href="../reference/gcap.plotKMcurve.html">gcap.plotKMcurve()</a></code>.</li>
-<li>Added <code><a href="../reference/gcap.plotProfile.html">gcap.plotProfile()</a></code>.</li>
-<li>Added method <code>convertGeneID()</code> to <code>fCNA</code>
-class.</li>
-<li>Set a default value for <code>pdata</code> option in
-<code>fCNA$new()</code>.</li>
+<ul><li>Added <code>gcap.plotForest()</code>.</li>
+<li>Added <code>gcap.plotKMcurve()</code>.</li>
+<li>Added <code>gcap.plotProfile()</code>.</li>
+<li>Added method <code>convertGeneID()</code> to <code>fCNA</code> class.</li>
+<li>Set a default value for <code>pdata</code> option in <code>fCNA$new()</code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.0" id="gcap-090">gcap 0.9.0<a class="anchor" aria-label="anchor" href="#gcap-090"></a></h2>
-<ul><li>Supported <code>gcap</code> as main command, and previous two
-commands as subcommands if <code>GetoptLong</code> version
-<code>&gt;=1.1.0</code>. Note: not test yet.</li>
+<ul><li>Supported <code>gcap</code> as main command, and previous two commands as subcommands if <code>GetoptLong</code> version <code>&gt;=1.1.0</code>. Note: not test yet.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.8.1" id="gcap-081">gcap 0.8.1<a class="anchor" aria-label="anchor" href="#gcap-081"></a></h2>
@@ -115,64 +113,46 @@ commands as subcommands if <code>GetoptLong</code> version
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.8.0" id="gcap-080">gcap 0.8.0<a class="anchor" aria-label="anchor" href="#gcap-080"></a></h2>
 <ul><li>Added options <code>tightness</code> and <code>gap_cn</code>.</li>
-<li>Renamed <code>gcap-wes.R</code> script to
-<code>gcap-bam.R</code>.</li>
+<li>Renamed <code>gcap-wes.R</code> script to <code>gcap-bam.R</code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.7.0" id="gcap-070">gcap 0.7.0<a class="anchor" aria-label="anchor" href="#gcap-070"></a></h2>
 <ul><li>Handled void result.</li>
-<li>Updated the background copy number reference and criterion judging a
-amplicon (<a href="https://github.com/ShixiangWang/gcap/issues/22" class="external-link">#22</a>).</li>
+<li>Updated the background copy number reference and criterion judging a amplicon (<a href="https://github.com/ShixiangWang/gcap/issues/22" class="external-link">#22</a>).</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.0" id="gcap-060">gcap 0.6.0<a class="anchor" aria-label="anchor" href="#gcap-060"></a></h2>
-<ul><li>Designed and implemented a class <code>fCNA</code> used for storing
-the workflow key outputs and downstream analysis and visualization.</li>
+<ul><li>Designed and implemented a class <code>fCNA</code> used for storing the workflow key outputs and downstream analysis and visualization.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.0" id="gcap-050">gcap 0.5.0<a class="anchor" aria-label="anchor" href="#gcap-050"></a></h2>
-<ul><li>Provided a function <code>convertID()</code> to convert gene
-IDs.</li>
+<ul><li>Provided a function <code>convertID()</code> to convert gene IDs.</li>
 <li>Optimized the output summary.</li>
 <li>Re-constructed scoring and workflow output.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1" id="gcap-041">gcap 0.4.1<a class="anchor" aria-label="anchor" href="#gcap-041"></a></h2>
-<ul><li>Added <code>use_best_ntreelimit</code> in
-<code><a href="../reference/gcap.runPrediction.html">gcap.runPrediction()</a></code> to control the ntree setting. When it
-is <code>FALSE</code>, we use a custom processing to obtain a more
-conservative tree number.</li>
-<li>Added <code><a href="../reference/deploy.html">deploy()</a></code> to auto-deploy the CLI to
-<code>/usr/loca/bin</code>.</li>
+<ul><li>Added <code>use_best_ntreelimit</code> in <code><a href="../reference/gcap.runPrediction.html">gcap.runPrediction()</a></code> to control the ntree setting. When it is <code>FALSE</code>, we use a custom processing to obtain a more conservative tree number.</li>
+<li>Added <code><a href="../reference/deploy.html">deploy()</a></code> to auto-deploy the CLI to <code>/usr/loca/bin</code>.</li>
 <li>Added easy-to-use CLI in <code>inst</code> directory.</li>
-<li>Filled <code>NA</code>s to input when age and gender are not
-available.</li>
-<li>Automatically appended logs to specific directory with
-<code>rappdirs::app_dir("gcap", "ShixiangWang")</code>. Users can obtain
-log path and cat log info with <code>gcap:::get_log_file()</code> and
-<code>gcap:::cat_log_file()</code> for debugging. (<a href="https://github.com/ShixiangWang/gcap/issues/14" class="external-link">#14</a>)</li>
+<li>Filled <code>NA</code>s to input when age and gender are not available.</li>
+<li>Automatically appended logs to specific directory with <code>rappdirs::app_dir("gcap", "ShixiangWang")</code>. Users can obtain log path and cat log info with <code>gcap:::get_log_file()</code> and <code>gcap:::cat_log_file()</code> for debugging. (<a href="https://github.com/ShixiangWang/gcap/issues/14" class="external-link">#14</a>)</li>
 <li>Supported XGB54 model in workflows. (<a href="https://github.com/ShixiangWang/gcap/issues/13" class="external-link">#13</a>)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.0" id="gcap-040">gcap 0.4.0<a class="anchor" aria-label="anchor" href="#gcap-040"></a></h2>
-<ul><li>After exploration, we found our stepwise model outperform MBO tuned
-model. So the models for predicting circular target have been limited to
-3.</li>
+<ul><li>After exploration, we found our stepwise model outperform MBO tuned model. So the models for predicting circular target have been limited to 3.</li>
 <li>
-<code><a href="../reference/gcap.ASCNworkflow.html">gcap.ASCNworkflow()</a></code> now supports input with only total
-integer copy number, like the result from ABSOLUTE software (also <a href="https://github.com/ShixiangWang/DoAbsolute" class="external-link">DoAbsolute</a>).</li>
+<code><a href="../reference/gcap.ASCNworkflow.html">gcap.ASCNworkflow()</a></code> now supports input with only total integer copy number, like the result from ABSOLUTE software (also <a href="https://github.com/ShixiangWang/DoAbsolute" class="external-link">DoAbsolute</a>).</li>
 <li>Added stepwised model for circle target.</li>
 <li>Changed the way how to select model and run prediction.</li>
 <li>
-<code>custom_model</code> in <code><a href="../reference/gcap.runPrediction.html">gcap.runPrediction()</a></code> has
-been changed to <code>model</code>. This is inconsistent with version
-below v0.4.</li>
+<code>custom_model</code> in <code><a href="../reference/gcap.runPrediction.html">gcap.runPrediction()</a></code> has been changed to <code>model</code>. This is inconsistent with version below v0.4.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.3" id="gcap-033">gcap 0.3.3<a class="anchor" aria-label="anchor" href="#gcap-033"></a></h2>
 <ul><li>Updated scoring for supporting different thresholds.</li>
-<li>Wrapped ASCAT workflow in <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> to avoid abnormal
-failure.</li>
+<li>Wrapped ASCAT workflow in <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> to avoid abnormal failure.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.2" id="gcap-032">gcap 0.3.2<a class="anchor" aria-label="anchor" href="#gcap-032"></a></h2>
@@ -180,8 +160,7 @@ failure.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.1" id="gcap-031">gcap 0.3.1<a class="anchor" aria-label="anchor" href="#gcap-031"></a></h2>
-<ul><li>Fixed the issue about rendering wrong data files when skipping
-existing ASCAT calling.</li>
+<ul><li>Fixed the issue about rendering wrong data files when skipping existing ASCAT calling.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.0" id="gcap-030">gcap 0.3.0<a class="anchor" aria-label="anchor" href="#gcap-030"></a></h2>
@@ -189,20 +168,16 @@ existing ASCAT calling.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.1" id="gcap-021">gcap 0.2.1<a class="anchor" aria-label="anchor" href="#gcap-021"></a></h2>
-<ul><li>Removed <code>prob_cutoff</code> setting in workflows. Directly use
-prob 0.1, 0.5 and 0.9 for cutting low, medium and high quality
-amplicon.</li>
+<ul><li>Removed <code>prob_cutoff</code> setting in workflows. Directly use prob 0.1, 0.5 and 0.9 for cutting low, medium and high quality amplicon.</li>
 </ul></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.0" id="gcap-020">gcap 0.2.0<a class="anchor" aria-label="anchor" href="#gcap-020"></a></h2>
-<ul><li>Implemented an alternative workflow from allele specific copy number
-data to final result files. (<a href="https://github.com/ShixiangWang/gcap/issues/5" class="external-link">#5</a>)</li>
+<h2 class="page-header" data-toc-text="0.2.0" id="gcap-020-1">gcap 0.2.0<a class="anchor" aria-label="anchor" href="#gcap-020-1"></a></h2>
+<ul><li>Implemented an alternative workflow from allele specific copy number data to final result files. (<a href="https://github.com/ShixiangWang/gcap/issues/5" class="external-link">#5</a>)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.0" id="gcap-010">gcap 0.1.0<a class="anchor" aria-label="anchor" href="#gcap-010"></a></h2>
 <ul><li>Implemented basic workflow from BAM files to result files.</li>
-<li>Added a <code>NEWS.md</code> file to track changes to the
-package.</li>
+<li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 </ul></div>
   </div>
 
@@ -214,13 +189,11 @@ package.</li>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

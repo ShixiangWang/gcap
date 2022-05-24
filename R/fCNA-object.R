@@ -23,7 +23,7 @@ fCNA <- R6::R6Class(
     #' they are mean and sd of top 5% copy number values for each gene (in ~2000 samples);
     #' `ploidy` is tumor ploidy.
     #' - `prob` the probability the gene located in circular DNA.
-    #' - `amplicon_type` the type of DNA amplicon.
+    #' - `thlevel` the type of DNA amplicon.
     #' @field sample_summary a `data.table` storing sample summary data, which typically contains
     #' at least the following columns:
     #' - `sample` sample or case ID. **Should only include cases have been called with GCAP workflow,
@@ -37,12 +37,8 @@ fCNA <- R6::R6Class(
     #' - `ec_possibly_genes` same with `ec_genes` but with less confidence.
     #' - `ec_cytobands` number of cytobands predicted as located on circular DNA.
     #' (the regions of `ec_possibly_genes` are not included in computation)
-    #' @field gene_summary a `data.table` storing gene summary data.
-    #' @field cytoband_summary a `data.table` storing cytoband summary data.
     data = NULL,
     sample_summary = NULL,
-    gene_summary = NULL,
-    cytoband_summary = NULL,
     #' @description Create a `fCNA` object.
     #' Typically, you can obtain this object from [gcap.workflow()] or [gcap.ASCNworkflow()].
     #' @param fcna a `data.frame` storing focal copy number amplicon list.
@@ -55,18 +51,16 @@ fCNA <- R6::R6Class(
         is.data.frame(fcna), is.data.frame(pdata),
         all(c(
           "sample", "band", "gene_id", "total_cn",
-          "prob", "amplicon_type"
+          "ploidy", "prob", "thlevel"
         ) %in% colnames(fcna)),
         all(c("sample") %in% colnames(pdata)),
         !is.null(min_n) && min_n >= 1
       )
 
       private$n <- min_n
-
-      message("set fixed levels for 'amplicon_type'")
-      amplvls <- c("noncircular", "possibly_circular", "circular")
-      fcna <- fcna[fcna$amplicon_type %in% amplvls, ]
-      fcna$amplicon_type <- factor(fcna$amplicon_type, levels = amplvls)
+      amplvls <- paste0("l", 0:3) # a strict threshold for c("nofocal", "noncircular", "possibly_circular", "circular")
+      fcna <- fcna[fcna$thlevel %in% amplvls, ]
+      fcna$thlevel <- factor(fcna$thlevel, levels = amplvls)
       self$data <- data.table::as.data.table(fcna)
       message("summarizing sample...")
       ss <- self$getSampleSummary()
@@ -82,9 +76,6 @@ fCNA <- R6::R6Class(
       # Set default label 'nofocal' to samples with NA
       self$sample_summary[, `:=`(class = data.table::fifelse(is.na(class), "nofocal", class))]
 
-      message("summarizing gene and cytoband...")
-      self$gene_summary <- self$getGeneSummary()
-      self$cytoband_summary <- self$getCytobandSummary()
       message("done")
     },
     #' @description Return a subset `fCNA` object
@@ -105,7 +96,12 @@ fCNA <- R6::R6Class(
     getSampleSummary = function() {
       stopifnot(!is.null(private$n) && private$n >= 1L)
       message("  classifying samples with min_n=", private$n)
-      self$data[
+      amplvls <- paste0("l", 1:3)
+      data <- data.table::copy(self$data)
+      data <- data[data$thlevel %in% amplvls, ]
+      data$thlevel <- factor(data$thlevel, levels = amplvls)
+
+      data[
         , summarize_sample(.SD,
           min_n = private$n
         ),
@@ -113,10 +109,18 @@ fCNA <- R6::R6Class(
       ]
     },
     #' @description Get gene level summary of fCNA type
+    #' @param prob_cutoff,gap_cn thresholds for classify 'circular' and 'noncircular'
     #' @return a `data.table`
-    getGeneSummary = function() {
+    getGeneSummary = function(prob_cutoff = 0.5, gap_cn = 4L) {
+      stopifnot(gap_cn >= 2)
+      data <- data.table::copy(self$data)[total_cn > ploidy + gap_cn]
+      data$amplicon_type <- data.table::fifelse(
+        data$prob > prob_cutoff, "circular", "noncircular"
+      )
+      data$amplicon_type <- factor(data$amplicon_type, c("noncircular", "circular"))
+
       if (nrow(self$data) > 0) {
-        rv <- data.table::dcast(self$data[, .N, by = .(gene_id, amplicon_type)],
+        rv <- data.table::dcast(data[, .N, by = .(gene_id, amplicon_type)],
           gene_id ~ amplicon_type,
           value.var = "N", fill = 0L,
           drop = FALSE
@@ -128,10 +132,24 @@ fCNA <- R6::R6Class(
       rv
     },
     #' @description Get cytoband level summary of fCNA type
+    #' @param prob_cutoff,gap_cn thresholds for classify 'circular' and 'noncircular'
+    #' @param unique if `TRUE`, count sample frequency instead of gene frequency.
     #' @return a `data.table`
-    getCytobandSummary = function() {
+    getCytobandSummary = function(prob_cutoff = 0.5, gap_cn = 4L, unique = FALSE) {
+      stopifnot(gap_cn >= 2)
+      data <- data.table::copy(self$data)[total_cn > ploidy + gap_cn]
+      data$amplicon_type <- data.table::fifelse(
+        data$prob > prob_cutoff, "circular", "noncircular"
+      )
+      data$amplicon_type <- factor(data$amplicon_type, c("noncircular", "circular"))
+      if (unique) {
+        data <- data[, .(N = length(unique(sample))), by = .(band, amplicon_type)]
+      } else {
+        data <- data[, .N, by = .(band, amplicon_type)]
+      }
+
       if (nrow(self$data) > 0) {
-        rv <- data.table::dcast(self$data[, .N, by = .(band, amplicon_type)],
+        rv <- data.table::dcast(data,
           band ~ amplicon_type,
           value.var = "N", fill = 0L,
           drop = FALSE
@@ -166,14 +184,9 @@ fCNA <- R6::R6Class(
 
       type <- match.arg(type)
       genome_build <- match.arg(genome_build)
-      message("converting gene IDs, will update 'data' and 'gene_summary' fields")
+      message("converting gene IDs, will update 'data' fields")
       self$data$gene_id <- IDConverter::convert_hm_genes(
         self$data$gene_id,
-        type = type,
-        genome_build = genome_build
-      )
-      self$gene_summary$gene_id <- IDConverter::convert_hm_genes(
-        self$gene_summary$gene_id,
         type = type,
         genome_build = genome_build
       )
@@ -181,24 +194,22 @@ fCNA <- R6::R6Class(
     #' @description print the fCNA object
     #' @param ... unused.
     print = function(...) {
-      tbl <- table(self$data$amplicon_type)
       ss <- self$sample_summary
       cat("======================\nA <")
       cat(cli::col_br_cyan("fCNA"))
       cat("> object\n")
+      cat(sprintf("%8s: %s\n", "record", cli::col_green(nrow(self$data))))
       cat(sprintf("%8s: %s\n", "case", cli::col_cyan(nrow(ss))))
-      cat(sprintf("%8s: %s\n", "gene", cli::col_green(nrow(self$gene_summary))))
-      cat(sprintf("%8s: %s\n", "fCNA", cli::col_green(nrow(self$data))))
-      cat("     |__ ", cli::col_green(tbl[1]),
-        " (", cli::col_cyan(sum(ss$class == "noncircular", na.rm = TRUE)), ") noncircular\n",
+      cat("     |__ ",
+        "(", cli::col_cyan(sum(ss$class == "noncircular", na.rm = TRUE)), ") noncircular\n",
         sep = ""
       )
-      cat("     |__ ", cli::col_green(tbl[2]),
-        " (", cli::col_cyan(sum(ss$class == "possibly_circular", na.rm = TRUE)), ") possibly_circular\n",
+      cat("     |__ ",
+        "(", cli::col_cyan(sum(ss$class == "possibly_circular", na.rm = TRUE)), ") possibly_circular\n",
         sep = ""
       )
-      cat("     |__ ", cli::col_green(tbl[3]),
-        " (", cli::col_cyan(sum(ss$class == "circular", na.rm = TRUE)), ") circular\n",
+      cat("     |__ ",
+        "(", cli::col_cyan(sum(ss$class == "circular", na.rm = TRUE)), ") circular\n",
         sep = ""
       )
       cat("======================\n")
@@ -233,12 +244,12 @@ fCNA <- R6::R6Class(
 # summarize sample --------------------------------------------------------
 
 summarize_sample <- function(data, min_n) {
-  ec_genes <- sum(data$amplicon_type == "circular", na.rm = TRUE)
-  ec_cytobands_detail <- na.omit(unique(data$band[data$amplicon_type == "circular"]))
+  ec_genes <- sum(data$thlevel == "l3", na.rm = TRUE)
+  ec_cytobands_detail <- na.omit(unique(data$band[data$thlevel == "l3"]))
   ec_cytobands <- length(ec_cytobands_detail)
   ec_cytobands_detail <- paste(sort(ec_cytobands_detail), collapse = ",")
-  ec_possibly_genes <- sum(data$amplicon_type == "possibly_circular", na.rm = TRUE)
-  prob_possibly <- data[data$amplicon_type %in% c("possibly_circular", "circular")]
+  ec_possibly_genes <- sum(data$thlevel == "l2", na.rm = TRUE)
+  prob_possibly <- data[data$thlevel %in% c("l2", "l3")]
 
   if (nrow(prob_possibly) > 0) {
     # Collapse probs by cytobands
@@ -266,7 +277,7 @@ summarize_sample <- function(data, min_n) {
   } else {
     # Use cytobands instead of genes to count
     flag_amp <- length(na.omit(unique(
-      data$band[data$amplicon_type %in% c("noncircular", "possibly_circular", "circular")]
+      data$band[data$thlevel %in% paste0("l", 1:3)]
     ))) >= min_n
     if (flag_amp) {
       "noncircular"
@@ -275,13 +286,7 @@ summarize_sample <- function(data, min_n) {
     }
   }
 
-  data.frame(
-    class = class,
-    ec_genes = ec_genes,
-    ec_possibly_genes = ec_possibly_genes,
-    ec_cytobands = ec_cytobands,
-    ec_cytobands_detail = ec_cytobands_detail
-  )
+  data.frame(class = class)
 }
 
 
