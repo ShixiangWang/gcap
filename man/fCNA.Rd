@@ -130,7 +130,12 @@ a \code{data.table}
 \subsection{Method \code{getGeneSummary()}}{
 Get gene level summary of fCNA type
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$getGeneSummary(prob_cutoff = 0.5, gap_cn = 4L, return_mat = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$getGeneSummary(
+  prob_cutoff = 0.5,
+  gap_cn = 4L,
+  return_mat = FALSE,
+  return_record = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -139,6 +144,8 @@ Get gene level summary of fCNA type
 \item{\code{prob_cutoff, gap_cn}}{thresholds for classify 'circular' and 'noncircular'.}
 
 \item{\code{return_mat}}{if \code{TRUE}, return a cytoband by sample matrix instead of a summary.}
+
+\item{\code{return_record}}{if \code{TRUE}, return a record \code{data.table}.}
 }
 \if{html}{\out{</div>}}
 }

@@ -111,14 +111,20 @@ fCNA <- R6::R6Class(
     #' @description Get gene level summary of fCNA type
     #' @param prob_cutoff,gap_cn thresholds for classify 'circular' and 'noncircular'.
     #' @param return_mat if `TRUE`, return a cytoband by sample matrix instead of a summary.
+    #' @param return_record if `TRUE`, return a record `data.table`.
     #' @return a `data.table`
-    getGeneSummary = function(prob_cutoff = 0.5, gap_cn = 4L, return_mat = FALSE) {
+    getGeneSummary = function(prob_cutoff = 0.5, gap_cn = 4L,
+                              return_mat = FALSE, return_record = FALSE) {
       stopifnot(gap_cn >= 2)
       data <- data.table::copy(self$data)[total_cn > ploidy + gap_cn]
       data$amplicon_type <- data.table::fifelse(
         data$prob > prob_cutoff, "circular", "noncircular"
       )
       data$amplicon_type <- factor(data$amplicon_type, c("noncircular", "circular"))
+
+      if (return_record) {
+        return(data)
+      }
 
       if (nrow(self$data) > 0) {
         rv <- data.table::dcast(data[, .N, by = .(gene_id, amplicon_type)],
