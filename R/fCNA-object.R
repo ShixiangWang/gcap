@@ -197,7 +197,11 @@ fCNA <- R6::R6Class(
         data,
         band ~ sample,
         value.var = "amplicon_type", fill = NA,
-        drop = FALSE, fun.aggregate = function(x) names(sort(table(x), decreasing = TRUE)[1])
+        drop = FALSE, fun.aggregate = function(x) {
+          if ("circular" %in% x) return("circular")
+          if ("noncircular" %in% x) return("noncircular")
+          return(NA)
+        }
       )
       data <- data.frame(data[, -1], row.names = data[[1]])
       # Reorder data
