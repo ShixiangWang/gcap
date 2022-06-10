@@ -1,3 +1,7 @@
+# gcap 0.20.2
+
+- Limited `xgboost` version lower than `1.6` as it will not keep some key info in `.rds` file.
+
 # gcap 0.20.1
 
 - Enhance the `getGeneSummary()` and `getCytobandSummary()` methods to return mutation matrix.
