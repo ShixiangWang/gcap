@@ -63,14 +63,14 @@
 #' nrow(rv_subset2$data)
 #' unique(rv_subset2$data$sample)
 #'
-#' sum_gene = rv$getGeneSummary()
+#' sum_gene <- rv$getGeneSummary()
 #' sum_gene
-#' mat_gene = rv$getGeneSummary(return_mat = TRUE)
+#' mat_gene <- rv$getGeneSummary(return_mat = TRUE)
 #' mat_gene
 #'
-#' sum_cytoband = rv$getCytobandSummary()
+#' sum_cytoband <- rv$getCytobandSummary()
 #' sum_cytoband
-#' mat_cytoband = rv$getCytobandSummary(return_mat = TRUE)
+#' mat_cytoband <- rv$getCytobandSummary(return_mat = TRUE)
 #' mat_cytoband
 #'
 #' @testexamples

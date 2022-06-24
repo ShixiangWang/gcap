@@ -5,10 +5,10 @@
 #' @param min_n a minimal cytoband number (default is `1`) to determine
 #' sample class. e.g., sample with at least 1 cytoband harboring circular
 #' genes would be labelled as "circular".
-#' @param tightness a coefficient to times to TCGA blood CN to set a more strict threshold
+#' @param tightness a coefficient to times to TCGA somatic CN to set a more strict threshold
 #' as a circular amplicon.
 #' If the value is larger, it is more likely a fCNA assigned to `noncircular`
-#' instead of `circular`. **When it is `NA`, we don't use CN data from TCGA blood.**
+#' instead of `circular`. **When it is `NA`, we don't use TCGA somatic CN data as reference**.
 #' @param gap_cn a gap copy number value, default is `4L` refer to Kim 2020 Nat.Gen.
 #' A gene with copy number above `ploidy + gap_cn` would be treated as focal amplicon.
 #' Smaller, more amplicons.
@@ -51,8 +51,9 @@ gcap.runScoring <- function(data,
   data <- data[!is.na(data$prob)]
 
   lg$info("joining extra annotation data")
-  blood_cn <- readRDS(system.file("extdata", "blood_gene_cn.rds", package = "gcap"))
-  colnames(blood_cn)[2:3] <- c("blood_cn_top5", "blood_cn_top5_sd")
+  somatic_cn <- readRDS(system.file("extdata", "somatic_gene_cn.rds", package = "gcap"))[, 1:3]
+  # colnames(somatic_cn)[2:3] <- c("somatic_cn_mean", "somatic_cn_sd")
+  somatic_cn <- somatic_cn[order(somatic_cn$somatic_cn_mean)]
 
   cytobands <- as.data.table(
     sigminer::get_genome_annotation("cytobands", genome_build = genome_build)
@@ -71,39 +72,39 @@ gcap.runScoring <- function(data,
   gene_cytobands <- gene_cytobands[, .(gene_id, band = paste(chr, band, sep = ":"))]
 
   all_ids <- unique(data$gene_id)
-  df_ids <- setdiff(all_ids, blood_cn$gene_id)
+  df_ids <- setdiff(all_ids, somatic_cn$gene_id)
   if (length(df_ids) > 0) {
-    blood_cn <- rbind(blood_cn, data.table::data.table(
+    somatic_cn <- rbind(somatic_cn, data.table::data.table(
       gene_id = df_ids,
-      blood_cn_top5 = blood_cn$blood_cn_top5[1],
-      blood_cn_top5_sd = blood_cn$blood_cn_top5_sd[1]
+      somatic_cn_mean = somatic_cn$somatic_cn_mean[1],
+      somatic_cn_sd = somatic_cn$somatic_cn_sd[1]
     ))
   } # Fill with smallest value
-  data <- merge(data, blood_cn, by = "gene_id", all.x = TRUE)
+  data <- merge(data, somatic_cn, by = "gene_id", all.x = TRUE)
 
   if ("band" %in% colnames(data)) data$band <- NULL
   data <- merge(data, gene_cytobands, by = "gene_id", all.x = TRUE)
 
-  cytoband_cn <- data[
-    , .(cytoband_cn_median = median(total_cn, na.rm = TRUE)),
-    by = .(sample, band)
-  ] # Currently, median is not used
-  data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
+  # cytoband_cn <- data[
+  #   , .(cytoband_cn_median = median(total_cn, na.rm = TRUE)),
+  #   by = .(sample, band)
+  # ] # Currently, median is not used
+  # data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
 
   # (background_cn) Mean + SD for large threshold (circular), smaller is looser
   # (background_cn2) Ploidy for basic threshold (above noncircular)
-  data$background_cn <- pmax((data$blood_cn_top5 + data$blood_cn_top5_sd) * tightness, data$ploidy, na.rm = TRUE)
+  data$background_cn <- pmax((data$somatic_cn_mean + data$somatic_cn_sd) * tightness, data$ploidy, na.rm = TRUE)
   data$background_cn <- ifelse(is.na(data$background_cn), 2, data$background_cn)
   data$background_cn2 <- data$ploidy
   data$background_cn2 <- ifelse(is.na(data$background_cn2), 2, data$background_cn2)
 
-  data$blood_cn_top5 <- NULL
-  data$blood_cn_top5_sd <- NULL
+  data$somatic_cn_mean <- NULL
+  data$somatic_cn_sd <- NULL
 
   flag_amp <- data$total_cn >= (data$background_cn + gap_cn) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
   flag_amp2 <- data$total_cn >= data$background_cn2 + gap_cn
   if (is.na(tightness)) {
-    # In such case, remove limit from blood CN
+    # In such case, remove limit from reference somatic CN
     flag_amp <- flag_amp2
     data$background_cn <- data$background_cn2
   }

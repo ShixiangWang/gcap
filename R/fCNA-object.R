@@ -18,12 +18,8 @@ fCNA <- R6::R6Class(
     #' - `gene_id` gene ID, typically Ensembl ID. You can convert the ID with R package `IDConverter`.
     #' - `total_cn` total copy number value.
     #' - `minor_cn` copy number value for minor allele.
-    #' - `background_cn` background copy number value (for circular amplicon), calculated as `pmax(blood_cn_top5 + tightness * blood_cn_top5_sd, 2) * ploidy / 2`. (**Optional**)
-    #' At default, `blood_cn_top5(_sd)` is obtained from SNP array data of ~2000 TCGA diploidy blood samples,
-    #' they are mean and sd of top 5% copy number values for each gene (in ~2000 samples);
-    #' `ploidy` is tumor ploidy.
     #' - `prob` the probability the gene located in circular DNA.
-    #' - `thlevel` the type of DNA amplicon.
+    #' - `thlevel` the thresholded gene level of DNA amplicon for sample classification.
     #' @field sample_summary a `data.table` storing sample summary data, which typically contains
     #' at least the following columns:
     #' - `sample` sample or case ID. **Should only include cases have been called with GCAP workflow,
@@ -204,8 +200,12 @@ fCNA <- R6::R6Class(
         band ~ sample,
         value.var = "amplicon_type", fill = NA,
         drop = FALSE, fun.aggregate = function(x) {
-          if ("circular" %in% x) return("circular")
-          if ("noncircular" %in% x) return("noncircular")
+          if ("circular" %in% x) {
+            return("circular")
+          }
+          if ("noncircular" %in% x) {
+            return("noncircular")
+          }
           return(NA)
         }
       )

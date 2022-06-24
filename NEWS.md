@@ -1,3 +1,7 @@
+# gcap 0.21.0
+
+- Corrected blood label to somatic (https://github.com/BioinformaticsFMRP/TCGAbiolinks/issues/523).
+
 # gcap 0.20.2
 
 - Limited `xgboost` version lower than `1.6` as it will not keep some key info in `.rds` file.
