@@ -103,7 +103,7 @@ gcap.runScoring <- function(data,
 
   flag_amp <- data$total_cn >= (data$background_cn + gap_cn) * pmax(data$ploidy, 2, na.rm = TRUE) / 2
   flag_amp2 <- data$total_cn >= data$background_cn2 + gap_cn
-  if (is.na(tightness)) {
+  if (is.na(tightness) || tightness == 0) {
     # In such case, remove limit from reference somatic CN
     flag_amp <- flag_amp2
     data$background_cn <- data$background_cn2

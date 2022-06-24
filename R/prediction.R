@@ -52,6 +52,11 @@ gcap.runPrediction <- function(data,
   if (is.null(data$pLOH)) data$pLOH <- NA
   if (is.null(data$age)) data$age <- NA
   if (is.null(data$gender)) data$gender <- NA
+  if (all(is.na(data$minor_cn))) {
+    # Set copy number signatures to NA
+    z = paste0("CN", 1:19)
+    data[, (z) := rep(list(NA), 19)]
+  }
   data <- tryCatch(
     as.matrix(data[, model$feature_names, with = FALSE]),
     error = function(e) {
