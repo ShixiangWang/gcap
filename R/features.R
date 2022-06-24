@@ -97,13 +97,15 @@ gcap.extractFeatures <- function(ascat_files,
 
   if (add_loh) {
     lg$info("generating copy number catalog matrix for fitting signature activity")
-    cn_tally <- sig_tally(cn, method = "S")
+    cn_tally <- suppressMessages(sig_tally(cn, method = "S"))
     lg$info("fitting copy number signature activity")
-    df_act <- sig_fit(
-      t(cn_tally$all_matrices$CN_48),
-      sig_db = "CNS_TCGA",
-      sig_index = "ALL",
-      return_class = "data.table"
+    df_act <- suppressMessages(
+      sig_fit(
+        t(cn_tally$all_matrices$CN_48),
+        sig_db = "CNS_TCGA",
+        sig_index = "ALL",
+        return_class = "data.table"
+      )
     )
   } else {
     lg$info("copy number signature activity quantification is skipped as no LOH data available")
