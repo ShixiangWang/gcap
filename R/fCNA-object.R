@@ -199,7 +199,12 @@ fCNA <- R6::R6Class(
 # summarize sample --------------------------------------------------------
 
 summarize_sample <- function(data, min_prob) {
-  prob_possibly <- data[data$gene_class %in% "circular"]
+  if (nrow(data) == 0) return(data.frame(class = "nofocal"))
+
+  prob_possibly <- data[data$gene_class %in% "circular" & !is.na(data$prob)]
+  if (nrow(prob_possibly) == 0) return(data.frame(class = "noncircular"))
+
+  # Use cytobands instead of genes to calculate
   prob_possibly <- prob_possibly[
     , .(prob = max(prob, na.rm = TRUE)),
     by = .(band)
@@ -210,13 +215,7 @@ summarize_sample <- function(data, min_prob) {
   class <- if (flag_ec) {
     "circular"
   } else {
-    # Use cytobands instead of genes to count
-    flag_amp <- sum(data$gene_class %in% c("noncircular", "circular"), na.rm = TRUE) > 0
-    if (flag_amp) {
-      "noncircular"
-    } else {
-      "nofocal"
-    }
+    "noncircular"
   }
 
   data.frame(class = class)

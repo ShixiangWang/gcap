@@ -110,7 +110,7 @@ gcap.runScoring <- function(data,
   # Classify amplicon
   data$gene_class <- data.table::fcase(
     flag_amp & flag_circle, "circular",
-    flag_amp, "noncircular",
+    flag_amp2, "noncircular",
     default = "nofocal"
   )
   #data$gene_class <- factor(data$gene_class, levels = c("nofocal", "noncircular", "circular"))
