@@ -14,3 +14,4 @@ gcap.py
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+.vscode

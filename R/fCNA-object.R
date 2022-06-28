@@ -9,7 +9,7 @@ fCNA <- R6::R6Class(
   "fCNA",
   inherit = NULL,
   cloneable = FALSE,
-  lock_objects = TRUE,
+  lock_objects = FALSE,
   lock_class = TRUE,
   public = list(
     #' @field data a `data.table` storing fCNA list, which typically contains following columns:
@@ -19,7 +19,7 @@ fCNA <- R6::R6Class(
     #' - `total_cn` total copy number value.
     #' - `minor_cn` copy number value for minor allele.
     #' - `prob` the probability the gene located in circular DNA.
-    #' - `thlevel` the thresholded gene level of DNA amplicon for sample classification.
+    #' - `gene_class` gene level amplicon classification.
     #' @field sample_summary a `data.table` storing sample summary data, which typically contains
     #' at least the following columns:
     #' - `sample` sample or case ID. **Should only include cases have been called with GCAP workflow,
@@ -39,24 +39,22 @@ fCNA <- R6::R6Class(
     #' Typically, you can obtain this object from [gcap.workflow()] or [gcap.ASCNworkflow()].
     #' @param fcna a `data.frame` storing focal copy number amplicon list.
     #' @param pdata a `data.frame` storing phenotype or sample-level related data. (Optional)
-    #' @param min_n a minimal cytoband number (default is `1`) to determine
-    #' sample class. e.g., sample with at least 1 cytoband harboring circular
-    #' genes would be labelled as "circular". **This only affect `sample_summary` field**.
-    initialize = function(fcna, pdata = fcna[, "sample", drop = FALSE], min_n = 1L) {
+    #' @param min_prob the minimal aggregated (in cytoband level) probability to determine a circular amplicon.
+    initialize = function(fcna, pdata = fcna[, "sample", drop = FALSE], min_prob = 0.9) {
       stopifnot(
         is.data.frame(fcna), is.data.frame(pdata),
         all(c(
           "sample", "band", "gene_id", "total_cn",
-          "ploidy", "prob", "thlevel"
+          "ploidy", "prob", "gene_class"
         ) %in% colnames(fcna)),
         all(c("sample") %in% colnames(pdata)),
-        !is.null(min_n) && min_n >= 1
+        !is.null(min_prob) && min_prob >= 0.5 && min_prob < 1
       )
 
-      private$n <- min_n
-      amplvls <- paste0("l", 0:3) # a strict threshold for c("nofocal", "noncircular", "possibly_circular", "circular")
-      fcna <- fcna[fcna$thlevel %in% amplvls, ]
-      fcna$thlevel <- factor(fcna$thlevel, levels = amplvls)
+      private$prob <- min_prob
+      amplvls <- c("noncircular", "circular")
+      fcna <- fcna[fcna$gene_class %in% amplvls, ]
+      fcna$gene_class <- factor(fcna$gene_class, levels = amplvls)
       self$data <- data.table::as.data.table(fcna)
       message("summarizing sample...")
       ss <- self$getSampleSummary()
@@ -85,134 +83,37 @@ fCNA <- R6::R6Class(
       subs <- unique(subset(data, ...)$sample)
       fcna <- if (on == "data") subset(data, ...) else self$data[sample %in% subs]
       pdata <- self$sample_summary[sample %in% subs]
-      fCNA$new(fcna, pdata, min_n = private$n)
+      fCNA$new(fcna, pdata, min_prob = private$prob)
     },
     #' @description Get sample summary of fCNA
     #' @return a `data.table`
     getSampleSummary = function() {
-      stopifnot(!is.null(private$n) && private$n >= 1L)
-      message("  classifying samples with min_n=", private$n)
-      amplvls <- paste0("l", 1:3)
-      data <- data.table::copy(self$data)
-      data <- data[data$thlevel %in% amplvls, ]
-      data$thlevel <- factor(data$thlevel, levels = amplvls)
-
-      data[
+      message("  classifying samples with min_prob=", private$prob)
+      self$data[
         , summarize_sample(.SD,
-          min_n = private$n
+          min_prob = private$prob
         ),
         by = .(sample)
       ]
     },
     #' @description Get gene level summary of fCNA type
-    #' @param prob_cutoff,gap_cn thresholds for classify 'circular' and 'noncircular'.
     #' @param return_mat if `TRUE`, return a cytoband by sample matrix instead of a summary.
-    #' @param return_record if `TRUE`, return a record `data.table`.
-    #' @return a `data.table`
-    getGeneSummary = function(prob_cutoff = 0.5, gap_cn = 4L,
-                              return_mat = FALSE, return_record = FALSE) {
-      stopifnot(gap_cn >= 2)
-      data <- data.table::copy(self$data)[total_cn > ploidy + gap_cn]
-      data$amplicon_type <- data.table::fifelse(
-        data$prob > prob_cutoff, "circular", "noncircular"
-      )
-      data$amplicon_type <- factor(data$amplicon_type, c("noncircular", "circular"))
-
-      if (return_record) {
-        return(data)
-      }
-
-      if (nrow(self$data) > 0) {
-        rv <- data.table::dcast(data[, .N, by = .(gene_id, amplicon_type)],
-          gene_id ~ amplicon_type,
-          value.var = "N", fill = 0L,
-          drop = FALSE
-        )
-        rv$Total <- rowSums(rv[, -1])
-        rv <- rv[order(rv$circular, rv$Total, decreasing = TRUE), ]
-      } else {
-        rv <- data.table::data.table()
-      }
-      if (!return_mat) {
-        return(rv)
-      }
-      if (nrow(rv) == 0) {
-        message("No data")
-        return(NULL)
-      }
-
+    #' @return a `data.table` or a `matrix`.
+    getGeneSummary = function(return_mat = FALSE) {
+      data <- copy(self$data)
       allsamps <- self$sample_summary$sample
-      data$sample <- factor(data$sample, allsamps)
-      data <- data.table::dcast(
-        data,
-        gene_id ~ sample,
-        value.var = "amplicon_type", fill = NA,
-        drop = FALSE, fun.aggregate = function(x) x[1]
-      )
-      data <- data.frame(data[, -1], row.names = data[[1]])
-      # Reorder data
-      data <- data[rv$gene_id, ]
-      return(data)
+      getGeneSummary(data, allsamps, return_mat)
     },
+
     #' @description Get cytoband level summary of fCNA type
-    #' @param prob_cutoff,gap_cn thresholds for classify 'circular' and 'noncircular'
     #' @param unique if `TRUE`, count sample frequency instead of gene frequency.
     #' @param return_mat if `TRUE`, return a cytoband by sample matrix instead of a summary.
     #' @return a `data.table`
-    getCytobandSummary = function(prob_cutoff = 0.5, gap_cn = 4L, unique = FALSE,
+    getCytobandSummary = function(unique = FALSE,
                                   return_mat = FALSE) {
-      stopifnot(gap_cn >= 2)
-      data <- data.table::copy(self$data)[total_cn > ploidy + gap_cn]
-      data$amplicon_type <- data.table::fifelse(
-        data$prob > prob_cutoff, "circular", "noncircular"
-      )
-      data$amplicon_type <- factor(data$amplicon_type, c("noncircular", "circular"))
-
-      if (nrow(self$data) > 0) {
-        if (unique) {
-          data2 <- data[, .(N = length(unique(sample))), by = .(band, amplicon_type)]
-        } else {
-          data2 <- data[, .N, by = .(band, amplicon_type)]
-        }
-
-        rv <- data.table::dcast(data2,
-          band ~ amplicon_type,
-          value.var = "N", fill = 0L,
-          drop = FALSE
-        )
-        rv$Total <- rowSums(rv[, -1])
-        rv <- rv[order(rv$circular, rv$Total, decreasing = TRUE), ]
-      } else {
-        rv <- data.table::data.table()
-      }
-      if (!return_mat) {
-        return(rv)
-      }
-      if (nrow(rv) == 0) {
-        message("No data")
-        return(NULL)
-      }
-
+      data <- copy(self$data)
       allsamps <- self$sample_summary$sample
-      data$sample <- factor(data$sample, allsamps)
-      data <- data.table::dcast(
-        data,
-        band ~ sample,
-        value.var = "amplicon_type", fill = NA,
-        drop = FALSE, fun.aggregate = function(x) {
-          if ("circular" %in% x) {
-            return("circular")
-          }
-          if ("noncircular" %in% x) {
-            return("noncircular")
-          }
-          return(NA)
-        }
-      )
-      data <- data.frame(data[, -1], row.names = data[[1]])
-      # Reorder data
-      data <- data[rv$band, ]
-      return(data)
+      getCytobandSummary(data, allsamps, unique, return_mat)
     },
     #' @description Save the key data to local files
     #' @param dirpath directory path storing output files.
@@ -255,32 +156,32 @@ fCNA <- R6::R6Class(
       cat(sprintf("%8s: %s\n", "record", cli::col_green(nrow(self$data))))
       cat(sprintf("%8s: %s\n", "case", cli::col_cyan(nrow(ss))))
       cat("     |__ ",
-        "(", cli::col_cyan(sum(ss$class == "noncircular", na.rm = TRUE)), ") noncircular\n",
+        "(", cli::col_cyan(sum(ss$class == "noncircular", na.rm = TRUE)), ") ",
+        cli::col_green(nrow(self$data[gene_class %in% "noncircular"])),
+        " noncircular\n",
         sep = ""
       )
       cat("     |__ ",
-        "(", cli::col_cyan(sum(ss$class == "possibly_circular", na.rm = TRUE)), ") possibly_circular\n",
-        sep = ""
-      )
-      cat("     |__ ",
-        "(", cli::col_cyan(sum(ss$class == "circular", na.rm = TRUE)), ") circular\n",
+        "(", cli::col_cyan(sum(ss$class == "circular", na.rm = TRUE)), ") ",
+        cli::col_green(nrow(self$data[gene_class %in% "circular"])),
+        " circular\n",
         sep = ""
       )
       cat("======================\n")
     }
   ),
   private = list(
-    n = NULL
+    min_probs = NULL
   ),
   active = list(
-    #' @field min_n check `$new()` method for details. If you updated this value,
+    #' @field min_prob check `$new()` method for details. If you updated this value,
     #' a function will be called to update the sample summary.
-    min_n = function(x) {
+    min_prob = function(x) {
       if (missing(x)) {
-        private$n
+        private$prob
       } else {
-        message("A new 'min_n' is specified, try updating sample summary")
-        private$n <- x
+        message("A new 'min_prob' is specified, try updating sample summary")
+        private$prob <- x
         # Update sample summary
         ss <- self$getSampleSummary()
         pdata <- self$sample_summary
@@ -297,42 +198,20 @@ fCNA <- R6::R6Class(
 
 # summarize sample --------------------------------------------------------
 
-summarize_sample <- function(data, min_n) {
-  ec_genes <- sum(data$thlevel == "l3", na.rm = TRUE)
-  ec_cytobands_detail <- na.omit(unique(data$band[data$thlevel == "l3"]))
-  ec_cytobands <- length(ec_cytobands_detail)
-  ec_cytobands_detail <- paste(sort(ec_cytobands_detail), collapse = ",")
-  ec_possibly_genes <- sum(data$thlevel == "l2", na.rm = TRUE)
-  prob_possibly <- data[data$thlevel %in% c("l2", "l3")]
+summarize_sample <- function(data, min_prob) {
+  prob_possibly <- data[data$gene_class %in% "circular"]
+  prob_possibly <- prob_possibly[
+    , .(prob = max(prob, na.rm = TRUE)),
+    by = .(band)
+  ]$prob
 
-  if (nrow(prob_possibly) > 0) {
-    # Collapse probs by cytobands
-    prob_possibly <- prob_possibly[
-      , .(prob = max(prob, na.rm = TRUE)),
-      by = .(band)
-    ]$prob
-  } else {
-    prob_possibly <- NULL
-  }
-
-  # flags have priority
-  # flag_ec <- ec_genes >= min_n
-  flag_ec <- ec_cytobands >= min_n
-  flag_ec_possibly <- if (!flag_ec && length(prob_possibly) > 0) {
-    calc_prob(prob_possibly, min_n) > 0.75
-  } else {
-    FALSE
-  }
+  flag_ec <- calc_prob(prob_possibly, 1) >= min_prob
 
   class <- if (flag_ec) {
     "circular"
-  } else if (flag_ec_possibly) {
-    "possibly_circular"
   } else {
     # Use cytobands instead of genes to count
-    flag_amp <- length(na.omit(unique(
-      data$band[data$thlevel %in% paste0("l", 1:3)]
-    ))) >= min_n
+    flag_amp <- sum(data$gene_class %in% c("noncircular", "circular"), na.rm = TRUE) > 0
     if (flag_amp) {
       "noncircular"
     } else {
@@ -344,28 +223,82 @@ summarize_sample <- function(data, min_n) {
 }
 
 
-# Archive -----------------
-# Checker comes from https://github.com/r-lib/R6/issues/48#issuecomment-339872876
-# #' R6 class representing a Asserter
-# #'
-# #' @description
-# #' This class includes many publc functions for validating
-# #' the modification of a R6 object.
-# #' @export
-# Asserter <- R6::R6Class(
-#   "Asserter",
-#   inherit = NULL,
-#   cloneable = FALSE,
-#   lock_objects = TRUE,
-#   lock_class = TRUE,
-#   public = list(
-#     #' @description
-#     #' Assert input is a `data.table`
-#     #' @param x modified/updated R6 field/active-binding
-#     #' @param varnm corresponding variable name of input `x`, e.g.,
-#     #' for command `obj$year <- 10`, `10` means `x` and `year` means `varnm`.
-#     assertDT = function(x, varnm = deparse(substitute(x))) {
-#       `if`(!all(data.table::is.data.table(x)), stop(sprintf("'%s' must be data.table", varnm), call. = FALSE), invisible(x))
-#     }
-#   )
-# )
+getGeneSummary <- function(data, allsamps, return_mat) {
+  if (nrow(data) > 0) {
+    rv <- data.table::dcast(data[, .N, by = .(gene_id, gene_class)],
+      gene_id ~ gene_class,
+      value.var = "N", fill = 0L,
+      drop = FALSE
+    )
+    rv$Total <- rowSums(rv[, -1])
+    rv <- rv[order(rv$circular, rv$Total, rv$gene_id, decreasing = TRUE), ]
+  } else {
+    rv <- data.table::data.table()
+  }
+  if (!return_mat) {
+    return(rv)
+  }
+  if (nrow(rv) == 0) {
+    message("No data")
+    return(NULL)
+  }
+
+  data$sample <- factor(data$sample, allsamps)
+  data <- data.table::dcast(
+    data,
+    gene_id ~ sample,
+    value.var = "gene_class", fill = NA,
+    drop = FALSE, fun.aggregate = function(x) x[1]
+  )
+  data <- data.frame(data[, -1], row.names = data[[1]])
+  # Reorder data
+  data <- data[rv$gene_id, , drop = FALSE]
+  return(data)
+}
+
+getCytobandSummary <- function(data, allsamps, unique, return_mat) {
+  if (nrow(data) > 0) {
+    if (unique) {
+      data2 <- data[, .(N = length(unique(sample))), by = .(band, gene_class)]
+    } else {
+      data2 <- data[, .N, by = .(band, gene_class)]
+    }
+
+    rv <- data.table::dcast(data2,
+      band ~ gene_class,
+      value.var = "N", fill = 0L,
+      drop = FALSE
+    )
+    rv$Total <- rowSums(rv[, -1])
+    rv <- rv[order(rv$circular, rv$Total, rv$band, decreasing = TRUE), ]
+  } else {
+    rv <- data.table::data.table()
+  }
+  if (!return_mat) {
+    return(rv)
+  }
+  if (nrow(rv) == 0) {
+    message("No data")
+    return(NULL)
+  }
+
+  data$sample <- factor(data$sample, allsamps)
+  data <- data.table::dcast(
+    data,
+    band ~ sample,
+    value.var = "gene_class", fill = NA,
+    drop = FALSE, fun.aggregate = function(x) {
+      if ("circular" %in% x) {
+        return("circular")
+      }
+      if ("noncircular" %in% x) {
+        return("noncircular")
+      }
+      return(NA)
+    }
+  )
+  data <- data.frame(data[, -1], row.names = data[[1]])
+  # Reorder data
+  data <- data[rv$band, , drop = FALSE]
+  return(data)
+}

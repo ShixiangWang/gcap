@@ -7,7 +7,7 @@
 gcap.runScoring(
   data,
   genome_build = "hg38",
-  min_n = 1L,
+  min_prob = 0.9,
   tightness = 1L,
   gap_cn = 4L
 )
@@ -18,9 +18,7 @@ gcap.runScoring(
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
 
-\item{min_n}{a minimal cytoband number (default is \code{1}) to determine
-sample class. e.g., sample with at least 1 cytoband harboring circular
-genes would be labelled as "circular".}
+\item{min_prob}{the minimal aggregated (in cytoband level) probability to determine a circular amplicon.}
 
 \item{tightness}{a coefficient to times to TCGA somatic CN to set a more strict threshold
 as a circular amplicon.

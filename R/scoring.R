@@ -2,9 +2,7 @@
 #'
 #' @inheritParams gcap.collapse2Genes
 #' @param data a `data.table` containing result from [gcap.runPrediction].
-#' @param min_n a minimal cytoband number (default is `1`) to determine
-#' sample class. e.g., sample with at least 1 cytoband harboring circular
-#' genes would be labelled as "circular".
+#' @param min_prob the minimal aggregated (in cytoband level) probability to determine a circular amplicon.
 #' @param tightness a coefficient to times to TCGA somatic CN to set a more strict threshold
 #' as a circular amplicon.
 #' If the value is larger, it is more likely a fCNA assigned to `noncircular`
@@ -25,7 +23,7 @@
 #' expect_equal(length(score), 3L)
 gcap.runScoring <- function(data,
                             genome_build = "hg38",
-                            min_n = 1L,
+                            min_prob = 0.9,
                             tightness = 1L,
                             gap_cn = 4L) {
   on.exit(invisible(gc()))
@@ -108,35 +106,34 @@ gcap.runScoring <- function(data,
     flag_amp <- flag_amp2
     data$background_cn <- data$background_cn2
   }
-  flag_circle <- as.integer(cut(data$prob, breaks = c(0, 0.45, 0.75, 1), include.lowest = TRUE))
+  flag_circle <- data$prob > 0.5
   # Classify amplicon
-  data$thlevel <- data.table::fcase(
-    flag_amp & flag_circle == 3, "l3",
-    flag_amp & flag_circle == 2, "l2",
-    flag_amp | flag_amp2, "l1",
-    default = "l0"
+  data$gene_class <- data.table::fcase(
+    flag_amp & flag_circle, "circular",
+    flag_amp, "noncircular",
+    default = "nofocal"
   )
-  data$thlevel <- factor(data$thlevel, levels = paste0("l", 0:3))
+  #data$gene_class <- factor(data$gene_class, levels = c("nofocal", "noncircular", "circular"))
 
-  # Generate input of fCNA class
+  # Generate fCNA and output
   sel_cols <- c(
     "sample", "purity", "ploidy", "AScore", "pLOH", "cna_burden",
     paste0("CN", 1:19)
   )
   sel_cols <- sel_cols[sel_cols %in% colnames(data)]
   pdata <- data[match(unique(data$sample), sample), sel_cols, with = FALSE]
-  lg$info("only keep genes with copy number >= ploidy+2 in result fCNA object")
-  fcna <- data[!thlevel %in% NA & total_cn >= ploidy + 2,
+  lg$info("only keep genes labeled as amplicons in result fCNA object")
+  fcna <- data[!gene_class %in% "nofocal",
     c(
       "sample", "band", "gene_id", "total_cn",
-      "minor_cn", "ploidy", "prob", "thlevel"
+      "minor_cn", "ploidy", "prob", "gene_class"
     ),
     with = FALSE
-  ] # Only treat nofocal as (focal) variants
+  ]
 
   data.table::setkey(fcna, NULL) # To make sure all equal to rebuild the fCNA object from file
   if (nrow(fcna) == 0) lg$info("No fCNA records detected")
-  fCNAobj <- fCNA$new(fcna, pdata, min_n = min_n)
+  fCNAobj <- fCNA$new(fcna, pdata, min_prob = min_prob)
   print(fCNAobj)
 
   lg$info("done")

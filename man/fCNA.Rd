@@ -18,7 +18,7 @@ fCNA information. Examples please see \code{\link[=gcap.ASCNworkflow]{gcap.ASCNw
 \item \code{total_cn} total copy number value.
 \item \code{minor_cn} copy number value for minor allele.
 \item \code{prob} the probability the gene located in circular DNA.
-\item \code{thlevel} the thresholded gene level of DNA amplicon for sample classification.
+\item \code{gene_class} gene level amplicon classification.
 }}
 
 \item{\code{sample_summary}}{a \code{data.table} storing sample summary data, which typically contains
@@ -42,7 +42,7 @@ otherwise the extra cases would be automatically classified as 'nofocal' (i.e. \
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{min_n}}{check \verb{$new()} method for details. If you updated this value,
+\item{\code{min_prob}}{check \verb{$new()} method for details. If you updated this value,
 a function will be called to update the sample summary.}
 }
 \if{html}{\out{</div>}}
@@ -50,24 +50,24 @@ a function will be called to update the sample summary.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-fCNA-new}{\code{fCNA$new()}}
-\item \href{#method-fCNA-subset}{\code{fCNA$subset()}}
-\item \href{#method-fCNA-getSampleSummary}{\code{fCNA$getSampleSummary()}}
-\item \href{#method-fCNA-getGeneSummary}{\code{fCNA$getGeneSummary()}}
-\item \href{#method-fCNA-getCytobandSummary}{\code{fCNA$getCytobandSummary()}}
-\item \href{#method-fCNA-saveToFiles}{\code{fCNA$saveToFiles()}}
-\item \href{#method-fCNA-convertGeneID}{\code{fCNA$convertGeneID()}}
-\item \href{#method-fCNA-print}{\code{fCNA$print()}}
+\item \href{#method-new}{\code{fCNA$new()}}
+\item \href{#method-subset}{\code{fCNA$subset()}}
+\item \href{#method-getSampleSummary}{\code{fCNA$getSampleSummary()}}
+\item \href{#method-getGeneSummary}{\code{fCNA$getGeneSummary()}}
+\item \href{#method-getCytobandSummary}{\code{fCNA$getCytobandSummary()}}
+\item \href{#method-saveToFiles}{\code{fCNA$saveToFiles()}}
+\item \href{#method-convertGeneID}{\code{fCNA$convertGeneID()}}
+\item \href{#method-print}{\code{fCNA$print()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fCNA-new"></a>}}
-\if{latex}{\out{\hypertarget{method-fCNA-new}{}}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Create a \code{fCNA} object.
 Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.workflow()}} or \code{\link[=gcap.ASCNworkflow]{gcap.ASCNworkflow()}}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(fcna, pdata = fcna[, "sample", drop = FALSE], min_n = 1L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(fcna, pdata = fcna[, "sample", drop = FALSE], min_prob = 0.9)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -77,16 +77,14 @@ Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.work
 
 \item{\code{pdata}}{a \code{data.frame} storing phenotype or sample-level related data. (Optional)}
 
-\item{\code{min_n}}{a minimal cytoband number (default is \code{1}) to determine
-sample class. e.g., sample with at least 1 cytoband harboring circular
-genes would be labelled as "circular". \strong{This only affect \code{sample_summary} field}.}
+\item{\code{min_prob}}{the minimal aggregated (in cytoband level) probability to determine a circular amplicon.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fCNA-subset"></a>}}
-\if{latex}{\out{\hypertarget{method-fCNA-subset}{}}}
+\if{html}{\out{<a id="method-subset"></a>}}
+\if{latex}{\out{\hypertarget{method-subset}{}}}
 \subsection{Method \code{subset()}}{
 Return a subset \code{fCNA} object
 \subsection{Usage}{
@@ -108,8 +106,8 @@ a \code{fCNA}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fCNA-getSampleSummary"></a>}}
-\if{latex}{\out{\hypertarget{method-fCNA-getSampleSummary}{}}}
+\if{html}{\out{<a id="method-getSampleSummary"></a>}}
+\if{latex}{\out{\hypertarget{method-getSampleSummary}{}}}
 \subsection{Method \code{getSampleSummary()}}{
 Get sample summary of fCNA
 \subsection{Usage}{
@@ -121,53 +119,37 @@ a \code{data.table}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fCNA-getGeneSummary"></a>}}
-\if{latex}{\out{\hypertarget{method-fCNA-getGeneSummary}{}}}
+\if{html}{\out{<a id="method-getGeneSummary"></a>}}
+\if{latex}{\out{\hypertarget{method-getGeneSummary}{}}}
 \subsection{Method \code{getGeneSummary()}}{
 Get gene level summary of fCNA type
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$getGeneSummary(
-  prob_cutoff = 0.5,
-  gap_cn = 4L,
-  return_mat = FALSE,
-  return_record = FALSE
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$getGeneSummary(return_mat = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{prob_cutoff, gap_cn}}{thresholds for classify 'circular' and 'noncircular'.}
-
 \item{\code{return_mat}}{if \code{TRUE}, return a cytoband by sample matrix instead of a summary.}
-
-\item{\code{return_record}}{if \code{TRUE}, return a record \code{data.table}.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-a \code{data.table}
+a \code{data.table} or a \code{matrix}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fCNA-getCytobandSummary"></a>}}
-\if{latex}{\out{\hypertarget{method-fCNA-getCytobandSummary}{}}}
+\if{html}{\out{<a id="method-getCytobandSummary"></a>}}
+\if{latex}{\out{\hypertarget{method-getCytobandSummary}{}}}
 \subsection{Method \code{getCytobandSummary()}}{
 Get cytoband level summary of fCNA type
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$getCytobandSummary(
-  prob_cutoff = 0.5,
-  gap_cn = 4L,
-  unique = FALSE,
-  return_mat = FALSE
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$getCytobandSummary(unique = FALSE, return_mat = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{prob_cutoff, gap_cn}}{thresholds for classify 'circular' and 'noncircular'}
-
 \item{\code{unique}}{if \code{TRUE}, count sample frequency instead of gene frequency.}
 
 \item{\code{return_mat}}{if \code{TRUE}, return a cytoband by sample matrix instead of a summary.}
@@ -179,8 +161,8 @@ a \code{data.table}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fCNA-saveToFiles"></a>}}
-\if{latex}{\out{\hypertarget{method-fCNA-saveToFiles}{}}}
+\if{html}{\out{<a id="method-saveToFiles"></a>}}
+\if{latex}{\out{\hypertarget{method-saveToFiles}{}}}
 \subsection{Method \code{saveToFiles()}}{
 Save the key data to local files
 \subsection{Usage}{
@@ -198,8 +180,8 @@ Save the key data to local files
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fCNA-convertGeneID"></a>}}
-\if{latex}{\out{\hypertarget{method-fCNA-convertGeneID}{}}}
+\if{html}{\out{<a id="method-convertGeneID"></a>}}
+\if{latex}{\out{\hypertarget{method-convertGeneID}{}}}
 \subsection{Method \code{convertGeneID()}}{
 Convert Gene IDs between Ensembl and Hugo Symbol System
 \subsection{Usage}{
@@ -220,8 +202,8 @@ Convert Gene IDs between Ensembl and Hugo Symbol System
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fCNA-print"></a>}}
-\if{latex}{\out{\hypertarget{method-fCNA-print}{}}}
+\if{html}{\out{<a id="method-print"></a>}}
+\if{latex}{\out{\hypertarget{method-print}{}}}
 \subsection{Method \code{print()}}{
 print the fCNA object
 \subsection{Usage}{
