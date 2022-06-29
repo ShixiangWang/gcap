@@ -210,7 +210,12 @@ summarize_sample <- function(data, min_prob) {
     by = .(band)
   ]$prob
 
-  flag_ec <- calc_prob(prob_possibly, 1) >= min_prob
+  if (max(prob_possibly, na.rm = TRUE) >= min_prob) {
+    flag_ec = TRUE
+  } else {
+    flag_ec <- calc_prob(prob_possibly, 2) >= min_prob
+  }
+  #flag_ec <- calc_prob(prob_possibly, 1) >= min_prob
 
   class <- if (flag_ec) {
     "circular"
