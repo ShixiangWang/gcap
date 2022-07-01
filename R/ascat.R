@@ -68,7 +68,7 @@ gcap.runASCAT <- function(tumourseqfile,
   }
   if (length(normalseqfile) == 1 && length(tumourseqfile) > 1) {
     normalseqfile <- rep(normalseqfile, length(tumourseqfile))
-    normalname <- rep(normalname, length(tumourseqfile))s
+    normalname <- rep(normalname, length(tumourseqfile))
   }
 
   lg <- set_logger()
