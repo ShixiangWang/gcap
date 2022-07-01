@@ -7,7 +7,7 @@
 
 #' Run ASCAT on tumor-normal pair WES data files
 #'
-#' A wrapper calling ASCAT on WES data on one or more tumor-normal pairs.
+#' A wrapper calling ASCAT on WES data on one or more tumor(-normal paired) bam data.
 #' Note, for multiple tumor-normal pairs, the first 5 arguments should
 #' be a vector with same length.
 #'
@@ -32,8 +32,10 @@
 #'
 #' @return Nothing. Check the `outdir` for results.
 #' @export
-gcap.runASCAT <- function(tumourseqfile, normalseqfile,
-                          tumourname, normalname, jobname = tumourname,
+gcap.runASCAT <- function(tumourseqfile,
+                          normalseqfile = NA_character_,
+                          tumourname,
+                          normalname = NA_character_, jobname = tumourname,
                           outdir = getwd(),
                           allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
                           g1000allelesprefix = file.path(
@@ -63,6 +65,10 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
   on.exit(setwd(cwd))
   if (length(gender) == 1 && length(tumourseqfile) > 1) {
     gender <- rep(gender, length(tumourseqfile))
+  }
+  if (length(normalseqfile) == 1 && length(tumourseqfile) > 1) {
+    normalseqfile <- rep(normalseqfile, length(tumourseqfile))
+    normalname <- rep(normalname, length(tumourseqfile))s
   }
 
   lg <- set_logger()
@@ -108,6 +114,11 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
     lg$info("   tumor sample name: {tn}")
     lg$info("  normal sample name: {nn}")
 
+    if (is.na(normalseqfile) || is.na(normalname)) {
+      lg$info("run with tumor only model, this is only supported in specified ASCAT version")
+      skip_norm = TRUE
+    } else skip_norm = FALSEs
+
     # In some special cases, ASCAT failed after alleleCounter.
     # Maybe we should handle the ASCAT source code to fix corresponding issues
     tryCatch(
@@ -132,18 +143,30 @@ gcap.runASCAT <- function(tumourseqfile, normalseqfile,
           min_base_qual = min_base_qual,
           min_map_qual = min_map_qual,
           skip_allele_counting_tumour = FALSE,
-          skip_allele_counting_normal = FALSE
+          skip_allele_counting_normal = skip_norm
         )
 
         ascat.bc <- ascat.loadData(
           paste0(tn, "_tumourLogR.txt"), paste0(tn, "_tumourBAF.txt"),
-          paste0(tn, "_normalLogR.txt"), paste0(tn, "_normalBAF.txt"),
+          if (skip_norm) NULL else paste0(tn, "_normalLogR.txt"),
+          if (skip_norm) NULL else paste0(tn, "_normalBAF.txt"),
           chrs = chrom_names,
           gender = gender
-        )
+        ) # New parameter genomeVersion in the latest version of ASCAT
         ascat.bc <- ascat.GCcorrect(ascat.bc, GCcontentfile, replictimingfile)
         ascat.plotRawData(ascat.bc)
-        ascat.bc <- ascat.aspcf(ascat.bc, penalty = penalty)
+        if (skip_norm) {
+          # https://github.com/VanLoo-lab/ascat/issues/73
+          # gg = ascat.predictGermlineGenotypes(ascat.bc, platform = "AffySNP6")
+          gg = ascat.predictGermlineGenotypes_custom(
+                ascat.bc, 
+                maxHomozygous = 0.05, 
+                proportionHetero = 0.59, 
+                proportionHomo = 0.38, 
+                proportionOpen = 0.02, 
+                segmentLength = 100)
+        } else gg = NULL
+        ascat.bc <- ascat.aspcf(ascat.bc, ascat.gg = gg, penalty = penalty)
         ascat.plotSegmentedData(ascat.bc)
         ascat.output <- ascat.runAscat(ascat.bc, gamma = 1L, pdfPlot = TRUE)
         saveRDS(ascat.output, file = paste0(id, ".ASCAT.rds"))
