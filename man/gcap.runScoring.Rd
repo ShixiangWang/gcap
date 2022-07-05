@@ -7,7 +7,7 @@
 gcap.runScoring(
   data,
   genome_build = "hg38",
-  min_prob = 0.9,
+  min_prob = 0.7,
   tightness = 1L,
   gap_cn = 4L
 )

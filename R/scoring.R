@@ -23,7 +23,7 @@
 #' expect_equal(length(score), 3L)
 gcap.runScoring <- function(data,
                             genome_build = "hg38",
-                            min_prob = 0.9,
+                            min_prob = 0.7,
                             tightness = 1L,
                             gap_cn = 4L) {
   on.exit(invisible(gc()))
@@ -106,7 +106,7 @@ gcap.runScoring <- function(data,
     flag_amp <- flag_amp2
     data$background_cn <- data$background_cn2
   }
-  flag_circle <- data$prob > 0.466 # determine this based on PR curve data or common sense TODO
+  flag_circle <- data$prob > 0.5
   # Classify amplicon
   data$gene_class <- data.table::fcase(
     flag_amp & flag_circle, "circular",

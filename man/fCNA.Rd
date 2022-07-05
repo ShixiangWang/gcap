@@ -67,7 +67,7 @@ a function will be called to update the sample summary.}
 Create a \code{fCNA} object.
 Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.workflow()}} or \code{\link[=gcap.ASCNworkflow]{gcap.ASCNworkflow()}}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(fcna, pdata = fcna[, "sample", drop = FALSE], min_prob = 0.9)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(fcna, pdata = fcna[, "sample", drop = FALSE], min_prob = 0.7)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

@@ -27,7 +27,7 @@
 #' to save time.
 #'
 #' @importFrom ASCAT ascat.prepareHTS ascat.loadData ascat.GCcorrect
-#' ascat.plotRawData ascat.aspcf ascat.plotSegmentedData
+#' ascat.plotRawData ascat.aspcf ascat.plotSegmentedData ascat.predictGermlineGenotypes
 #' ascat.runAscat
 #'
 #' @return Nothing. Check the `outdir` for results.
@@ -117,7 +117,7 @@ gcap.runASCAT <- function(tumourseqfile,
     if (is.na(normalseqfile) || is.na(normalname)) {
       lg$info("run with tumor only model, this is only supported in specified ASCAT version")
       skip_norm = TRUE
-    } else skip_norm = FALSEs
+    } else skip_norm = FALSE
 
     # In some special cases, ASCAT failed after alleleCounter.
     # Maybe we should handle the ASCAT source code to fix corresponding issues
@@ -158,6 +158,7 @@ gcap.runASCAT <- function(tumourseqfile,
         if (skip_norm) {
           # https://github.com/VanLoo-lab/ascat/issues/73
           # gg = ascat.predictGermlineGenotypes(ascat.bc, platform = "AffySNP6")
+          stop("This is not working in current stage")
           gg = ascat.predictGermlineGenotypes(
                 ascat.bc, 
                 custom = list(

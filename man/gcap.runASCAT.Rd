@@ -6,9 +6,9 @@
 \usage{
 gcap.runASCAT(
   tumourseqfile,
-  normalseqfile,
+  normalseqfile = NA_character_,
   tumourname,
-  normalname,
+  normalname = NA_character_,
   jobname = tumourname,
   outdir = getwd(),
   allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
@@ -81,7 +81,7 @@ to save time.}
 Nothing. Check the \code{outdir} for results.
 }
 \description{
-A wrapper calling ASCAT on WES data on one or more tumor-normal pairs.
+A wrapper calling ASCAT on WES data on one or more tumor(-normal paired) bam data.
 Note, for multiple tumor-normal pairs, the first 5 arguments should
 be a vector with same length.
 }
