@@ -3,6 +3,9 @@
 #' @inheritParams gcap.collapse2Genes
 #' @param data a `data.table` containing result from [gcap.runPrediction].
 #' @param min_prob the minimal aggregated (in cytoband level) probability to determine a circular amplicon.
+#' The default value is for the balance of recall and precision. **We highly recomment set it to
+#' 0.95 or larger if you want to detect solid positive cases (for experimental validation etc.) 
+#' instead of subtyping cases**.
 #' @param tightness a coefficient to times to TCGA somatic CN to set a more strict threshold
 #' as a circular amplicon.
 #' If the value is larger, it is more likely a fCNA assigned to `noncircular`
@@ -23,7 +26,7 @@
 #' expect_equal(length(score), 3L)
 gcap.runScoring <- function(data,
                             genome_build = "hg38",
-                            min_prob = 0.7,
+                            min_prob = 0.6,
                             tightness = 1L,
                             gap_cn = 4L) {
   on.exit(invisible(gc()))

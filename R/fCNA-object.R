@@ -40,7 +40,7 @@ fCNA <- R6::R6Class(
     #' @param fcna a `data.frame` storing focal copy number amplicon list.
     #' @param pdata a `data.frame` storing phenotype or sample-level related data. (Optional)
     #' @param min_prob the minimal aggregated (in cytoband level) probability to determine a circular amplicon.
-    initialize = function(fcna, pdata = fcna[, "sample", drop = FALSE], min_prob = 0.7) {
+    initialize = function(fcna, pdata = fcna[, "sample", drop = FALSE], min_prob = 0.6) {
       stopifnot(
         is.data.frame(fcna), is.data.frame(pdata),
         all(c(

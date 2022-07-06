@@ -2,7 +2,7 @@
 
 context("File R/scoring.R: @testexamples")
 
-test_that("Function gcap.runScoring() @ L24", {
+test_that("Function gcap.runScoring() @ L27", {
   
   data("ec")
   ec2 <- ec

@@ -4,7 +4,7 @@
 \alias{gcap.runPrediction}
 \title{Run gene-level circular prediction}
 \usage{
-gcap.runPrediction(data, model = "XGB32")
+gcap.runPrediction(data, model = "XGB11")
 }
 \arguments{
 \item{data}{data to predict (\code{data.frame}/\code{matrix} format), from

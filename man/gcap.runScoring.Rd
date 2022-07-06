@@ -7,7 +7,7 @@
 gcap.runScoring(
   data,
   genome_build = "hg38",
-  min_prob = 0.7,
+  min_prob = 0.6,
   tightness = 1L,
   gap_cn = 4L
 )
@@ -18,7 +18,10 @@ gcap.runScoring(
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
 
-\item{min_prob}{the minimal aggregated (in cytoband level) probability to determine a circular amplicon.}
+\item{min_prob}{the minimal aggregated (in cytoband level) probability to determine a circular amplicon.
+The default value is for the balance of recall and precision. \strong{We highly recomment set it to
+0.95 or larger if you want to detect solid positive cases (for experimental validation etc.)
+instead of subtyping cases}.}
 
 \item{tightness}{a coefficient to times to TCGA somatic CN to set a more strict threshold
 as a circular amplicon.

@@ -13,7 +13,7 @@ gcap.workflow(
   extra_info = NULL,
   include_type = FALSE,
   genome_build = c("hg38", "hg19"),
-  model = "XGB32",
+  model = "XGB11",
   tightness = 1L,
   gap_cn = 4L,
   outdir = getwd(),

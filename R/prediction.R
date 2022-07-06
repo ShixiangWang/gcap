@@ -16,7 +16,7 @@
 #' @testexamples
 #' expect_equal(length(y_pred), 2020L)
 gcap.runPrediction <- function(data,
-                               model = "XGB32") {
+                               model = "XGB11") {
   stopifnot(data.table::is.data.table(data))
   lg <- set_logger()
 
