@@ -28,7 +28,7 @@ gcap.runScoring <- function(data,
                             genome_build = "hg38",
                             min_prob = 0.6,
                             tightness = 1L,
-                            gap_cn = 4L) {
+                            gap_cn = 3L) {
   on.exit(invisible(gc()))
   stopifnot(is.data.frame(data))
   lg <- set_logger()
@@ -129,7 +129,7 @@ gcap.runScoring <- function(data,
   fcna <- data[!gene_class %in% "nofocal",
     c(
       "sample", "band", "gene_id", "total_cn",
-      "minor_cn", "ploidy", "prob", "gene_class"
+      "minor_cn", "ploidy", "background_cn", "prob", "gene_class"
     ),
     with = FALSE
   ]

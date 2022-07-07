@@ -4,9 +4,6 @@
 #' copy number data along with some extra sample information to infer
 #' ecDNA genes.
 #'
-#' (tigntness, gap_cn) => (2, 3) or (1, 4) are the most common setting.
-#' You can adapt them based on your requirement.
-#'
 #' @inheritParams gcap.runASCAT
 #' @inheritParams gcap.extractFeatures
 #' @inheritParams gcap.collapse2Genes
@@ -89,7 +86,7 @@ gcap.ASCNworkflow <- function(data,
                               genome_build = c("hg38", "hg19"),
                               model = "XGB11",
                               tightness = 1L,
-                              gap_cn = 4L,
+                              gap_cn = 3L,
                               outdir = getwd(),
                               result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE))) {
   genome_build <- match.arg(genome_build)

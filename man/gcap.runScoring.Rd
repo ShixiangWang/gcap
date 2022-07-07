@@ -9,7 +9,7 @@ gcap.runScoring(
   genome_build = "hg38",
   min_prob = 0.6,
   tightness = 1L,
-  gap_cn = 4L
+  gap_cn = 3L
 )
 }
 \arguments{

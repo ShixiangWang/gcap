@@ -9,7 +9,7 @@ gcap.ASCNworkflow(
   genome_build = c("hg38", "hg19"),
   model = "XGB11",
   tightness = 1L,
-  gap_cn = 4L,
+  gap_cn = 3L,
   outdir = getwd(),
   result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE))
 )
@@ -63,10 +63,6 @@ a list of invisible \code{data.table} and corresponding files saved to local mac
 Unlike \link{gcap.workflow}, this function directly uses the allele-specific
 copy number data along with some extra sample information to infer
 ecDNA genes.
-}
-\details{
-(tigntness, gap_cn) => (2, 3) or (1, 4) are the most common setting.
-You can adapt them based on your requirement.
 }
 \examples{
 data("ascn")
