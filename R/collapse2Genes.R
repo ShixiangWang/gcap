@@ -124,6 +124,7 @@ collapse_to_genes <- function(x, genome_build = "hg38", overlap = 1, drop = TRUE
   colnames(x)[1:3] <- colnames(y)[1:3] <- c("chr", "start", "end")
 
   lg$info("finding overlaps")
+  data.table::setkey(x, chr, start, end)
   data.table::setkey(y, chr, start, end)
   out <- data.table::foverlaps(x, y)[!is.na(gene_id)]
 
