@@ -57,7 +57,11 @@ gcap.collapse2Genes <- function(fts,
         as.character(extra_info$type),
         levels = types
       )
-      extra_info <- mltools::one_hot(extra_info, cols = "type")
+      if (!all(is.na(extra_info$type))) {
+        extra_info <- mltools::one_hot(extra_info, cols = "type")
+      } else {
+        lg$info("no valid cancer types to generate for one-hot encoding")
+      }
     }
 
     lg$info("checking data type for age column")
