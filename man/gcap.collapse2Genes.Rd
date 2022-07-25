@@ -9,7 +9,8 @@ gcap.collapse2Genes(
   extra_info = NULL,
   include_type = FALSE,
   fix_type = TRUE,
-  genome_build = c("hg38", "hg19")
+  genome_build = c("hg38", "hg19"),
+  overlap = 1
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ one-hot encoding for cancer types in input data.}
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
+
+\item{overlap}{the overlap percentage on gene.}
 }
 \value{
 a \code{data.table}.

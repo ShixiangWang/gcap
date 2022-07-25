@@ -4,7 +4,7 @@
 \alias{gcap.runASCATBuildflow}
 \title{Build data for prediction from absolute copy number data}
 \usage{
-gcap.runASCATBuildflow(data, genome_build = c("hg38", "hg19"))
+gcap.runASCATBuildflow(data, genome_build = c("hg38", "hg19"), overlap = 1)
 }
 \arguments{
 \item{data}{a \code{data.frame} with following columns. The key columns can be obtained
@@ -29,6 +29,8 @@ don't need to set it.
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
+
+\item{overlap}{the overlap percentage on gene.}
 }
 \value{
 a \code{data.table}.

@@ -7,6 +7,7 @@
 #' 'age' and 'gender', for including cancer type, check
 #' parameter `include_type`. For gender, should be 'XX' or 'XY',
 #' also could be `0` for 'XX' and `1` for 'XY'.
+#' @param overlap the overlap percentage on gene.
 #' @param include_type if `TRUE`, a fourth column named 'type'
 #' should be included in `extra_info`, the supported cancer
 #' type should be described with [TCGA cancer type abbr.](https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/tcga-study-abbreviations).
@@ -20,7 +21,8 @@ gcap.collapse2Genes <- function(fts,
                                 extra_info = NULL,
                                 include_type = FALSE,
                                 fix_type = TRUE,
-                                genome_build = c("hg38", "hg19")) {
+                                genome_build = c("hg38", "hg19"),
+                                overlap = 1) {
   stopifnot(
     is.list(fts),
     all.equal(names(fts), c("fts_sample", "fts_region"))
@@ -81,7 +83,7 @@ gcap.collapse2Genes <- function(fts,
   }
 
   lg$info("collapsing region-level features to gene-level")
-  dt <- collapse_to_genes(fts$fts_region, genome_build)
+  dt <- collapse_to_genes(fts$fts_region, genome_build, overlap = overlap)
 
   lg$info("merging gene-level and sample-level data")
   dt <- merge(dt, fts$fts_sample, by = "sample", all.x = TRUE)

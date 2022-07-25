@@ -15,7 +15,8 @@
 gcap.runBuildflow <- function(ascat_files,
                               extra_info,
                               include_type = FALSE,
-                              genome_build = c("hg38", "hg19")) {
+                              genome_build = c("hg38", "hg19"),
+                              overlap = 1) {
   genome_build <- match.arg(genome_build)
 
   lg <- set_logger()
@@ -29,6 +30,7 @@ gcap.runBuildflow <- function(ascat_files,
   lg$info("collapsing all data into gene-level prediction input")
   gcap.collapse2Genes(
     fts = fts, extra_info = extra_info,
-    include_type = include_type, genome_build = genome_build
+    include_type = include_type, genome_build = genome_build,
+    overlap = overlap
   )
 }

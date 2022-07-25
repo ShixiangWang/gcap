@@ -8,7 +8,8 @@ gcap.runBuildflow(
   ascat_files,
   extra_info,
   include_type = FALSE,
-  genome_build = c("hg38", "hg19")
+  genome_build = c("hg38", "hg19"),
+  overlap = 1
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ type should be described with \href{https://gdc.cancer.gov/resources-tcga-users/
 
 \item{genome_build}{genome build version, should be
 one of 'hg38', 'hg19'.}
+
+\item{overlap}{the overlap percentage on gene.}
 }
 \value{
 a \code{data.table}.

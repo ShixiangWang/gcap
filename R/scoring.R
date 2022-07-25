@@ -86,11 +86,11 @@ gcap.runScoring <- function(data,
   if ("band" %in% colnames(data)) data$band <- NULL
   data <- merge(data, gene_cytobands, by = "gene_id", all.x = TRUE)
 
-  # cytoband_cn <- data[
-  #   , .(cytoband_cn_median = median(total_cn, na.rm = TRUE)),
-  #   by = .(sample, band)
-  # ] # Currently, median is not used
-  # data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
+  cytoband_cn <- data[
+    , .(cytoband_cn_median = median(total_cn, na.rm = TRUE)),
+    by = .(sample, band)
+  ] # Currently, median is not used
+  data <- merge(data, cytoband_cn, by = c("sample", "band"), all.x = TRUE)
 
   # (background_cn) Mean + SD for large threshold (circular), smaller is looser
   # (background_cn2) Ploidy for basic threshold (above noncircular)

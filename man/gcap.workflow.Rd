@@ -16,6 +16,7 @@ gcap.workflow(
   model = "XGB11",
   tightness = 1L,
   gap_cn = 3L,
+  overlap = 1,
   outdir = getwd(),
   result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE)),
   allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
@@ -71,6 +72,8 @@ instead of \code{circular}. \strong{When it is \code{NA}, we don't use TCGA soma
 \item{gap_cn}{a gap copy number value, default is \code{4L} refer to Kim 2020 Nat.Gen.
 A gene with copy number above \code{ploidy + gap_cn} would be treated as focal amplicon.
 Smaller, more amplicons.}
+
+\item{overlap}{the overlap percentage on gene.}
 
 \item{outdir}{result output path.}
 

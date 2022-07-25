@@ -25,6 +25,7 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
                           model = "XGB11",
                           tightness = 1L,
                           gap_cn = 3L,
+                          overlap = 1,
                           outdir = getwd(),
                           result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE)),
                           allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",
@@ -171,7 +172,8 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
     ascat_files,
     extra_info,
     include_type = include_type,
-    genome_build = genome_build
+    genome_build = genome_build,
+    overlap = overlap
   )
 
   lg$info("=======================")

@@ -87,6 +87,7 @@ gcap.ASCNworkflow <- function(data,
                               model = "XGB11",
                               tightness = 1L,
                               gap_cn = 3L,
+                              overlap = 1,
                               outdir = getwd(),
                               result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE))) {
   genome_build <- match.arg(genome_build)
@@ -107,7 +108,8 @@ gcap.ASCNworkflow <- function(data,
 
   model_input <- gcap.runASCATBuildflow(
     data,
-    genome_build = genome_build
+    genome_build = genome_build,
+    overlap = overlap
   )
 
   lg$info("=======================")
@@ -158,7 +160,8 @@ gcap.ASCNworkflow <- function(data,
 #' @return a `data.table`.
 #' @export
 gcap.runASCATBuildflow <- function(data,
-                                   genome_build = c("hg38", "hg19")) {
+                                   genome_build = c("hg38", "hg19"),
+                                   overlap = 1) {
   genome_build <- match.arg(genome_build)
   lg <- set_logger()
 
@@ -182,6 +185,7 @@ gcap.runASCATBuildflow <- function(data,
   gcap.collapse2Genes(
     fts = fts, extra_info = extra_info,
     include_type = if ("type" %in% colnames(extra_info)) TRUE else FALSE,
-    genome_build = genome_build
+    genome_build = genome_build,
+    overlap = overlap
   )
 }
