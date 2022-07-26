@@ -134,6 +134,7 @@ gcap.runScoring <- function(data,
     with = FALSE
   ]
 
+  data.table::setkey(data, NULL)
   data.table::setkey(fcna, NULL) # To make sure all equal to rebuild the fCNA object from file
   if (nrow(fcna) == 0) lg$info("No fCNA records detected")
   fCNAobj <- fCNA$new(fcna, pdata, min_prob = min_prob)
