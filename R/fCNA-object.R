@@ -229,7 +229,7 @@ summarize_sample <- function(data, min_prob) {
 
 getGeneSummary <- function(data, allsamps, return_mat) {
   if (nrow(data) > 0) {
-    rv <- data.table::dcast(data[, .N, by = .(gene_id, gene_class)],
+    rv <- data.table::dcast(data[!is.na(gene_id), .N, by = .(gene_id, gene_class)],
       gene_id ~ gene_class,
       value.var = "N", fill = 0L,
       drop = FALSE
@@ -249,7 +249,7 @@ getGeneSummary <- function(data, allsamps, return_mat) {
 
   data$sample <- factor(data$sample, allsamps)
   data <- data.table::dcast(
-    data,
+    data[!is.na(gene_id)],
     gene_id ~ sample,
     value.var = "gene_class", fill = NA,
     drop = FALSE, fun.aggregate = function(x) x[1]
@@ -263,9 +263,9 @@ getGeneSummary <- function(data, allsamps, return_mat) {
 getCytobandSummary <- function(data, allsamps, unique, return_mat) {
   if (nrow(data) > 0) {
     if (unique) {
-      data2 <- data[, .(N = length(unique(sample))), by = .(band, gene_class)]
+      data2 <- data[!is.na(band), .(N = length(unique(sample))), by = .(band, gene_class)]
     } else {
-      data2 <- data[, .N, by = .(band, gene_class)]
+      data2 <- data[!is.na(band), .N, by = .(band, gene_class)]
     }
 
     rv <- data.table::dcast(data2,
@@ -288,7 +288,7 @@ getCytobandSummary <- function(data, allsamps, unique, return_mat) {
 
   data$sample <- factor(data$sample, allsamps)
   data <- data.table::dcast(
-    data,
+    data[!is.na(band)],
     band ~ sample,
     value.var = "gene_class", fill = NA,
     drop = FALSE, fun.aggregate = function(x) {
