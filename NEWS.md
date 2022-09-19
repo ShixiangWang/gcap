@@ -1,3 +1,7 @@
+# gcap 1.0.0
+
+- The first public and stable release.
+
 # gcap 0.21.0
 
 - Corrected blood label to somatic (https://github.com/BioinformaticsFMRP/TCGAbiolinks/issues/523).

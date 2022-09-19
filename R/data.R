@@ -19,3 +19,12 @@ NULL
 #' @examples
 #' data("ascn")
 NULL
+
+#' Oncogene list
+#' @docType data
+#' @name oncogenes
+#' @format A `data.frame`
+#' @source Generate from `data-raw/`, raw source from <http://ongene.bioinfo-minzhao.org/>
+#' @examples
+#' data("oncogenes")
+NULL

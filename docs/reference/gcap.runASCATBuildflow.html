@@ -34,7 +34,7 @@ wrapper."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/ma
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.20.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@ wrapper.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.runASCATBuildflow</span><span class="op">(</span><span class="va">data</span>, genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.runASCATBuildflow</span><span class="op">(</span><span class="va">data</span>, genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span>, overlap <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -111,6 +111,8 @@ don't need to set it.</p></li>
 <dt>genome_build</dt>
 <dd><p>genome build version, should be
 one of 'hg38', 'hg19'.</p></dd>
+<dt>overlap</dt>
+<dd><p>the overlap percentage on gene.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

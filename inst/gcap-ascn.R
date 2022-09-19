@@ -4,7 +4,7 @@ suppressMessages(library(GetoptLong))
 GetoptLong.options(help_style = "two-column")
 VERSION = as.character(packageVersion("gcap"))
 
-model = "XGB32"
+model = "XGB11"
 genome = "hg38"
 tightness = 1L
 gapCN = 4L

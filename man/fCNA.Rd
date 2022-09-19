@@ -50,19 +50,19 @@ a function will be called to update the sample summary.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{fCNA$new()}}
-\item \href{#method-subset}{\code{fCNA$subset()}}
-\item \href{#method-getSampleSummary}{\code{fCNA$getSampleSummary()}}
-\item \href{#method-getGeneSummary}{\code{fCNA$getGeneSummary()}}
-\item \href{#method-getCytobandSummary}{\code{fCNA$getCytobandSummary()}}
-\item \href{#method-saveToFiles}{\code{fCNA$saveToFiles()}}
-\item \href{#method-convertGeneID}{\code{fCNA$convertGeneID()}}
-\item \href{#method-print}{\code{fCNA$print()}}
+\item \href{#method-fCNA-new}{\code{fCNA$new()}}
+\item \href{#method-fCNA-subset}{\code{fCNA$subset()}}
+\item \href{#method-fCNA-getSampleSummary}{\code{fCNA$getSampleSummary()}}
+\item \href{#method-fCNA-getGeneSummary}{\code{fCNA$getGeneSummary()}}
+\item \href{#method-fCNA-getCytobandSummary}{\code{fCNA$getCytobandSummary()}}
+\item \href{#method-fCNA-saveToFiles}{\code{fCNA$saveToFiles()}}
+\item \href{#method-fCNA-convertGeneID}{\code{fCNA$convertGeneID()}}
+\item \href{#method-fCNA-print}{\code{fCNA$print()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-fCNA-new"></a>}}
+\if{latex}{\out{\hypertarget{method-fCNA-new}{}}}
 \subsection{Method \code{new()}}{
 Create a \code{fCNA} object.
 Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.workflow()}} or \code{\link[=gcap.ASCNworkflow]{gcap.ASCNworkflow()}}.
@@ -83,8 +83,8 @@ Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.work
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-subset"></a>}}
-\if{latex}{\out{\hypertarget{method-subset}{}}}
+\if{html}{\out{<a id="method-fCNA-subset"></a>}}
+\if{latex}{\out{\hypertarget{method-fCNA-subset}{}}}
 \subsection{Method \code{subset()}}{
 Return a subset \code{fCNA} object
 \subsection{Usage}{
@@ -106,8 +106,8 @@ a \code{fCNA}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getSampleSummary"></a>}}
-\if{latex}{\out{\hypertarget{method-getSampleSummary}{}}}
+\if{html}{\out{<a id="method-fCNA-getSampleSummary"></a>}}
+\if{latex}{\out{\hypertarget{method-fCNA-getSampleSummary}{}}}
 \subsection{Method \code{getSampleSummary()}}{
 Get sample summary of fCNA
 \subsection{Usage}{
@@ -119,8 +119,8 @@ a \code{data.table}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getGeneSummary"></a>}}
-\if{latex}{\out{\hypertarget{method-getGeneSummary}{}}}
+\if{html}{\out{<a id="method-fCNA-getGeneSummary"></a>}}
+\if{latex}{\out{\hypertarget{method-fCNA-getGeneSummary}{}}}
 \subsection{Method \code{getGeneSummary()}}{
 Get gene level summary of fCNA type
 \subsection{Usage}{
@@ -139,8 +139,8 @@ a \code{data.table} or a \code{matrix}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-getCytobandSummary"></a>}}
-\if{latex}{\out{\hypertarget{method-getCytobandSummary}{}}}
+\if{html}{\out{<a id="method-fCNA-getCytobandSummary"></a>}}
+\if{latex}{\out{\hypertarget{method-fCNA-getCytobandSummary}{}}}
 \subsection{Method \code{getCytobandSummary()}}{
 Get cytoband level summary of fCNA type
 \subsection{Usage}{
@@ -161,8 +161,8 @@ a \code{data.table}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-saveToFiles"></a>}}
-\if{latex}{\out{\hypertarget{method-saveToFiles}{}}}
+\if{html}{\out{<a id="method-fCNA-saveToFiles"></a>}}
+\if{latex}{\out{\hypertarget{method-fCNA-saveToFiles}{}}}
 \subsection{Method \code{saveToFiles()}}{
 Save the key data to local files
 \subsection{Usage}{
@@ -180,8 +180,8 @@ Save the key data to local files
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-convertGeneID"></a>}}
-\if{latex}{\out{\hypertarget{method-convertGeneID}{}}}
+\if{html}{\out{<a id="method-fCNA-convertGeneID"></a>}}
+\if{latex}{\out{\hypertarget{method-fCNA-convertGeneID}{}}}
 \subsection{Method \code{convertGeneID()}}{
 Convert Gene IDs between Ensembl and Hugo Symbol System
 \subsection{Usage}{
@@ -202,8 +202,8 @@ Convert Gene IDs between Ensembl and Hugo Symbol System
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-fCNA-print"></a>}}
+\if{latex}{\out{\hypertarget{method-fCNA-print}{}}}
 \subsection{Method \code{print()}}{
 print the fCNA object
 \subsection{Usage}{

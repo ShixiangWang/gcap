@@ -88,6 +88,7 @@ gcap.ASCNworkflow <- function(data,
                               tightness = 1L,
                               gap_cn = 3L,
                               overlap = 1,
+                              only_oncogenes = FALSE,
                               outdir = getwd(),
                               result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE))) {
   genome_build <- match.arg(genome_build)
@@ -123,7 +124,9 @@ gcap.ASCNworkflow <- function(data,
   lg$info("====================================")
   lg$info("Step 3: Run scoring and summarizing")
   lg$info("====================================")
-  out <- gcap.runScoring(model_input, genome_build, tightness = tightness, gap_cn = gap_cn)
+  out <- gcap.runScoring(model_input, genome_build,
+                         tightness = tightness, gap_cn = gap_cn,
+                         only_oncogenes = only_oncogenes)
 
   save_file <- file.path(outdir, paste0(result_file_prefix, "_prediction_result.rds"))
   lg$info("Saving raw prediction result to {save_file}")

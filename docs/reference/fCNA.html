@@ -30,7 +30,7 @@ fCNA information. Examples please see gcap.ASCNworkflow()."><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.20.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -85,12 +85,8 @@ fCNA information. Examples please see <code><a href="gcap.ASCNworkflow.html">gca
 <li><p><code>gene_id</code> gene ID, typically Ensembl ID. You can convert the ID with R package <code>IDConverter</code>.</p></li>
 <li><p><code>total_cn</code> total copy number value.</p></li>
 <li><p><code>minor_cn</code> copy number value for minor allele.</p></li>
-<li><p><code>background_cn</code> background copy number value (for circular amplicon), calculated as <code>pmax(blood_cn_top5 + tightness * blood_cn_top5_sd, 2) * ploidy / 2</code>. (<strong>Optional</strong>)
-At default, <code>blood_cn_top5(_sd)</code> is obtained from SNP array data of ~2000 TCGA diploidy blood samples,
-they are mean and sd of top 5% copy number values for each gene (in ~2000 samples);
-<code>ploidy</code> is tumor ploidy.</p></li>
 <li><p><code>prob</code> the probability the gene located in circular DNA.</p></li>
-<li><p><code>thlevel</code> the type of DNA amplicon.</p></li>
+<li><p><code>gene_class</code> gene level amplicon classification.</p></li>
 </ul></dd>
 
 
@@ -114,7 +110,7 @@ otherwise the extra cases would be automatically classified as 'nofocal' (i.e. <
     </div>
     <div id="active-bindings">
     <h2>Active bindings</h2>
-    <p></p><div class="r6-active-bindings"><dl><dt><code>min_n</code></dt>
+    <p></p><div class="r6-active-bindings"><dl><dt><code>min_prob</code></dt>
 <dd><p>check <code>$new()</code> method for details. If you updated this value,
 a function will be called to update the sample summary.</p></dd>
 
@@ -127,20 +123,20 @@ a function will be called to update the sample summary.</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>fCNA$new()</code></a></p></li>
-<li><p><a href="#method-subset"><code>fCNA$subset()</code></a></p></li>
-<li><p><a href="#method-getSampleSummary"><code>fCNA$getSampleSummary()</code></a></p></li>
-<li><p><a href="#method-getGeneSummary"><code>fCNA$getGeneSummary()</code></a></p></li>
-<li><p><a href="#method-getCytobandSummary"><code>fCNA$getCytobandSummary()</code></a></p></li>
-<li><p><a href="#method-saveToFiles"><code>fCNA$saveToFiles()</code></a></p></li>
-<li><p><a href="#method-convertGeneID"><code>fCNA$convertGeneID()</code></a></p></li>
-<li><p><a href="#method-print"><code>fCNA$print()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-fCNA-new"><code>fCNA$new()</code></a></p></li>
+<li><p><a href="#method-fCNA-subset"><code>fCNA$subset()</code></a></p></li>
+<li><p><a href="#method-fCNA-getSampleSummary"><code>fCNA$getSampleSummary()</code></a></p></li>
+<li><p><a href="#method-fCNA-getGeneSummary"><code>fCNA$getGeneSummary()</code></a></p></li>
+<li><p><a href="#method-fCNA-getCytobandSummary"><code>fCNA$getCytobandSummary()</code></a></p></li>
+<li><p><a href="#method-fCNA-saveToFiles"><code>fCNA$saveToFiles()</code></a></p></li>
+<li><p><a href="#method-fCNA-convertGeneID"><code>fCNA$convertGeneID()</code></a></p></li>
+<li><p><a href="#method-fCNA-print"><code>fCNA$print()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-fCNA-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Create a <code>fCNA</code> object.
 Typically, you can obtain this object from <code><a href="gcap.workflow.html">gcap.workflow()</a></code> or <code><a href="gcap.ASCNworkflow.html">gcap.ASCNworkflow()</a></code>.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/fCNA.html">fCNA</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">fcna</span>, pdata <span class="op">=</span> <span class="va">fcna</span><span class="op">[</span>, <span class="st">"sample"</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>, min_n <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/fCNA.html">fCNA</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">fcna</span>, pdata <span class="op">=</span> <span class="va">fcna</span><span class="op">[</span>, <span class="st">"sample"</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>, min_prob <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -153,16 +149,14 @@ Typically, you can obtain this object from <code><a href="gcap.workflow.html">gc
 <dd><p>a <code>data.frame</code> storing phenotype or sample-level related data. (Optional)</p></dd>
 
 
-<dt><code>min_n</code></dt>
-<dd><p>a minimal cytoband number (default is <code>1</code>) to determine
-sample class. e.g., sample with at least 1 cytoband harboring circular
-genes would be labelled as "circular". <strong>This only affect <code>sample_summary</code> field</strong>.</p></dd>
+<dt><code>min_prob</code></dt>
+<dd><p>the minimal aggregated (in cytoband level) probability to determine a circular amplicon.</p></dd>
 
 
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-subset"></a><div class="section">
+</div><p></p><hr><a id="method-fCNA-subset"></a><div class="section">
 <h3 id="method-subset-">Method <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code><a class="anchor" aria-label="anchor" href="#method-subset-"></a></h3>
 <p>Return a subset <code>fCNA</code> object</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
@@ -187,7 +181,7 @@ same for "sample_summary".</p></dd>
 <p>a <code>fCNA</code></p>
 </div>
 
-</div><p></p><hr><a id="method-getSampleSummary"></a><div class="section">
+</div><p></p><hr><a id="method-fCNA-getSampleSummary"></a><div class="section">
 <h3 id="method-getsamplesummary-">Method <code>getSampleSummary()</code><a class="anchor" aria-label="anchor" href="#method-getsamplesummary-"></a></h3>
 <p>Get sample summary of fCNA</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
@@ -199,58 +193,36 @@ same for "sample_summary".</p></dd>
 <p>a <code>data.table</code></p>
 </div>
 
-</div><p></p><hr><a id="method-getGeneSummary"></a><div class="section">
+</div><p></p><hr><a id="method-fCNA-getGeneSummary"></a><div class="section">
 <h3 id="method-getgenesummary-">Method <code>getGeneSummary()</code><a class="anchor" aria-label="anchor" href="#method-getgenesummary-"></a></h3>
 <p>Get gene level summary of fCNA type</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">getGeneSummary</span><span class="op">(</span>
-  prob_cutoff <span class="op">=</span> <span class="fl">0.5</span>,
-  gap_cn <span class="op">=</span> <span class="fl">4L</span>,
-  return_mat <span class="op">=</span> <span class="cn">FALSE</span>,
-  return_record <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">getGeneSummary</span><span class="op">(</span>return_mat <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>prob_cutoff, gap_cn</code></dt>
-<dd><p>thresholds for classify 'circular' and 'noncircular'.</p></dd>
-
-
-<dt><code>return_mat</code></dt>
+<p></p><div class="arguments"><dl><dt><code>return_mat</code></dt>
 <dd><p>if <code>TRUE</code>, return a cytoband by sample matrix instead of a summary.</p></dd>
-
-
-<dt><code>return_record</code></dt>
-<dd><p>if <code>TRUE</code>, return a record <code>data.table</code>.</p></dd>
 
 
 </dl><p></p></div>
 </div>
 <div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
-<p>a <code>data.table</code></p>
+<p>a <code>data.table</code> or a <code>matrix</code>.</p>
 </div>
 
-</div><p></p><hr><a id="method-getCytobandSummary"></a><div class="section">
+</div><p></p><hr><a id="method-fCNA-getCytobandSummary"></a><div class="section">
 <h3 id="method-getcytobandsummary-">Method <code>getCytobandSummary()</code><a class="anchor" aria-label="anchor" href="#method-getcytobandsummary-"></a></h3>
 <p>Get cytoband level summary of fCNA type</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">getCytobandSummary</span><span class="op">(</span>
-  prob_cutoff <span class="op">=</span> <span class="fl">0.5</span>,
-  gap_cn <span class="op">=</span> <span class="fl">4L</span>,
-  unique <span class="op">=</span> <span class="cn">FALSE</span>,
-  return_mat <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">getCytobandSummary</span><span class="op">(</span>unique <span class="op">=</span> <span class="cn">FALSE</span>, return_mat <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>prob_cutoff, gap_cn</code></dt>
-<dd><p>thresholds for classify 'circular' and 'noncircular'</p></dd>
-
-
-<dt><code>unique</code></dt>
+<p></p><div class="arguments"><dl><dt><code>unique</code></dt>
 <dd><p>if <code>TRUE</code>, count sample frequency instead of gene frequency.</p></dd>
 
 
@@ -265,7 +237,7 @@ same for "sample_summary".</p></dd>
 <p>a <code>data.table</code></p>
 </div>
 
-</div><p></p><hr><a id="method-saveToFiles"></a><div class="section">
+</div><p></p><hr><a id="method-fCNA-saveToFiles"></a><div class="section">
 <h3 id="method-savetofiles-">Method <code>saveToFiles()</code><a class="anchor" aria-label="anchor" href="#method-savetofiles-"></a></h3>
 <p>Save the key data to local files</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
@@ -285,7 +257,7 @@ same for "sample_summary".</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-convertGeneID"></a><div class="section">
+</div><p></p><hr><a id="method-fCNA-convertGeneID"></a><div class="section">
 <h3 id="method-convertgeneid-">Method <code>convertGeneID()</code><a class="anchor" aria-label="anchor" href="#method-convertgeneid-"></a></h3>
 <p>Convert Gene IDs between Ensembl and Hugo Symbol System</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
@@ -308,7 +280,7 @@ same for "sample_summary".</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-print"></a><div class="section">
+</div><p></p><hr><a id="method-fCNA-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>print the fCNA object</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
@@ -340,7 +312,7 @@ same for "sample_summary".</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

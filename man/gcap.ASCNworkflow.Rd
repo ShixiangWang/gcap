@@ -11,6 +11,7 @@ gcap.ASCNworkflow(
   tightness = 1L,
   gap_cn = 3L,
   overlap = 1,
+  only_oncogenes = FALSE,
   outdir = getwd(),
   result_file_prefix = paste0("gcap_", uuid::UUIDgenerate(TRUE))
 )
@@ -52,6 +53,9 @@ A gene with copy number above \code{ploidy + gap_cn} would be treated as focal a
 Smaller, more amplicons.}
 
 \item{overlap}{the overlap percentage on gene.}
+
+\item{only_oncogenes}{if \code{TRUE}, only known oncogenes are kept for fCNA analysis
+and circular prediction.}
 
 \item{outdir}{result output path.}
 

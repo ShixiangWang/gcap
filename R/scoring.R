@@ -4,7 +4,7 @@
 #' @param data a `data.table` containing result from [gcap.runPrediction].
 #' @param min_prob the minimal aggregated (in cytoband level) probability to determine a circular amplicon.
 #' The default value is for the balance of recall and precision. **We highly recomment set it to
-#' 0.95 or larger if you want to detect solid positive cases (for experimental validation etc.) 
+#' 0.95 or larger if you want to detect solid positive cases (for experimental validation etc.)
 #' instead of subtyping cases**.
 #' @param tightness a coefficient to times to TCGA somatic CN to set a more strict threshold
 #' as a circular amplicon.
@@ -13,6 +13,8 @@
 #' @param gap_cn a gap copy number value, default is `4L` refer to Kim 2020 Nat.Gen.
 #' A gene with copy number above `ploidy + gap_cn` would be treated as focal amplicon.
 #' Smaller, more amplicons.
+#' @param only_oncogenes if `TRUE`, only known oncogenes are kept for fCNA analysis
+#' and circular prediction.
 #' @return a list of `data.table`.
 #' @export
 #'
@@ -28,7 +30,8 @@ gcap.runScoring <- function(data,
                             genome_build = "hg38",
                             min_prob = 0.6,
                             tightness = 1L,
-                            gap_cn = 3L) {
+                            gap_cn = 3L,
+                            only_oncogenes = FALSE) {
   on.exit(invisible(gc()))
   stopifnot(is.data.frame(data))
   lg <- set_logger()
@@ -133,6 +136,10 @@ gcap.runScoring <- function(data,
     ),
     with = FALSE
   ]
+
+  if (only_oncogenes) {
+    fcna = fcna[gene_id %in% na.omit(unique(oncogenes$gene_id))]
+  }
 
   data.table::setkey(data, NULL)
   data.table::setkey(fcna, NULL) # To make sure all equal to rebuild the fCNA object from file
