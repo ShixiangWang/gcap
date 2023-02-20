@@ -159,6 +159,7 @@ functions as they are not exported from **gcap**.
  
 ## Citations 
 
+Wang et al. Machine learning-driven extrachromosomal DNA amplification allocation from large-scale cancer genomics and its clinical utility in colorectal cancer. _Nature Genetics (Submitted)_
 
 ## LICENSE
 
