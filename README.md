@@ -89,6 +89,13 @@ URL:
   https://github.com/ShixiangWang/gcap
 ```
 
+NOTE: **gcap** use XGBOOST < 1.6, if you have installed a latest version,
+you can install the specified version with:
+
+```R
+install.packages("https://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_1.5.2.1.tar.gz", repos = NULL)
+```
+
 ## Example
 
 Run the following code to see a quick example:
@@ -154,12 +161,13 @@ functions as they are not exported from **gcap**.
 - [DoAbsolute](https://github.com/ShixiangWang/DoAbsolute): Automate Absolute Copy Number Calling using 'ABSOLUTE' package.
 - [sigminer](https://github.com/ShixiangWang/sigminer): An easy-to-use and scalable toolkit for genomic alteration signature (a.k.a. mutational signature) analysis and visualization in R.
 
-## Output     
+## Output 
+
  **gcap** outputs two data tables including feature table and prediction result.
  
 ## Citations 
 
-Wang et al. Machine learning-driven extrachromosomal DNA amplification allocation from large-scale cancer genomics and its clinical utility in colorectal cancer. _Nature Genetics (Submitted)_
+Wang et al. Machine learning-driven extrachromosomal DNA amplification allocation from large-scale cancer genomics and its clinical utility in colorectal cancer. _(Submitted)_
 
 ## LICENSE
 
