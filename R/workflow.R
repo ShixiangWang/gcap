@@ -58,7 +58,7 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   lg$info("=====================")
   lg$info("   GCAP WORKFLOW")
   lg$info("=====================")
-  lg$info()
+  lg$info("")
 
   lg$info("=====================")
   lg$info("Step 1: Run ASCAT 3.0")

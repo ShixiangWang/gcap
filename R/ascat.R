@@ -73,7 +73,7 @@ gcap.runASCAT <- function(tumourseqfile,
 
   lg <- set_logger()
   lg$info("> Run ASCAT on WES data <")
-  lg$info()
+  lg$info("")
   lg$info("Configs:")
   lg$info("  result path set to {outdir}")
   lg$info("  allelecounter_exe set to {allelecounter_exe}")

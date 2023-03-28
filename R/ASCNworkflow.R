@@ -101,7 +101,7 @@ gcap.ASCNworkflow <- function(data,
   lg$info("=========================")
   lg$info("   GCAP ASCN WORKFLOW    ")
   lg$info("=========================")
-  lg$info()
+  lg$info("")
 
   lg$info("============================================================")
   lg$info("Step 1: Extract features and collapse features to gene level")

@@ -31,7 +31,7 @@ gcap.extractFeatures <- function(ascat_files,
     purity_ploidy <- unique(ascn_data[, c("sample", "purity", "ploidy")])
   } else {
     lg$info("> Extract features from ASCAT results <")
-    lg$info()
+    lg$info("")
 
     lg$info("reading ASCAT file list")
     rvlist <- read_copynumber_ascat(ascat_files)
