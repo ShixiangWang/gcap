@@ -22,7 +22,7 @@ We recommend all users directly download the reference files from the links belo
 
 - [Curated reference files for GCAP (WES)](https://zenodo.org/record/5533065)
 
-> The prediction model was built with data on the top of hg38 genome build, while 
+> The prediction model was built with data on the top of hg38 genome build, so 
 hg38-based BAM file input is more recommended.
 
 ### Install alleleCount (WES bam data only)
@@ -75,7 +75,7 @@ a unified interface.
 
 ```sh
 $ gcap
-gcap (v0.9.0)
+gcap (v1.0.0)
 Usage: gcap [command] [options]
 
 Commands:
@@ -132,6 +132,52 @@ A recommended setting for Slurm is given as:
 #SBATCH -o output-%J.o
 #SBATCH -n 22
 #SBATCH --mem=102400
+```
+
+Templates of practical calling command with provided hg38 and hg19 annotations are given below:
+
+```r
+# hg38 ----------------
+gcap.workflow(
+  tumourseqfile = tfile, normalseqfile = nfile, tumourname = tn, normalname = nn, jobname = id,
+  outdir = outdir,
+  allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter", 
+  g1000allelesprefix = file.path(
+    "/data/wsx/data/1000G_loci_hg38/",
+    "1kg.phase3.v5a_GRCh38nounref_allele_index_chr"
+  ), 
+  g1000lociprefix = file.path("/data/wsx/data/1000G_loci_hg38/",
+                              "1kg.phase3.v5a_GRCh38nounref_loci_chrstring_chr"
+  ),
+  GCcontentfile = "/data/wsx/data/GC_correction_hg38.txt",
+  replictimingfile = "/data/wsx/data/RT_correction_hg38.txt",
+  skip_finished_ASCAT = TRUE,
+  skip_ascat_call = FALSE,
+  result_file_prefix = "xxx",
+  extra_info = df,
+  include_type = FALSE,
+  genome_build = "hg38",
+  model = "XGB11"
+)
+
+# hg19 ----------------
+gcap.workflow(
+  tumourseqfile = tfile, normalseqfile = nfile, tumourname = tn, normalname = nn, jobname = id,
+  outdir = outdir,
+  allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter", g1000allelesprefix = file.path(
+    "/data/wsx/data/1000G_loci_hg19/",
+    "1000genomesAlleles2012_chr"
+  ), g1000lociprefix = file.path("/data/wsx/data/1000G_loci_hg19/", "1000genomesloci2012chrstring_chr"),
+  GCcontentfile = "/data/wsx/data/GC_correction_hg19.txt", replictimingfile = "/data/wsx/data/RT_correction_hg19.txt",
+  skip_finished_ASCAT = TRUE,
+  skip_ascat_call = FALSE,
+  result_file_prefix = "xxx",
+  extra_info = NULL,
+  include_type = FALSE,
+  genome_build = "hg19",
+  model = "XGB11"
+)
+
 ```
 
 ### Pipeline (Allele specific or absolute copy number data)
