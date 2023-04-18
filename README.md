@@ -210,13 +210,14 @@ functions as they are not exported from **gcap**.
 ## Output 
 
  **gcap** outputs two data tables including feature table and prediction result.
- 
+
 ## Citations 
 
-Wang et al. Machine learning-driven extrachromosomal DNA amplification allocation from large-scale cancer genomics and its clinical utility in colorectal cancer. _(Submitted)_
+Wang et al. Machine learning-based extrachromosomal DNA identification in large-scale cohorts reveals its clinical implications in cancer. _(Submitted)_
 
 ## LICENSE
 
 This software and associated documentation files (the “Software”) are protected by copyright. This Software is provided “as is” (at your own risk) for internal non-commercial academic research purposes only. Please read the [Non-Commercial Academic License](LICENSE) in detail before downloading a copy. By installing or using this Software, you agree to be bound by the terms and conditions of the Non-Commercial Academic License.
 
-All commercial use of the Software or any modification, manipulation or derivative of the Software, including but not limited to transfer, sale or licence to a commercial third party or use on behalf of a commercial third party (including but not limited to use as part of a service supplied to any third party for financial reward) is strictly prohibited and requires a commercial use licence. For further information please email <wangsx1@sysucc.org.cn> or <zhaoqi@sysucc.org.cn>.
+All commercial use of the Software or any modification, manipulation or derivative of the Software, including but not limited to transfer, sale or licence to a commercial third party or use on behalf of a commercial third party (including but not limited to use as part of a service supplied to any third party for financial reward) is strictly prohibited and requires a commercial use licence. **This software is protected by the P. R. China patent [202211067952.6](https://www.patentguru.com/cn/search?q=202211067952.6)** For further information please email <wangsx1@sysucc.org.cn> or <zhaoqi@sysucc.org.cn>.
+
