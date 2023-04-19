@@ -8,7 +8,7 @@ gcap.runBuildflow(
   ascat_files,
   extra_info,
   include_type = FALSE,
-  genome_build = c("hg38", "hg19"),
+  genome_build = c("hg38", "hg19", "mm10"),
   overlap = 1
 )
 }

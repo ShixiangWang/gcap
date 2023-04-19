@@ -15,7 +15,7 @@
 #' @return a `list`.
 #' @export
 gcap.extractFeatures <- function(ascat_files,
-                                 genome_build = c("hg38", "hg19"),
+                                 genome_build = c("hg38", "hg19", "mm10"),
                                  ascn_data = NULL) {
   genome_build <- match.arg(genome_build)
 
@@ -29,6 +29,15 @@ gcap.extractFeatures <- function(ascat_files,
     if (!"purity" %in% colnames(ascn_data)) ascn_data$purity <- 1
     if (!"ploidy" %in% colnames(ascn_data)) ascn_data$ploidy <- NA_real_
     purity_ploidy <- unique(ascn_data[, c("sample", "purity", "ploidy")])
+  } else if (endsWith(ascat_files[1], "_segments.txt")) {
+    lg$info("> Extract features from sequenza results <")
+    lg$info("")
+
+    lg$info("reading sequenza file list")
+    rvlist = list()
+    rvlist$data <- read_copynumber_seqz_cn(ascat_files)
+    colnames(rvlist$data)[1:6] =  c("chromosome", "start", "end", "total_cn", "minor_cn", "sample")
+    purity_ploidy <- read_copynumber_seqz_pp(ascat_files)
   } else {
     lg$info("> Extract features from ASCAT results <")
     lg$info("")

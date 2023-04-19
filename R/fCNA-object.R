@@ -129,7 +129,7 @@ fCNA <- R6::R6Class(
     #' @param type type of input IDs, could be 'ensembl' or 'symbol'.
     #' @param genome_build reference genome build.
     convertGeneID = function(type = c("ensembl", "symbol"),
-                             genome_build = c("hg38", "hg19", "mm10", "mm9")) {
+                             genome_build = c("hg38", "hg19", "mm10")) {
       if (!require("IDConverter")) {
         message("package 'IDConverter' is required to convert IDs")
         return(NULL)

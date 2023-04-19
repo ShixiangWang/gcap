@@ -9,7 +9,7 @@ gcap.collapse2Genes(
   extra_info = NULL,
   include_type = FALSE,
   fix_type = TRUE,
-  genome_build = c("hg38", "hg19"),
+  genome_build = c("hg38", "hg19", "mm10"),
   overlap = 1
 )
 }

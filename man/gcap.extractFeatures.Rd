@@ -6,7 +6,7 @@
 \usage{
 gcap.extractFeatures(
   ascat_files,
-  genome_build = c("hg38", "hg19"),
+  genome_build = c("hg38", "hg19", "mm10"),
   ascn_data = NULL
 )
 }
