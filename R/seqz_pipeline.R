@@ -1,9 +1,4 @@
-# A file designed for mouse cancer genome analysis workflow
-#
-# Install sequenza and utils
-# devtools::install_git("https://bitbucket.org/sequenzatools/sequenza")
-# pip install sequenza-utils
-#
+
 gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
                                jobname,
                                extra_info = NULL,
@@ -194,7 +189,7 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
   sequenza_files <- file.path(outdir, paste0(jobname, "_segments.txt"))
   keep_idx <- sapply(sequenza_files, function(x) {
     keep <- if (file.exists(x)) {
-      file.info(x)$size > 2000
+      file.info(x)$size > 200
     } else {
       lg$warn("result file {x} does not exist, the corresponding sequenza calling has error occurred ")
       FALSE
@@ -285,59 +280,3 @@ read_copynumber_seqz_pp = function(x) {
 
   return(res)
 }
-
-
-# Install facets
-# remotes::install_github("mskcc/facets")
-#
-# cd /public/home/liuxs/anaconda3/envs/R/lib/R/library/facets/extcode
-# source activate R
-#
-# # <sample1>=tumorbam
-# # <sample2>=normalbam
-#
-# path1="/public/home/liuxs/ncbi/dbGaP-16533/copy/out"
-# path2="/public/home/liuxs/ncbi/dbGaP-16533/dnaseq/BQSR/bqsrbam"
-# path3="/public/home/liuxs/ncbi/dbGaP-21926/dnaseq/BQSR/bqsrbam"
-#
-# name=<sample1>
-#
-#   if [ -e /public/home/liuxs/ncbi/dbGaP-16533/dnaseq/BQSR/bqsrbam/$name.sorted.marked.BQSR.bam ];
-# then
-# ./snp-pileup -g -q15 -Q20 -P100 -r25,0 /public/home/liuxs/biodata/reference/genome/hg38/snpvcf/common_all_20180418.vcf.gz\
-# ${path1}/<sample>.out.gz \
-# ${path2}/<sample2>.sorted.marked.BQSR.bam \
-# ${path2}/<sample1>.sorted.marked.BQSR.bam
-# else
-#   ./snp-pileup -g -q15 -Q20 -P100 -r25,0 /public/home/liuxs/biodata/reference/genome/hg38/snpvcf/common_all_20180418.vcf.gz\
-# ${path1}/<sample>.out.gz \
-# ${path3}/<sample2>.sorted.marked.BQSR.bam  \
-# ${path3}/<sample1>.sorted.marked.BQSR.bam
-# fi
-#
-# path1="/public/home/liuxs/ncbi/dbGaP-16533/copy/csv"
-# path2="/public/home/liuxs/biodata/gdc/links/TCGA_PRAD"
-#
-#
-# library("pctGCdata")
-# library("facets")
-# set.seed(1234)
-# rcmat = readSnpMatrix("/public/home/liuxs/ncbi/dbGaP-16533/copy/out/<sample>.out.gz")
-# xx = preProcSample(rcmat,gbuild = "hg38")
-# oo=procSample(xx,cval=150)
-# fit=emcncf(oo)
-#
-# #plot
-# pdf("/public/home/liuxs/ncbi/dbGaP-16533/copy/facetdata_150/<sample>.pdf")
-# plotSample(x=oo,emfit=fit)
-# logRlogORspider(oo$out, oo$dipLogR)
-# while (!is.null(dev.list()))  dev.off()
-# #
-# save(fit,file = "/public/home/liuxs/ncbi/dbGaP-16533/copy/facetdata_150/<sample>.Rdata")
-# # output purity and ploidy -----
-# purity=fit$purity
-# purity=round(purity,2)
-# ploidy=fit$ploidy
-# ploidy=round(ploidy,1)
-# output <- paste("<sample>", purity, ploidy, sep = "\t")
-# write(output, "/public/home/liuxs/ncbi/dbGaP-16533/copy/facetdata_150/<sample>.txt", append = TRUE)

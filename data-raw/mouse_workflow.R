@@ -16,3 +16,16 @@ gcap.workflow.seqz(tumourseqfile, normalseqfile, jobname,
                    samtools_exe = "~/miniconda3/envs/circlemap/bin/samtools",
                    tabix_exe = "~/miniconda3/envs/circlemap/bin/tabix",
                    only_oncogenes = TRUE)
+
+
+gcap.workflow.facets(
+  tumourseqfile, normalseqfile, jobname,
+  genome_build = "mm10", snp_file = "~/data/mouse-all.snp.vcf.gz",
+  outdir = "~/gcap_data"
+)
+
+gcap.workflow.facets(
+  tumourseqfile, normalseqfile, jobname,
+  genome_build = "mm10", snp_file = "~/data/mouse-all.snp.vcf.gz",
+  outdir = "~/gcap_data", only_oncogenes = TRUE
+)

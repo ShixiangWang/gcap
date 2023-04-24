@@ -43,7 +43,7 @@ LinkingTo:
     Rcpp
 Remotes: 
     bitbucket::sequenzatools/sequenza,
-    github::mskcc/facets,
+    github::ShixiangWang/facets,
     github::ShixiangWang/ascat/ASCAT@v3-for-gcap-v1,
     github::ShixiangWang/IDConverter
 biocViews:

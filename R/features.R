@@ -38,6 +38,13 @@ gcap.extractFeatures <- function(ascat_files,
     rvlist$data <- read_copynumber_seqz_cn(ascat_files)
     colnames(rvlist$data)[1:6] =  c("chromosome", "start", "end", "total_cn", "minor_cn", "sample")
     purity_ploidy <- read_copynumber_seqz_pp(ascat_files)
+  } else if (endsWith(ascat_files[1], "_facets.rds")) {
+    lg$info("> Extract features from FACETS results <")
+    lg$info("")
+
+    lg$info("reading FACETS file list")
+    rvlist = read_copynumber_facets(ascat_files)
+    purity_ploidy <- rvlist$purity_ploidy
   } else {
     lg$info("> Extract features from ASCAT results <")
     lg$info("")
