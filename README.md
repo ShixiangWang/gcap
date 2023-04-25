@@ -204,6 +204,7 @@ functions as they are not exported from **gcap**.
 
 ## Related tools
 
+- [gcaputils](https://github.com/ShixiangWang/gcaputils): **gcap** utils for downstream analysis and visualization.  
 - [DoAbsolute](https://github.com/ShixiangWang/DoAbsolute): Automate Absolute Copy Number Calling using 'ABSOLUTE' package.
 - [sigminer](https://github.com/ShixiangWang/sigminer): An easy-to-use and scalable toolkit for genomic alteration signature (a.k.a. mutational signature) analysis and visualization in R.
 
