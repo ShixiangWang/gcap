@@ -187,7 +187,7 @@ Convert Gene IDs between Ensembl and Hugo Symbol System
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{fCNA$convertGeneID(
   type = c("ensembl", "symbol"),
-  genome_build = c("hg38", "hg19", "mm10", "mm9")
+  genome_build = c("hg38", "hg19", "mm10")
 )}\if{html}{\out{</div>}}
 }
 

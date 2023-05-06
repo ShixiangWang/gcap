@@ -1,4 +1,18 @@
-
+#' GCAP sequenza workflow for gene-level amplicon prediction
+#'
+#' @inheritParams gcap.workflow
+#' @param genome_build genome build version, should be one of 'hg38', 'hg19' and 'mm10'.
+#' @param ref_file a reference genome file, should be consistent with `genome_build` option.
+#' @param data_tmp_dir a directory path for storing temp data for reuse in handling multiple samples.
+#' @param util_exe the path to `sequenza-utils`.
+#' @param samtools_exe the path to `samtools_exe`.
+#' @param tabix_exe the path to `tabix`.
+#' @param skip_finished_sequenza if `TRUE`, skip finished sequenza runs.
+#' @param skip_sequenza_call if `TRUE`, skip calling sequenza.
+#' This is useful when you have done this step and just want
+#' to run next steps.
+#' @return a list of invisible `data.table` and corresponding files saved to local machine.
+#' @export
 gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
                                jobname,
                                extra_info = NULL,

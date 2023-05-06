@@ -1,7 +1,26 @@
-# A file designed for mouse cancer genome analysis workflow
-#
-# cd /data3/wsx/R/x86_64-pc-linux-gnu-library/4.2/facets/extcode/
-# g++ -std=c++11 -I/data3/wsx/miniconda3/envs/circlemap/include snp-pileup.cpp -L/data3/wsx/miniconda3/envs/circlemap/lib -lhts -Wl,-rpath=/data3/wsx/miniconda3/envs/circlemap/lib -o snp-pileup
+#' GCAP FACETS workflow for gene-level amplicon prediction
+#'
+#' @inheritParams gcap.workflow
+#' @param genome_build genome build version, should be one of 'hg38', 'hg19' and 'mm10'.
+#' @param pro_cval critical value for segmentation used in `facets::procSample()`.
+#' @param snp_file a file path to SNP file of genome, should be consistent with `genome_build` option.
+#' @param util_exe the path to `snp-pileup`.
+#' @param skip_finished_facets if `TRUE`, skip finished FACETS runs.
+#' @param skip_facets_call if `TRUE`, skip calling FACETS.
+#' This is useful when you have done this step and just want
+#' to run next steps.
+#' @return a list of invisible `data.table` and corresponding files saved to local machine.
+#' @export
+#' @importFrom grDevices dev.list dev.off pdf
+#' @details
+#' For generating the `snp-pileup` program, reference commands given here.
+#' You need modify corresponding path to fit your own machine.
+#'
+#' ```sh
+#' cd /data3/wsx/R/x86_64-pc-linux-gnu-library/4.2/facets/extcode/
+#' g++ -std=c++11 -I/data3/wsx/miniconda3/envs/circlemap/include snp-pileup.cpp -L/data3/wsx/miniconda3/envs/circlemap/lib -lhts -Wl,-rpath=/data3/wsx/miniconda3/envs/circlemap/lib -o snp-pileup
+#' ```
+#'
 gcap.workflow.facets <- function(tumourseqfile, normalseqfile,
                                  jobname,
                                  extra_info = NULL,
