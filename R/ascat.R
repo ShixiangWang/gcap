@@ -159,15 +159,15 @@ gcap.runASCAT <- function(tumourseqfile,
           # https://github.com/VanLoo-lab/ascat/issues/73
           # gg = ascat.predictGermlineGenotypes(ascat.bc, platform = "AffySNP6")
           stop("This is not working in current stage")
-          gg = ascat.predictGermlineGenotypes(
-                ascat.bc, 
-                custom = list(
-                  maxHomozygous = 0.05, 
-                  proportionHetero = 0.25, # ~0.3 var较大
-                  proportionHomo = 0.67,   # ~0.6 var较大
-                  proportionOpen = 0.04,   # ~0.03
-                  segmentLength = 100
-                ))
+          # gg = ascat.predictGermlineGenotypes(
+          #       ascat.bc,
+          #       custom = list(
+          #         maxHomozygous = 0.05,
+          #         proportionHetero = 0.25, # ~0.3 var较大
+          #         proportionHomo = 0.67,   # ~0.6 var较大
+          #         proportionOpen = 0.04,   # ~0.03
+          #         segmentLength = 100
+          #       ))
                 # https://github.com/ShixiangWang/ascat/blob/v3.0/ASCAT/R/ascat.predictGermlineGenotypes.R
         } else gg = NULL
         ascat.bc <- ascat.aspcf(ascat.bc, ascat.gg = gg, penalty = penalty)

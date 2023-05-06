@@ -8,3 +8,12 @@ oncogenes[!is.na(gene_id)]
 
 
 usethis::use_data(oncogenes, overwrite = TRUE)
+
+# mouse
+map = readRDS("data-raw/human-mouse-id-map.rds")
+library(IDConverter)
+oncogenes_mouse = convert_custom(unique(oncogenes$gene_id), from = "gene_id.x", to = "gene_id.y", dt = map)
+oncogenes_mouse = unique(na.omit(oncogenes_mouse))
+nrow(oncogenes)
+
+saveRDS(oncogenes_mouse, file = "inst/extdata/oncogenes_mouse.rds")

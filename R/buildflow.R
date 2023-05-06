@@ -15,7 +15,7 @@
 gcap.runBuildflow <- function(ascat_files,
                               extra_info,
                               include_type = FALSE,
-                              genome_build = c("hg38", "hg19"),
+                              genome_build = c("hg38", "hg19", "mm10"),
                               overlap = 1) {
   genome_build <- match.arg(genome_build)
 

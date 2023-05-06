@@ -55,7 +55,12 @@ gcap.runScoring <- function(data,
   data <- data[!is.na(data$prob)]
 
   lg$info("joining extra annotation data")
-  somatic_cn <- readRDS(system.file("extdata", "somatic_gene_cn.rds", package = "gcap"))[, 1:3]
+  if (startsWith(genome_build, "mm")) {
+    somatic_cn <- readRDS(system.file("extdata", "somatic_gene_cn_mm10.rds", package = "gcap"))[, 1:3]
+  } else {
+    somatic_cn <- readRDS(system.file("extdata", "somatic_gene_cn.rds", package = "gcap"))[, 1:3]
+  }
+
   # colnames(somatic_cn)[2:3] <- c("somatic_cn_mean", "somatic_cn_sd")
   somatic_cn <- somatic_cn[order(somatic_cn$somatic_cn_mean)]
 
@@ -138,7 +143,15 @@ gcap.runScoring <- function(data,
   ]
 
   if (only_oncogenes) {
-    fcna = fcna[gene_id %in% na.omit(unique(oncogenes$gene_id))]
+    if (startsWith(genome_build, "mm")) {
+      ids = system.file(
+        "extdata", "oncogenes_mouse.rds",
+        package = "gcap", mustWork = TRUE
+      )
+      fcna = fcna[gene_id %in% ids]
+    } else {
+      fcna = fcna[gene_id %in% na.omit(unique(oncogenes$gene_id))]
+    }
   }
 
   data.table::setkey(data, NULL)

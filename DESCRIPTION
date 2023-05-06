@@ -1,7 +1,7 @@
 Type: Package
 Package: gcap
 Title: Gene-level Circular Amplicon Prediction
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: 
     person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357"))
@@ -23,6 +23,7 @@ Imports:
     lgr,
     magrittr,
     mltools,
+    purrr,
     quadprog,
     R6,
     rappdirs,
@@ -32,13 +33,17 @@ Imports:
     xgboost (< 1.6)
 Suggests: 
     BiocManager,
+    facets,
     IDConverter (>= 0.3.0),
     PRROC,
+    sequenza,
     testthat (>= 3.0.0),
     utils
 LinkingTo: 
     Rcpp
 Remotes: 
+    bitbucket::sequenzatools/sequenza,
+    github::ShixiangWang/facets,
     github::ShixiangWang/ascat/ASCAT@v3-for-gcap-v1,
     github::ShixiangWang/IDConverter
 biocViews:
@@ -47,4 +52,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxytest::testthat_roclet"))
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3

@@ -21,7 +21,7 @@ gcap.collapse2Genes <- function(fts,
                                 extra_info = NULL,
                                 include_type = FALSE,
                                 fix_type = TRUE,
-                                genome_build = c("hg38", "hg19"),
+                                genome_build = c("hg38", "hg19", "mm10"),
                                 overlap = 1) {
   stopifnot(
     is.list(fts),
@@ -95,10 +95,17 @@ gcap.collapse2Genes <- function(fts,
 
   lg$info("merging data and prior amplicon frequency data")
   amp_freq <- readRDS(
-    system.file(
-      "extdata", "amplicon_freq.rds",
-      package = "gcap", mustWork = TRUE
-    )
+    if (startsWith(genome_build, "mm")) {
+      system.file(
+        "extdata", "amplicon_freq_mm10.rds",
+        package = "gcap", mustWork = TRUE
+      )
+    } else {
+      system.file(
+        "extdata", "amplicon_freq.rds",
+        package = "gcap", mustWork = TRUE
+      )
+    }
   )
   dt <- merge(dt, amp_freq, by = "gene_id", all.x = TRUE)
   dt[, `:=`(
