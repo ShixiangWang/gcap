@@ -13,6 +13,8 @@ reference:
     desc: Pipeline for implementing end-to-end analysis
     contents:
     - gcap.workflow
+    - gcap.workflow.seqz
+    - gcap.workflow.facets
     - gcap.ASCNworkflow
     - deploy
   - title: Class

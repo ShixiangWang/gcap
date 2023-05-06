@@ -31,7 +31,7 @@ be a vector with same length."><!-- mathjax --><script src="https://cdnjs.cloudf
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -79,85 +79,128 @@ be a vector with same length.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.runASCAT</span><span class="op">(</span>
-  <span class="va">tumourseqfile</span>,
-  normalseqfile <span class="op">=</span> <span class="cn">NA_character_</span>,
-  <span class="va">tumourname</span>,
-  normalname <span class="op">=</span> <span class="cn">NA_character_</span>,
-  jobname <span class="op">=</span> <span class="va">tumourname</span>,
-  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
-  allelecounter_exe <span class="op">=</span> <span class="st">"~/miniconda3/envs/cancerit/bin/alleleCounter"</span>,
-  g1000allelesprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,
-    <span class="st">"1kg.phase3.v5a_GRCh38nounref_allele_index_chr"</span><span class="op">)</span>,
-  g1000lociprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,
-    <span class="st">"1kg.phase3.v5a_GRCh38nounref_loci_chrstring_chr"</span><span class="op">)</span>,
-  GCcontentfile <span class="op">=</span> <span class="st">"~/data/snp/GC_correction_hg38.txt"</span>,
-  replictimingfile <span class="op">=</span> <span class="st">"~/data/snp/RT_correction_hg38.txt"</span>,
-  nthreads <span class="op">=</span> <span class="fl">22</span>,
-  minCounts <span class="op">=</span> <span class="fl">10</span>,
-  BED_file <span class="op">=</span> <span class="cn">NA</span>,
-  probloci_file <span class="op">=</span> <span class="cn">NA</span>,
-  chrom_names <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">22</span>,
-  gender <span class="op">=</span> <span class="st">"XX"</span>,
-  min_base_qual <span class="op">=</span> <span class="fl">20</span>,
-  min_map_qual <span class="op">=</span> <span class="fl">35</span>,
-  penalty <span class="op">=</span> <span class="fl">70</span>,
-  skip_finished_ASCAT <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gcap.runASCAT</span><span class="op">(</span></span>
+<span>  <span class="va">tumourseqfile</span>,</span>
+<span>  normalseqfile <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  <span class="va">tumourname</span>,</span>
+<span>  normalname <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  jobname <span class="op">=</span> <span class="va">tumourname</span>,</span>
+<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  allelecounter_exe <span class="op">=</span> <span class="st">"~/miniconda3/envs/cancerit/bin/alleleCounter"</span>,</span>
+<span>  g1000allelesprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,</span>
+<span>    <span class="st">"1kg.phase3.v5a_GRCh38nounref_allele_index_chr"</span><span class="op">)</span>,</span>
+<span>  g1000lociprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,</span>
+<span>    <span class="st">"1kg.phase3.v5a_GRCh38nounref_loci_chrstring_chr"</span><span class="op">)</span>,</span>
+<span>  GCcontentfile <span class="op">=</span> <span class="st">"~/data/snp/GC_correction_hg38.txt"</span>,</span>
+<span>  replictimingfile <span class="op">=</span> <span class="st">"~/data/snp/RT_correction_hg38.txt"</span>,</span>
+<span>  nthreads <span class="op">=</span> <span class="fl">22</span>,</span>
+<span>  minCounts <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  BED_file <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  probloci_file <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  chrom_names <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">22</span>,</span>
+<span>  gender <span class="op">=</span> <span class="st">"XX"</span>,</span>
+<span>  min_base_qual <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  min_map_qual <span class="op">=</span> <span class="fl">35</span>,</span>
+<span>  penalty <span class="op">=</span> <span class="fl">70</span>,</span>
+<span>  skip_finished_ASCAT <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>tumourseqfile</dt>
 <dd><p>Full path to the tumour BAM file.</p></dd>
+
+
 <dt>normalseqfile</dt>
 <dd><p>Full path to the normal BAM file.</p></dd>
+
+
 <dt>tumourname</dt>
 <dd><p>Identifier to be used for tumour output files.</p></dd>
+
+
 <dt>normalname</dt>
 <dd><p>Identifier to be used for normal output files.</p></dd>
+
+
 <dt>jobname</dt>
 <dd><p>job name, typically an unique name for a tumor-normal pair.</p></dd>
+
+
 <dt>outdir</dt>
 <dd><p>result output path.</p></dd>
+
+
 <dt>allelecounter_exe</dt>
 <dd><p>Path to the allele counter executable.</p></dd>
+
+
 <dt>g1000allelesprefix</dt>
 <dd><p>Prefix path to the 1000 Genomes alleles reference files.</p></dd>
+
+
 <dt>g1000lociprefix</dt>
 <dd><p>Prefix path to the 1000 Genomes SNP reference files.</p></dd>
+
+
 <dt>GCcontentfile</dt>
 <dd><p>File containing the GC content around every SNP for increasing window sizes</p></dd>
+
+
 <dt>replictimingfile</dt>
 <dd><p>File containing replication timing at every SNP for various cell lines (optional)</p></dd>
+
+
 <dt>nthreads</dt>
 <dd><p>The number of parallel processes for getting allele counts (optional, default=1).</p></dd>
+
+
 <dt>minCounts</dt>
 <dd><p>Minimum depth required in the normal for a SNP to be considered (optional, default=10).</p></dd>
+
+
 <dt>BED_file</dt>
 <dd><p>A BED file for only looking at SNPs within specific intervals (optional, default=NA).</p></dd>
+
+
 <dt>probloci_file</dt>
 <dd><p>A file (chromosome &lt;tab&gt; position; no header) containing specific loci to ignore (optional, default=NA).</p></dd>
+
+
 <dt>chrom_names</dt>
 <dd><p>A vector containing the names of chromosomes to be
 considered (optional, default=1:22).</p></dd>
+
+
 <dt>gender</dt>
 <dd><p>a vector of gender for each cases ("XX" or "XY").
 Default = all female ("XX"). Ignore this if you don't include sex
 chromosomes.</p></dd>
+
+
 <dt>min_base_qual</dt>
 <dd><p>Minimum base quality required for a read to be counted (optional, default=20).</p></dd>
+
+
 <dt>min_map_qual</dt>
 <dd><p>Minimum mapping quality required for a read to be counted (optional, default=35).</p></dd>
+
+
 <dt>penalty</dt>
 <dd><p>penalty of introducing an additional ASPCF breakpoint (expert parameter, don't adapt unless you know what you're doing)</p></dd>
+
+
 <dt>skip_finished_ASCAT</dt>
 <dd><p>if <code>TRUE</code>, skipped finished ASCAT calls
 to save time.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Nothing. Check the <code>outdir</code> for results.</p>
+    
+
+<p>Nothing. Check the <code>outdir</code> for results.</p>
     </div>
 
   </div>
@@ -172,7 +215,7 @@ to save time.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

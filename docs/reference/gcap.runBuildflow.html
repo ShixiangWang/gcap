@@ -34,7 +34,7 @@ wrapper."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/ma
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -85,13 +85,13 @@ wrapper.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.runBuildflow</span><span class="op">(</span>
-  <span class="va">ascat_files</span>,
-  <span class="va">extra_info</span>,
-  include_type <span class="op">=</span> <span class="cn">FALSE</span>,
-  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span>,
-  overlap <span class="op">=</span> <span class="fl">1</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gcap.runBuildflow</span><span class="op">(</span></span>
+<span>  <span class="va">ascat_files</span>,</span>
+<span>  <span class="va">extra_info</span>,</span>
+<span>  include_type <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span>, <span class="st">"mm10"</span><span class="op">)</span>,</span>
+<span>  overlap <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -99,24 +99,35 @@ wrapper.</p>
     <dl><dt>ascat_files</dt>
 <dd><p>a list of file path.
 Typically the result of <code><a href="gcap.runASCAT.html">gcap.runASCAT()</a></code></p></dd>
+
+
 <dt>extra_info</dt>
 <dd><p>(optional) a <code>data.frame</code> with 3 columns 'sample',
 'age' and 'gender', for including cancer type, check
 parameter <code>include_type</code>. For gender, should be 'XX' or 'XY',
 also could be <code>0</code> for 'XX' and <code>1</code> for 'XY'.</p></dd>
+
+
 <dt>include_type</dt>
 <dd><p>if <code>TRUE</code>, a fourth column named 'type'
 should be included in <code>extra_info</code>, the supported cancer
 type should be described with <a href="https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/tcga-study-abbreviations" class="external-link">TCGA cancer type abbr.</a>.</p></dd>
+
+
 <dt>genome_build</dt>
 <dd><p>genome build version, should be
 one of 'hg38', 'hg19'.</p></dd>
+
+
 <dt>overlap</dt>
 <dd><p>the overlap percentage on gene.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>data.table</code>.</p>
+    
+
+<p>a <code>data.table</code>.</p>
     </div>
 
   </div>
@@ -131,7 +142,7 @@ one of 'hg38', 'hg19'.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

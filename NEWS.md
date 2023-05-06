@@ -1,3 +1,8 @@
+# gcap 1.1.0
+
+- Supported analysis workflow from FACETS and Sequenza.
+- Mouse genome is enabled based on the two implemented workflows above.
+
 # gcap 1.0.0
 
 - The first public and stable release.
