@@ -131,6 +131,7 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
         {
           if (!all(file.exists(tfile, nfile))) {
             lg$fatal("Not all bam files exist")
+            return(NULL)
           }
           seqz_file = file.path(seqz_dir, paste0(id, ".seqz.gz"))
           sseqz_file = file.path(sseqz_dir, paste0(id, ".small.seqz.gz"))
@@ -140,18 +141,22 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
           lg$info("Genrating proper small seqz.gz file from linux shell...")
           cmd1 = sprintf("%s bam2seqz -n %s -t %s --fasta %s -gc %s -S %s -T %s -o %s",
                          util_exe, nfile, tfile, ref_file, gc_file, samtools_exe, tabix_exe, seqz_file)
+          lg$info(cmd1)
           system(cmd1)
 
           cmd2 = sprintf("%s seqz_binning --seqz %s -w 50 -T %s -o %s",
                          util_exe, seqz_file, tabix_exe, sseqz_file)
+          lg$info(cmd2)
           system(cmd2)
 
           cmd3 = sprintf('zcat %s | awk "/^chromosome|chr[12]?[0-9XY]\t/{print}" | gzip > %s',
                          sseqz_file, sseqz_file2)
+          lg$info(cmd3)
           system(cmd3)
 
           if (!(file.exists(sseqz_file2) && file.size(sseqz_file2) > 200)) {
             lg$fatal("file {sseqz_file2} not be properly generated")
+            return(NULL)
           }
 
           lg$info("Running sequenza standard analysis...")
