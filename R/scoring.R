@@ -10,8 +10,8 @@
 #' as a circular amplicon.
 #' If the value is larger, it is more likely a fCNA assigned to `noncircular`
 #' instead of `circular`. **When it is `NA`, we don't use TCGA somatic CN data as reference**.
-#' @param gap_cn a gap copy number value, default is `4L` refer to Kim 2020 Nat.Gen.
-#' A gene with copy number above `ploidy + gap_cn` would be treated as focal amplicon.
+#' @param gap_cn a gap copy number value.
+#' A gene with copy number above background (`ploidy + gap_cn` in general) would be treated as focal amplicon.
 #' Smaller, more amplicons.
 #' @param only_oncogenes if `TRUE`, only known oncogenes are kept for fCNA analysis
 #' and circular prediction.

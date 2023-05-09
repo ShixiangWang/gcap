@@ -54,8 +54,8 @@ as a circular amplicon.
 If the value is larger, it is more likely a fCNA assigned to \code{noncircular}
 instead of \code{circular}. \strong{When it is \code{NA}, we don't use TCGA somatic CN data as reference}.}
 
-\item{gap_cn}{a gap copy number value, default is \code{4L} refer to Kim 2020 Nat.Gen.
-A gene with copy number above \code{ploidy + gap_cn} would be treated as focal amplicon.
+\item{gap_cn}{a gap copy number value.
+A gene with copy number above background (\code{ploidy + gap_cn} in general) would be treated as focal amplicon.
 Smaller, more amplicons.}
 
 \item{overlap}{the overlap percentage on gene.}
