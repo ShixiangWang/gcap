@@ -134,7 +134,7 @@ gcap.workflow.facets <- function(tumourseqfile, normalseqfile,
           lg$info("Genrating snp-pileup facets.gz file from linux shell...")
           cmd1 = sprintf("%s -g -q15 -Q20 -P100 -r20,0 %s %s %s %s",
                          util_exe, snp_file, facets_file, nfile, tfile)
-          lg$info(cmd1)
+          lg$info(cmd1, "\n")
           system(cmd1)
 
           if (!(file.exists(facets_file) && file.size(facets_file) > 200)) {
