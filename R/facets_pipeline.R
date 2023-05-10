@@ -143,7 +143,6 @@ gcap.workflow.facets <- function(tumourseqfile, normalseqfile,
           }
 
           lg$info("Running FACETS standard analysis...")
-          #if (is.null(Sys.getenv("VROOM_CONNECTION_SIZE"))) Sys.setenv("VROOM_CONNECTION_SIZE" = 28311552 * 6)
           #library("pctGCdata")
           #library("facets")
           eval(parse(text = "library('pctGCdata')"))

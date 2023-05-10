@@ -141,17 +141,17 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
           lg$info("Genrating proper small seqz.gz file from linux shell...")
           cmd1 = sprintf("%s bam2seqz -n %s -t %s --fasta %s -gc %s -S %s -T %s -o %s",
                          util_exe, nfile, tfile, ref_file, gc_file, samtools_exe, tabix_exe, seqz_file)
-          lg$info(cmd1)
+          lg$info(cmd1, "\n")
           system(cmd1)
 
           cmd2 = sprintf("%s seqz_binning --seqz %s -w 50 -T %s -o %s",
                          util_exe, seqz_file, tabix_exe, sseqz_file)
-          lg$info(cmd2)
+          lg$info(cmd2, "\n")
           system(cmd2)
 
           cmd3 = sprintf('zcat %s | awk "/^chromosome|chr[12]?[0-9XY]\t/{print}" | gzip > %s',
                          sseqz_file, sseqz_file2)
-          lg$info(cmd3)
+          lg$info(cmd3, "\n")
           system(cmd3)
 
           if (!(file.exists(sseqz_file2) && file.size(sseqz_file2) > 200)) {
@@ -160,7 +160,9 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
           }
 
           lg$info("Running sequenza standard analysis...")
-          if (is.null(Sys.getenv("VROOM_CONNECTION_SIZE"))) Sys.setenv("VROOM_CONNECTION_SIZE" = 28311552 * 6)
+          if (is.null(Sys.getenv("VROOM_CONNECTION_SIZE")) | identical(Sys.getenv("VROOM_CONNECTION_SIZE"), "")) {
+            Sys.setenv("VROOM_CONNECTION_SIZE" = 169869312L * 6L)
+          }
           s1 = sequenza::sequenza.extract(sseqz_file2, assembly = genome_build)
           s2 = sequenza::sequenza.fit(s1, chromosome.list = if (startsWith(genome_build, "mm")) 1:19 else 1:22)
           sequenza::sequenza.results(
