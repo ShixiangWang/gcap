@@ -125,7 +125,7 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
     run_one <- function(i) {
       tfile <- tumourseqfile[i]
       nfile <- normalseqfile[i]
-      id <- jobname[i]
+      id <- jobname2[i]
 
       tryCatch(
         {
@@ -138,7 +138,7 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
           sseqz_file2 = file.path(sseqz_dir, paste0(id, ".small_filtered.seqz.gz"))
 
 
-          lg$info("Genrating proper small seqz.gz file from linux shell...")
+          lg$info("Genrating proper small seqz.gz file from linux shell...\n")
           cmd1 = sprintf("%s bam2seqz -n %s -t %s --fasta %s -gc %s -S %s -T %s -o %s",
                          util_exe, nfile, tfile, ref_file, gc_file, samtools_exe, tabix_exe, seqz_file)
           lg$info(cmd1, "\n")

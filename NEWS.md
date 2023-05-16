@@ -1,3 +1,8 @@
+# gcap 1.1.1
+
+- Updated Sequenza workflow.
+- Fixed the re-handling of errored seqz and facets runs.
+
 # gcap 1.1.0
 
 - Supported analysis workflow from FACETS and Sequenza.

@@ -120,7 +120,7 @@ gcap.workflow.facets <- function(tumourseqfile, normalseqfile,
     run_one <- function(i) {
       tfile <- tumourseqfile[i]
       nfile <- normalseqfile[i]
-      id <- jobname[i]
+      id <- jobname2[i]
 
       tryCatch(
         {

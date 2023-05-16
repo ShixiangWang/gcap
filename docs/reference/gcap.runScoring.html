@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
       </span>
     </div>
 
@@ -133,17 +133,17 @@ and circular prediction.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ec"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ec2</span> <span class="op">&lt;-</span> <span class="va">ec</span></span></span>
 <span class="r-in"><span><span class="va">ec2</span><span class="op">$</span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="gcap.runPrediction.html">gcap.runPrediction</a></span><span class="op">(</span><span class="va">ec</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-09 16:35:28 info [gcap.runPrediction]: using model file XGB_NF11.rds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-09 16:35:28 info [gcap.runPrediction]: selecting necessary features from input data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-09 16:35:28 info [gcap.runPrediction]: running prediction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16:35:28] WARNING: amalgamation/../src/c_api/c_api.cc:718: `ntree_limit` is deprecated, use `iteration_range` instead.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runPrediction]: using model file XGB_NF11.rds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runPrediction]: selecting necessary features from input data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runPrediction]: running prediction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10:28:36] WARNING: amalgamation/../src/c_api/c_api.cc:718: `ntree_limit` is deprecated, use `iteration_range` instead.</span>
 <span class="r-in"><span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu">gcap.runScoring</span><span class="op">(</span><span class="va">ec2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-09 16:35:28 info [gcap.runScoring]: checking input data type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-09 16:35:28 info [gcap.runScoring]: checking columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-09 16:35:28 info [gcap.runScoring]: No 'sample' column found, mutating one</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-09 16:35:28 info [gcap.runScoring]: filtering out records without prob result</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-09 16:35:28 info [gcap.runScoring]: joining extra annotation data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-09 16:35:31 info [gcap.runScoring]: only keep genes labeled as amplicons in result fCNA object</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runScoring]: checking input data type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runScoring]: checking columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runScoring]: No 'sample' column found, mutating one</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runScoring]: filtering out records without prob result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runScoring]: joining extra annotation data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:38 info [gcap.runScoring]: only keep genes labeled as amplicons in result fCNA object</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> summarizing sample...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   classifying samples with min_prob=0.6</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> done</span>
@@ -154,7 +154,7 @@ and circular prediction.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      |__ (<span style="color: #00BBBB;">0</span>) <span style="color: #00BB00;">18</span> noncircular</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      |__ (<span style="color: #00BBBB;">1</span>) <span style="color: #00BB00;">9</span> circular</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-09 16:35:31 info [gcap.runScoring]: done</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:38 info [gcap.runScoring]: done</span>
 <span class="r-in"><span><span class="va">score</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       sample         band         gene_id total_cn minor_cn purity   ploidy</span>
