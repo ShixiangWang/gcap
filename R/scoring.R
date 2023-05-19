@@ -144,9 +144,11 @@ gcap.runScoring <- function(data,
 
   if (only_oncogenes) {
     if (startsWith(genome_build, "mm")) {
-      ids = system.file(
-        "extdata", "oncogenes_mouse.rds",
-        package = "gcap", mustWork = TRUE
+      ids = readRDS(
+        system.file(
+          "extdata", "oncogenes_mouse.rds",
+          package = "gcap", mustWork = TRUE
+        )
       )
       fcna = fcna[gene_id %in% ids]
     } else {
