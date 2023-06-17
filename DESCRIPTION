@@ -11,8 +11,7 @@ Description: Provides data processing pipeline feeding paired bam files
 License: Non-Commercial Academic License + file LICENSE
 URL: https://github.com/ShixiangWang/gcap
 BugReports: https://github.com/ShixiangWang/gcap/issues
-Depends: 
-    ASCAT (>= 3.0.0),
+Depends:
     R (>= 3.5),
     sigminer (>= 2.1.1)
 Imports:
@@ -28,6 +27,7 @@ Imports:
     R6,
     rappdirs,
     Rcpp,
+    remotes,
     stats,
     uuid,
     xgboost (< 1.6)
@@ -43,8 +43,8 @@ LinkingTo:
     Rcpp
 Remotes: 
     bitbucket::sequenzatools/sequenza,
-    github::ShixiangWang/facets,
     github::ShixiangWang/ascat/ASCAT@v3-for-gcap-v1,
+    github::ShixiangWang/facets,
     github::ShixiangWang/IDConverter
 biocViews:
 Config/testthat/edition: 3
@@ -53,3 +53,4 @@ LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxytest::testthat_roclet"))
 RoxygenNote: 7.2.3
+StagedInstall: no

@@ -5,6 +5,9 @@
   packageStartupMessage(msg)
 }
 
+.onLoad <- function(libname, pkgname) {
+  library("ASCAT")
+}
 
 utils::globalVariables(
   c("oncogenes")
