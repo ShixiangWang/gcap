@@ -2,7 +2,7 @@
 
 suppressMessages(library(GetoptLong))
 VERSION = as.character(packageVersion("gcap"))
-Citation = "GCAP"
+Citation = "Wang et al. Machine learning-based extrachromosomal DNA identification in large-scale cohorts reveals its clinical implications in cancer."
 
 
 subCommands(

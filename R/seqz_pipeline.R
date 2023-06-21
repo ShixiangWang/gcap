@@ -99,7 +99,7 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
   }
 
   if (!skip_sequenza_call) {
-    gc_file = file.path(data_tmp_dir, paste0(genome_build, ".gc50Base.wig.gz"))
+    gc_file <- file.path(data_tmp_dir, paste0(genome_build, ".gc50Base.wig.gz"))
     if (!dir.exists(data_tmp_dir)) {
       dir.create(data_tmp_dir, recursive = TRUE)
       lg$info("created data directory for storing reference relavant annotation")
@@ -109,7 +109,7 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
       if (!file.exists(util_exe)) {
         stop("Sequenza utils not found, please install it by `pip install sequenza-utils`")
       }
-      cmd = sprintf("%s gc_wiggle -w 50 --fasta %s -o %s", util_exe, ref_file, gc_file)
+      cmd <- sprintf("%s gc_wiggle -w 50 --fasta %s -o %s", util_exe, ref_file, gc_file)
       system(cmd)
       lg$info("done")
     } else {
@@ -117,8 +117,8 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
     }
 
     lg$info("creating sequenza files...")
-    seqz_dir = file.path(outdir, "seqz")
-    sseqz_dir = file.path(outdir, "small-seqz")
+    seqz_dir <- file.path(outdir, "seqz")
+    sseqz_dir <- file.path(outdir, "small-seqz")
     if (!dir.exists(seqz_dir)) dir.create(seqz_dir, recursive = TRUE)
     if (!dir.exists(sseqz_dir)) dir.create(sseqz_dir, recursive = TRUE)
 
@@ -133,24 +133,30 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
             lg$fatal("Not all bam files exist")
             return(NULL)
           }
-          seqz_file = file.path(seqz_dir, paste0(id, ".seqz.gz"))
-          sseqz_file = file.path(sseqz_dir, paste0(id, ".small.seqz.gz"))
-          sseqz_file2 = file.path(sseqz_dir, paste0(id, ".small_filtered.seqz.gz"))
+          seqz_file <- file.path(seqz_dir, paste0(id, ".seqz.gz"))
+          sseqz_file <- file.path(sseqz_dir, paste0(id, ".small.seqz.gz"))
+          sseqz_file2 <- file.path(sseqz_dir, paste0(id, ".small_filtered.seqz.gz"))
 
 
           lg$info("Genrating proper small seqz.gz file from linux shell...\n")
-          cmd1 = sprintf("%s bam2seqz -n %s -t %s --fasta %s -gc %s -S %s -T %s -o %s",
-                         util_exe, nfile, tfile, ref_file, gc_file, samtools_exe, tabix_exe, seqz_file)
+          cmd1 <- sprintf(
+            "%s bam2seqz -n %s -t %s --fasta %s -gc %s -S %s -T %s -o %s",
+            util_exe, nfile, tfile, ref_file, gc_file, samtools_exe, tabix_exe, seqz_file
+          )
           lg$info(cmd1, "\n")
           system(cmd1)
 
-          cmd2 = sprintf("%s seqz_binning --seqz %s -w 50 -T %s -o %s",
-                         util_exe, seqz_file, tabix_exe, sseqz_file)
+          cmd2 <- sprintf(
+            "%s seqz_binning --seqz %s -w 50 -T %s -o %s",
+            util_exe, seqz_file, tabix_exe, sseqz_file
+          )
           lg$info(cmd2, "\n")
           system(cmd2)
 
-          cmd3 = sprintf('zcat %s | awk "/^chromosome|chr[12]?[0-9XY]\t/{print}" | gzip > %s',
-                         sseqz_file, sseqz_file2)
+          cmd3 <- sprintf(
+            'zcat %s | awk "/^chromosome|chr[12]?[0-9XY]\t/{print}" | gzip > %s',
+            sseqz_file, sseqz_file2
+          )
           lg$info(cmd3, "\n")
           system(cmd3)
 
@@ -163,8 +169,8 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
           if (is.null(Sys.getenv("VROOM_CONNECTION_SIZE")) | identical(Sys.getenv("VROOM_CONNECTION_SIZE"), "")) {
             Sys.setenv("VROOM_CONNECTION_SIZE" = 169869312L * 6L)
           }
-          s1 = sequenza::sequenza.extract(sseqz_file2, assembly = genome_build)
-          s2 = sequenza::sequenza.fit(s1, chromosome.list = if (startsWith(genome_build, "mm")) 1:19 else 1:22)
+          s1 <- sequenza::sequenza.extract(sseqz_file2, assembly = genome_build)
+          s2 <- sequenza::sequenza.fit(s1, chromosome.list = if (startsWith(genome_build, "mm")) 1:19 else 1:22)
           sequenza::sequenza.results(
             sequenza.extract = s1,
             cp.table = s2,
@@ -186,7 +192,7 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
       )
     }
 
-    jobname2 = jobname
+    jobname2 <- jobname
     if (skip_finished_sequenza) {
       drop_idx <- sapply(file.path(outdir, paste0(jobname2, "_segments.txt")), file.exists)
       if (sum(drop_idx) > 0) {
@@ -203,7 +209,6 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
 
     if (length(jobname2) > 0) parallel::mclapply(seq_along(jobname2), run_one, mc.cores = nthreads)
     lg$info("sequenza analysis done, check {outdir} for results")
-
   }
 
   lg$info("checking sequenza result files")
@@ -251,8 +256,9 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
   lg$info("Step 4: Run scoring and summarizing")
   lg$info("====================================")
   out <- gcap.runScoring(model_input, genome_build,
-                         tightness = tightness, gap_cn = gap_cn,
-                         only_oncogenes = only_oncogenes)
+    tightness = tightness, gap_cn = gap_cn,
+    only_oncogenes = only_oncogenes
+  )
 
   save_file <- file.path(outdir, paste0(result_file_prefix, "_prediction_result.rds"))
   lg$info("Saving raw prediction result to {save_file}")
@@ -272,29 +278,33 @@ gcap.workflow.seqz <- function(tumourseqfile, normalseqfile,
   invisible(fCNA)
 }
 
-read_copynumber_seqz_cn = function(x) {
+read_copynumber_seqz_cn <- function(x) {
   stopifnot(length(x) >= 1)
-  SAMPLE = sub("_segments.txt", "", basename(x))
+  SAMPLE <- sub("_segments.txt", "", basename(x))
   res <- purrr::map2_df(x, SAMPLE, function(x, y) {
     df <- data.table::fread(x)
-    df <- df[, c("chromosome", "start.pos",
-                 "end.pos", "CNt", "B"), with = FALSE]
-    df$sample = y
-    colnames(df) <- c("Chromosome", "Start.bp", "End.bp",
-                      "modal_cn", "minor_cn", "sample")
+    df <- df[, c(
+      "chromosome", "start.pos",
+      "end.pos", "CNt", "B"
+    ), with = FALSE]
+    df$sample <- y
+    colnames(df) <- c(
+      "Chromosome", "Start.bp", "End.bp",
+      "modal_cn", "minor_cn", "sample"
+    )
     df
   })
 
   return(res)
 }
 
-read_copynumber_seqz_pp = function(x) {
+read_copynumber_seqz_pp <- function(x) {
   stopifnot(length(x) >= 1)
-  x2 = sub("_segments.txt", "_alternative_solutions.txt", x)
-  SAMPLE = sub("_segments.txt", "", basename(x))
+  x2 <- sub("_segments.txt", "_alternative_solutions.txt", x)
+  SAMPLE <- sub("_segments.txt", "", basename(x))
   res <- purrr::map2_df(x2, SAMPLE, function(x, y) {
     df <- data.table::fread(x)[1, 1:2]
-    df$sample = y
+    df$sample <- y
     colnames(df) <- c("purity", "ploidy", "sample")
     df[, c(3, 1, 2)]
   })

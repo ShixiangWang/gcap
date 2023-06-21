@@ -60,8 +60,7 @@ Smaller, more amplicons.}
 
 \item{pro_cval}{critical value for segmentation used in \code{facets::procSample()}.}
 
-\item{only_oncogenes}{if \code{TRUE}, only known oncogenes are kept for fCNA analysis
-and circular prediction.}
+\item{only_oncogenes}{if \code{TRUE}, only known oncogenes are kept for circular prediction.}
 
 \item{snp_file}{a file path to SNP file of genome, should be consistent with \code{genome_build} option.}
 

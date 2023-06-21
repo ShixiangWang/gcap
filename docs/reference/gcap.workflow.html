@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -75,40 +75,40 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gcap.workflow</span><span class="op">(</span></span>
-<span>  <span class="va">tumourseqfile</span>,</span>
-<span>  <span class="va">normalseqfile</span>,</span>
-<span>  <span class="va">tumourname</span>,</span>
-<span>  <span class="va">normalname</span>,</span>
-<span>  jobname <span class="op">=</span> <span class="va">tumourname</span>,</span>
-<span>  extra_info <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  include_type <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span>,</span>
-<span>  model <span class="op">=</span> <span class="st">"XGB11"</span>,</span>
-<span>  tightness <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  gap_cn <span class="op">=</span> <span class="fl">3L</span>,</span>
-<span>  overlap <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  only_oncogenes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  result_file_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"gcap_"</span>, <span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  allelecounter_exe <span class="op">=</span> <span class="st">"~/miniconda3/envs/cancerit/bin/alleleCounter"</span>,</span>
-<span>  g1000allelesprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,</span>
-<span>    <span class="st">"1kg.phase3.v5a_GRCh38nounref_allele_index_chr"</span><span class="op">)</span>,</span>
-<span>  g1000lociprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,</span>
-<span>    <span class="st">"1kg.phase3.v5a_GRCh38nounref_loci_chrstring_chr"</span><span class="op">)</span>,</span>
-<span>  GCcontentfile <span class="op">=</span> <span class="st">"~/data/snp/GC_correction_hg38.txt"</span>,</span>
-<span>  replictimingfile <span class="op">=</span> <span class="st">"~/data/snp/RT_correction_hg38.txt"</span>,</span>
-<span>  nthreads <span class="op">=</span> <span class="fl">22</span>,</span>
-<span>  minCounts <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  BED_file <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  probloci_file <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  chrom_names <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">22</span>,</span>
-<span>  min_base_qual <span class="op">=</span> <span class="fl">20</span>,</span>
-<span>  min_map_qual <span class="op">=</span> <span class="fl">35</span>,</span>
-<span>  penalty <span class="op">=</span> <span class="fl">70</span>,</span>
-<span>  skip_finished_ASCAT <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  skip_ascat_call <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.workflow</span><span class="op">(</span>
+  <span class="va">tumourseqfile</span>,
+  <span class="va">normalseqfile</span>,
+  <span class="va">tumourname</span>,
+  <span class="va">normalname</span>,
+  jobname <span class="op">=</span> <span class="va">tumourname</span>,
+  extra_info <span class="op">=</span> <span class="cn">NULL</span>,
+  include_type <span class="op">=</span> <span class="cn">FALSE</span>,
+  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span>,
+  model <span class="op">=</span> <span class="st">"XGB11"</span>,
+  tightness <span class="op">=</span> <span class="fl">1L</span>,
+  gap_cn <span class="op">=</span> <span class="fl">3L</span>,
+  overlap <span class="op">=</span> <span class="fl">1</span>,
+  only_oncogenes <span class="op">=</span> <span class="cn">FALSE</span>,
+  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
+  result_file_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"gcap_"</span>, <span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
+  allelecounter_exe <span class="op">=</span> <span class="st">"~/miniconda3/envs/cancerit/bin/alleleCounter"</span>,
+  g1000allelesprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,
+    <span class="st">"1kg.phase3.v5a_GRCh38nounref_allele_index_chr"</span><span class="op">)</span>,
+  g1000lociprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,
+    <span class="st">"1kg.phase3.v5a_GRCh38nounref_loci_chrstring_chr"</span><span class="op">)</span>,
+  GCcontentfile <span class="op">=</span> <span class="st">"~/data/snp/GC_correction_hg38.txt"</span>,
+  replictimingfile <span class="op">=</span> <span class="st">"~/data/snp/RT_correction_hg38.txt"</span>,
+  nthreads <span class="op">=</span> <span class="fl">22</span>,
+  minCounts <span class="op">=</span> <span class="fl">10</span>,
+  BED_file <span class="op">=</span> <span class="cn">NA</span>,
+  probloci_file <span class="op">=</span> <span class="cn">NA</span>,
+  chrom_names <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">22</span>,
+  min_base_qual <span class="op">=</span> <span class="fl">20</span>,
+  min_map_qual <span class="op">=</span> <span class="fl">35</span>,
+  penalty <span class="op">=</span> <span class="fl">70</span>,
+  skip_finished_ASCAT <span class="op">=</span> <span class="cn">TRUE</span>,
+  skip_ascat_call <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -174,8 +174,7 @@ Smaller, more amplicons.</p></dd>
 
 
 <dt>only_oncogenes</dt>
-<dd><p>if <code>TRUE</code>, only known oncogenes are kept for fCNA analysis
-and circular prediction.</p></dd>
+<dd><p>if <code>TRUE</code>, only known oncogenes are kept for circular prediction.</p></dd>
 
 
 <dt>outdir</dt>
@@ -271,7 +270,7 @@ to run next steps.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

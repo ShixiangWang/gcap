@@ -67,7 +67,13 @@ a function will be called to update the sample summary.}
 Create a \code{fCNA} object.
 Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.workflow()}} or \code{\link[=gcap.ASCNworkflow]{gcap.ASCNworkflow()}}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(fcna, pdata = fcna[, "sample", drop = FALSE], min_prob = 0.6)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$new(
+  fcna,
+  pdata = fcna[, "sample", drop = FALSE],
+  min_prob = 0.6,
+  only_oncogenes = FALSE,
+  genome_build = c("hg38", "hg19", "mm10")
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -78,6 +84,10 @@ Typically, you can obtain this object from \code{\link[=gcap.workflow]{gcap.work
 \item{\code{pdata}}{a \code{data.frame} storing phenotype or sample-level related data. (Optional)}
 
 \item{\code{min_prob}}{the minimal aggregated (in cytoband level) probability to determine a circular amplicon.}
+
+\item{\code{only_oncogenes}}{only_oncogenes if \code{TRUE}, only known oncogenes are kept for circular prediction.}
+
+\item{\code{genome_build}}{genome version}
 }
 \if{html}{\out{</div>}}
 }
@@ -111,9 +121,21 @@ a \code{fCNA}
 \subsection{Method \code{getSampleSummary()}}{
 Get sample summary of fCNA
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{fCNA$getSampleSummary()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{fCNA$getSampleSummary(
+  only_oncogenes = FALSE,
+  genome_build = c("hg38", "hg19", "mm10")
+)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{only_oncogenes}}{only_oncogenes if \code{TRUE}, only known oncogenes are kept for circular prediction.}
+
+\item{\code{genome_build}}{genome version.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 a \code{data.table}
 }

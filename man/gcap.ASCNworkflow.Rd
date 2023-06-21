@@ -54,8 +54,7 @@ Smaller, more amplicons.}
 
 \item{overlap}{the overlap percentage on gene.}
 
-\item{only_oncogenes}{if \code{TRUE}, only known oncogenes are kept for fCNA analysis
-and circular prediction.}
+\item{only_oncogenes}{if \code{TRUE}, only known oncogenes are kept for circular prediction.}
 
 \item{outdir}{result output path.}
 

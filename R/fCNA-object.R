@@ -40,7 +40,12 @@ fCNA <- R6::R6Class(
     #' @param fcna a `data.frame` storing focal copy number amplicon list.
     #' @param pdata a `data.frame` storing phenotype or sample-level related data. (Optional)
     #' @param min_prob the minimal aggregated (in cytoband level) probability to determine a circular amplicon.
-    initialize = function(fcna, pdata = fcna[, "sample", drop = FALSE], min_prob = 0.6) {
+    #' @param only_oncogenes only_oncogenes if `TRUE`, only known oncogenes are kept for circular prediction.
+    #' @param genome_build genome version
+    initialize = function(fcna, pdata = fcna[, "sample", drop = FALSE],
+                          min_prob = 0.6,
+                          only_oncogenes = FALSE,
+                          genome_build = c("hg38", "hg19", "mm10")) {
       stopifnot(
         is.data.frame(fcna), is.data.frame(pdata),
         all(c(
@@ -50,6 +55,7 @@ fCNA <- R6::R6Class(
         all(c("sample") %in% colnames(pdata)),
         !is.null(min_prob) && min_prob >= 0.5 && min_prob < 1
       )
+      genome_build = match.arg(genome_build)
 
       private$prob <- min_prob
       amplvls <- c("noncircular", "circular")
@@ -57,7 +63,8 @@ fCNA <- R6::R6Class(
       fcna$gene_class <- factor(fcna$gene_class, levels = amplvls)
       self$data <- data.table::as.data.table(fcna)
       message("summarizing sample...")
-      ss <- self$getSampleSummary()
+      ss <- self$getSampleSummary(only_oncogenes = only_oncogenes,
+                                  genome_build = genome_build)
       pdata <- data.table::as.data.table(pdata)
       overlap_cols <- setdiff(intersect(colnames(pdata), colnames(ss)), "sample")
       if (length(overlap_cols) > 0) {
@@ -86,12 +93,18 @@ fCNA <- R6::R6Class(
       fCNA$new(fcna, pdata, min_prob = private$prob)
     },
     #' @description Get sample summary of fCNA
+    #' @param only_oncogenes only_oncogenes if `TRUE`, only known oncogenes are kept for circular prediction.
+    #' @param genome_build genome version.
     #' @return a `data.table`
-    getSampleSummary = function() {
+    getSampleSummary = function(only_oncogenes = FALSE, genome_build = c("hg38", "hg19", "mm10")) {
+      genome_build = match.arg(genome_build)
       message("  classifying samples with min_prob=", private$prob)
+      if (only_oncogenes) message("  classifying 'circular' only based on oncogenes")
       self$data[
         , summarize_sample(.SD,
-          min_prob = private$prob
+          min_prob = private$prob,
+          only_oncogenes = only_oncogenes,
+          genome_build = genome_build
         ),
         by = .(sample)
       ]
@@ -198,11 +211,33 @@ fCNA <- R6::R6Class(
 
 # summarize sample --------------------------------------------------------
 
-summarize_sample <- function(data, min_prob) {
-  if (nrow(data) == 0) return(data.frame(class = "nofocal"))
+summarize_sample <- function(data, min_prob,
+                             only_oncogenes = FALSE,
+                             genome_build = "hg38") {
+  if (nrow(data) == 0) {
+    return(data.frame(class = "nofocal"))
+  }
 
-  prob_possibly <- data[data$gene_class %in% "circular" & !is.na(data$prob)]
-  if (nrow(prob_possibly) == 0) return(data.frame(class = "noncircular"))
+  if (only_oncogenes) {
+    if (startsWith(genome_build, "mm")) {
+      ids <- readRDS(
+        system.file(
+          "extdata", "oncogenes_mouse.rds",
+          package = "gcap", mustWork = TRUE
+        )
+      )
+    } else {
+      ids <- na.omit(unique(oncogenes$gene_id))
+    }
+
+    prob_possibly <- data[data$gene_id %in% ids & data$gene_class %in% "circular" & !is.na(data$prob)]
+  } else {
+    prob_possibly <- data[data$gene_class %in% "circular" & !is.na(data$prob)]
+  }
+
+  if (nrow(prob_possibly) == 0) {
+    return(data.frame(class = "noncircular"))
+  }
 
   # Use cytobands instead of genes to calculate
   prob_possibly <- prob_possibly[
@@ -211,11 +246,11 @@ summarize_sample <- function(data, min_prob) {
   ]$prob
 
   if (max(prob_possibly, na.rm = TRUE) >= min_prob) {
-    flag_ec = TRUE
+    flag_ec <- TRUE
   } else {
     flag_ec <- calc_prob(prob_possibly, 2) >= min_prob
   }
-  #flag_ec <- calc_prob(prob_possibly, 1) >= min_prob
+  # flag_ec <- calc_prob(prob_possibly, 1) >= min_prob
 
   class <- if (flag_ec) {
     "circular"

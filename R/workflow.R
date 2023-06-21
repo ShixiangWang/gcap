@@ -189,8 +189,9 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   lg$info("Step 4: Run scoring and summarizing")
   lg$info("====================================")
   out <- gcap.runScoring(model_input, genome_build,
-                         tightness = tightness, gap_cn = gap_cn,
-                         only_oncogenes = only_oncogenes)
+    tightness = tightness, gap_cn = gap_cn,
+    only_oncogenes = only_oncogenes
+  )
 
   save_file <- file.path(outdir, paste0(result_file_prefix, "_prediction_result.rds"))
   lg$info("Saving raw prediction result to {save_file}")

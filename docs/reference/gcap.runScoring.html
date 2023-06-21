@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -75,14 +75,14 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gcap.runScoring</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  genome_build <span class="op">=</span> <span class="st">"hg38"</span>,</span>
-<span>  min_prob <span class="op">=</span> <span class="fl">0.6</span>,</span>
-<span>  tightness <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  gap_cn <span class="op">=</span> <span class="fl">3L</span>,</span>
-<span>  only_oncogenes <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.runScoring</span><span class="op">(</span>
+  <span class="va">data</span>,
+  genome_build <span class="op">=</span> <span class="st">"hg38"</span>,
+  min_prob <span class="op">=</span> <span class="fl">0.6</span>,
+  tightness <span class="op">=</span> <span class="fl">1L</span>,
+  gap_cn <span class="op">=</span> <span class="fl">3L</span>,
+  only_oncogenes <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -117,8 +117,7 @@ Smaller, more amplicons.</p></dd>
 
 
 <dt>only_oncogenes</dt>
-<dd><p>if <code>TRUE</code>, only known oncogenes are kept for fCNA analysis
-and circular prediction.</p></dd>
+<dd><p>if <code>TRUE</code>, only known oncogenes are kept for circular prediction.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -130,151 +129,11 @@ and circular prediction.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ec"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ec2</span> <span class="op">&lt;-</span> <span class="va">ec</span></span></span>
-<span class="r-in"><span><span class="va">ec2</span><span class="op">$</span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="gcap.runPrediction.html">gcap.runPrediction</a></span><span class="op">(</span><span class="va">ec</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runPrediction]: using model file XGB_NF11.rds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runPrediction]: selecting necessary features from input data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runPrediction]: running prediction</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10:28:36] WARNING: amalgamation/../src/c_api/c_api.cc:718: `ntree_limit` is deprecated, use `iteration_range` instead.</span>
-<span class="r-in"><span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu">gcap.runScoring</span><span class="op">(</span><span class="va">ec2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runScoring]: checking input data type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runScoring]: checking columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runScoring]: No 'sample' column found, mutating one</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runScoring]: filtering out records without prob result</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:36 info [gcap.runScoring]: joining extra annotation data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:38 info [gcap.runScoring]: only keep genes labeled as amplicons in result fCNA object</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> summarizing sample...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   classifying samples with min_prob=0.6</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> done</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A &lt;<span style="color: #55FFFF;">fCNA</span>&gt; object</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   record: <span style="color: #00BB00;">27</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     case: <span style="color: #00BBBB;">1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      |__ (<span style="color: #00BBBB;">0</span>) <span style="color: #00BB00;">18</span> noncircular</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      |__ (<span style="color: #00BBBB;">1</span>) <span style="color: #00BB00;">9</span> circular</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;gcap&gt; 2023-05-16 10:28:38 info [gcap.runScoring]: done</span>
-<span class="r-in"><span><span class="va">score</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       sample         band         gene_id total_cn minor_cn purity   ploidy</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1: sample  chr10:p11.1 ENSG00000075407        2        1   0.45 1.992596</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2: sample chr10:p11.21 ENSG00000108100        4        2   0.75 3.780270</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3: sample chr10:p11.21 ENSG00000148498        2        1   0.89 2.172488</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4: sample chr10:p11.21 ENSG00000256892        7        3   0.58 4.191208</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5: sample  chr10:p12.1 ENSG00000099256        4        2   0.57 3.828760</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2016: sample   chr9:q34.3 ENSG00000181090        4        2   0.76 3.335332</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2017: sample   chr9:q34.3 ENSG00000186193        1        0   0.53 1.910773</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2018: sample   chr9:q34.3 ENSG00000188229        3        0   0.88 3.516363</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2019: sample   chr9:q34.3 ENSG00000261793        6        2   0.94 4.279899</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2020: sample   chr9:q34.3 ENSG00000284976        7        2   0.83 4.102196</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       AScore       pLOH cna_burden       CN1       CN2       CN3       CN4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1:      7 0.09848282      0.159 32.855780  5.239920  0.000000  0.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:     28 0.23170477      0.762  0.247997 12.031210 63.823823 19.494553</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3:     10 0.05947269      0.235 24.552253  7.052684  0.000000  0.413440</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4:     25 0.13763327      0.868  0.000000  0.000000 96.509495 31.445068</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5:     23 0.15308192      0.840  4.018197 42.331531  4.384916  0.034201</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2016:     20 0.17734065      0.751  2.492506 29.382937  0.000000  5.358470</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2017:     17 0.25444529      0.294 22.395815  1.410976  0.000000  0.674042</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2018:     20 0.14110685      0.773  3.533483 34.650972  0.000000  0.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2019:     11 0.02393007      0.974  0.000000 51.339374  0.000000  3.234558</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2020:     25 0.44861184      0.758  0.105810 15.238764  4.794849  3.367103</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            CN5      CN6       CN7        CN8       CN9     CN10     CN11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1:  0.00000 0.000000  1.721568   0.000000  1.182732  0.00000  0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:  0.00000 0.000000  0.000000  28.241614 22.624531 60.73726  0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3:  0.00000 0.000000  0.000000   3.691159 14.290464  0.00000  0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4: 36.26579 0.000000 31.936986 212.594639  0.000000  0.00000  0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5:  0.00000 0.000000  9.690830  21.555225  0.899325  0.00000  0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2016:  0.00000 8.704632 25.672591   6.724989 22.020808  0.00000  0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2017:  0.00000 0.000000 10.435391   0.045490 35.790772  0.00000  0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2018:  0.00000 0.326792  0.000000   0.000000  0.000000  0.00000  0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2019:  0.00000 0.000000  0.855554   0.000000  0.000000  0.00000  0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2020: 10.43265 0.000000 23.778204   0.000000  2.185567  0.00000 26.67354</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           CN12     CN13     CN14      CN15     CN16      CN17       CN18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1:  0.00000 0.000000  0.00000  0.000000 0.000000  0.000000   0.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:  0.00000 8.500558  0.00000  0.000000 2.811555  7.130902 108.355998</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3:  0.00000 0.000000  0.00000  0.000000 0.000000  0.000000   0.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4:  0.00000 0.000000  0.00000 93.661275 0.000000 52.467891 188.118858</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5:  0.00000 0.000000  0.00000 24.085775 0.000000  0.000000   0.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2016:  0.00000 1.243929  0.00000 12.700900 2.671725  0.000000   0.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2017:  0.00000 3.237960  0.39964  0.000000 0.000000  0.000000   7.644897</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2018:  0.00000 0.617547  0.00000  2.842098 0.000000  0.000000   2.464904</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2019:  0.00000 0.000000  0.00000  0.000000 0.000000  0.000000   1.462469</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2020: 20.59824 0.000000 10.06959 13.189780 9.440001  8.720157  36.405743</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            CN19 age gender type_BLCA type_BRCA type_CESC type_COAD type_ESCA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1:  0.000000  72      0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:  0.000000  68      1         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3:  0.000000  47      1         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4:  0.000000  84      0         0         1         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5:  0.000000  55      1         0         0         0         0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2016:  3.026513  50      0         0         1         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2017: 17.965018  84      0         0         0         0         0         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2018:  4.564205  70      1         1         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2019:  5.108045  71      0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2020:  0.000000  78      0         0         1         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       type_GBM type_HNSC type_KICH type_KIRP type_LGG type_LIHC type_LUAD</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1:        1         0         0         0        0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:        0         0         0         0        0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3:        1         0         0         0        0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4:        0         0         0         0        0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5:        0         0         0         0        0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2016:        0         0         0         0        0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2017:        0         0         0         0        0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2018:        0         0         0         0        0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2019:        0         0         0         0        0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2020:        0         0         0         0        0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       type_LUSC type_OV type_PRAD type_SARC type_SKCM type_STAD type_UCEC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1:         0       0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:         1       0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3:         0       0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4:         0       0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5:         0       0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2016:         0       0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2017:         0       0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2018:         0       0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2019:         0       0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2020:         0       0         0         0         0         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       type_UVM freq_Linear   freq_BFB freq_Circular   freq_HR y_Circular</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1:        0   1.2453300  0.6226650     2.4906600 2.1793275          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:        0   0.3113325  0.0000000     1.5566625 1.2453300          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3:        0   0.3113325  0.0000000     0.9339975 3.1133250          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4:        0   5.9153176 12.4533001     4.3586550 5.2926526          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5:        0   0.3113325  0.3113325     1.2453300 1.2453300          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2016:        0   1.5566625  0.3113325     2.1793275 0.9339975          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2017:        0   0.0000000  0.6226650     4.0473225 2.4906600          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2018:        0   1.8679950  0.3113325     2.4906600 2.8019925          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2019:        1   4.9813200 12.1419676     4.0473225 4.6699875          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2020:        0   0.3113325  2.4906600     0.6226650 2.1793275          0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               prob cytoband_cn_median background_cn background_cn2 gene_class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1: 0.0007460275                  2      3.696751       1.992596    nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2: 0.0008380752                  4      3.780270       3.780270    nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3: 0.0007460275                  4      3.703070       2.172488    nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4: 0.0055942656                  4      4.191208       4.191208    nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5: 0.0008380752                  3      3.828760       3.828760    nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2016: 0.0008380752                  3      3.620414       3.335332    nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2017: 0.0007460275                  3      3.621482       1.910773    nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2018: 0.0009429304                  3      3.620512       3.516363    nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2019: 0.0065993741                  3      4.279899       4.279899    nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2020: 0.0046329563                  3      4.102196       4.102196    nofocal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $fCNA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> A &lt;<span style="color: #55FFFF;">fCNA</span>&gt; object</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   record: <span style="color: #00BB00;">27</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     case: <span style="color: #00BBBB;">1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      |__ (<span style="color: #00BBBB;">0</span>) <span style="color: #00BB00;">18</span> noncircular</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      |__ (<span style="color: #00BBBB;">1</span>) <span style="color: #00BB00;">9</span> circular</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ec"</span><span class="op">)</span>
+<span class="va">ec2</span> <span class="op">&lt;-</span> <span class="va">ec</span>
+<span class="va">ec2</span><span class="op">$</span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="gcap.runPrediction.html">gcap.runPrediction</a></span><span class="op">(</span><span class="va">ec</span><span class="op">)</span>
+<span class="va">score</span> <span class="op">&lt;-</span> <span class="fu">gcap.runScoring</span><span class="op">(</span><span class="va">ec2</span><span class="op">)</span>
+<span class="va">score</span>
 </code></pre></div>
     </div>
   </div>
@@ -289,7 +148,7 @@ and circular prediction.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

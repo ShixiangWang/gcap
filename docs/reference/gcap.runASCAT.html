@@ -31,7 +31,7 @@ be a vector with same length."><!-- mathjax --><script src="https://cdnjs.cloudf
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -79,31 +79,31 @@ be a vector with same length.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gcap.runASCAT</span><span class="op">(</span></span>
-<span>  <span class="va">tumourseqfile</span>,</span>
-<span>  normalseqfile <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
-<span>  <span class="va">tumourname</span>,</span>
-<span>  normalname <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
-<span>  jobname <span class="op">=</span> <span class="va">tumourname</span>,</span>
-<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  allelecounter_exe <span class="op">=</span> <span class="st">"~/miniconda3/envs/cancerit/bin/alleleCounter"</span>,</span>
-<span>  g1000allelesprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,</span>
-<span>    <span class="st">"1kg.phase3.v5a_GRCh38nounref_allele_index_chr"</span><span class="op">)</span>,</span>
-<span>  g1000lociprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,</span>
-<span>    <span class="st">"1kg.phase3.v5a_GRCh38nounref_loci_chrstring_chr"</span><span class="op">)</span>,</span>
-<span>  GCcontentfile <span class="op">=</span> <span class="st">"~/data/snp/GC_correction_hg38.txt"</span>,</span>
-<span>  replictimingfile <span class="op">=</span> <span class="st">"~/data/snp/RT_correction_hg38.txt"</span>,</span>
-<span>  nthreads <span class="op">=</span> <span class="fl">22</span>,</span>
-<span>  minCounts <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  BED_file <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  probloci_file <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  chrom_names <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">22</span>,</span>
-<span>  gender <span class="op">=</span> <span class="st">"XX"</span>,</span>
-<span>  min_base_qual <span class="op">=</span> <span class="fl">20</span>,</span>
-<span>  min_map_qual <span class="op">=</span> <span class="fl">35</span>,</span>
-<span>  penalty <span class="op">=</span> <span class="fl">70</span>,</span>
-<span>  skip_finished_ASCAT <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.runASCAT</span><span class="op">(</span>
+  <span class="va">tumourseqfile</span>,
+  normalseqfile <span class="op">=</span> <span class="cn">NA_character_</span>,
+  <span class="va">tumourname</span>,
+  normalname <span class="op">=</span> <span class="cn">NA_character_</span>,
+  jobname <span class="op">=</span> <span class="va">tumourname</span>,
+  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
+  allelecounter_exe <span class="op">=</span> <span class="st">"~/miniconda3/envs/cancerit/bin/alleleCounter"</span>,
+  g1000allelesprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,
+    <span class="st">"1kg.phase3.v5a_GRCh38nounref_allele_index_chr"</span><span class="op">)</span>,
+  g1000lociprefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"~/data/snp/1000G_loci_hg38"</span>,
+    <span class="st">"1kg.phase3.v5a_GRCh38nounref_loci_chrstring_chr"</span><span class="op">)</span>,
+  GCcontentfile <span class="op">=</span> <span class="st">"~/data/snp/GC_correction_hg38.txt"</span>,
+  replictimingfile <span class="op">=</span> <span class="st">"~/data/snp/RT_correction_hg38.txt"</span>,
+  nthreads <span class="op">=</span> <span class="fl">22</span>,
+  minCounts <span class="op">=</span> <span class="fl">10</span>,
+  BED_file <span class="op">=</span> <span class="cn">NA</span>,
+  probloci_file <span class="op">=</span> <span class="cn">NA</span>,
+  chrom_names <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">22</span>,
+  gender <span class="op">=</span> <span class="st">"XX"</span>,
+  min_base_qual <span class="op">=</span> <span class="fl">20</span>,
+  min_map_qual <span class="op">=</span> <span class="fl">35</span>,
+  penalty <span class="op">=</span> <span class="fl">70</span>,
+  skip_finished_ASCAT <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -215,7 +215,7 @@ to save time.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

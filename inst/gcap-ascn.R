@@ -20,7 +20,8 @@ GetoptLong(
   "genome=s",  "Genome build version, should be hg38 or hg19.",
   "model=s", "Trained model name, should be one of XGB11, XGB32, XGB56.",
   "tightness=i", "Control the tightness to be a circular amplicon. If the value is larger, it is more likely a fCNA assigned to 'noncircular' instead of 'circular'.",
-  "gcapCN=i", "A gene with copy number above background (ploidy + gapCN in general) would be treated as focal amplicon. Smaller, more amplicons."
+  "gcapCN=i", "A gene with copy number above background (ploidy + gapCN in general) would be treated as focal amplicon. Smaller, more amplicons.",
+  "onlyOncogenes", "Only known oncogenes are kept for circular prediction."
 )
 
 suppressMessages(library(data.table))
@@ -35,5 +36,6 @@ gcap.ASCNworkflow(
   model = model,
   tightness = tightness,
   gap_cn = gapCN,
+  only_oncogenes = onlyOncogenes,
   outdir = outdir
 )

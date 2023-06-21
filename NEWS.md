@@ -1,3 +1,11 @@
+# gcap 1.1.3
+
+- Updated the logic of using `only_oncogenes` for filtering.
+
+# gcap 1.1.2
+
+- Fixed the data loading for oncogene of mouse.
+
 # gcap 1.1.1
 
 - Updated Sequenza workflow.

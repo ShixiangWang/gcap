@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -75,27 +75,27 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gcap.workflow.facets</span><span class="op">(</span></span>
-<span>  <span class="va">tumourseqfile</span>,</span>
-<span>  <span class="va">normalseqfile</span>,</span>
-<span>  <span class="va">jobname</span>,</span>
-<span>  extra_info <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  include_type <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mm10"</span>, <span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span>,</span>
-<span>  model <span class="op">=</span> <span class="st">"XGB11"</span>,</span>
-<span>  tightness <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  gap_cn <span class="op">=</span> <span class="fl">3L</span>,</span>
-<span>  overlap <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  pro_cval <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  only_oncogenes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  snp_file <span class="op">=</span> <span class="st">"path/to/genome_build_responding.vcf.gz"</span>,</span>
-<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  result_file_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"gcap_"</span>, <span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  util_exe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extcode"</span>, <span class="st">"snp-pileup"</span>, package <span class="op">=</span> <span class="st">"facets"</span><span class="op">)</span>,</span>
-<span>  nthreads <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  skip_finished_facets <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  skip_facets_call <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.workflow.facets</span><span class="op">(</span>
+  <span class="va">tumourseqfile</span>,
+  <span class="va">normalseqfile</span>,
+  <span class="va">jobname</span>,
+  extra_info <span class="op">=</span> <span class="cn">NULL</span>,
+  include_type <span class="op">=</span> <span class="cn">FALSE</span>,
+  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mm10"</span>, <span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span>,
+  model <span class="op">=</span> <span class="st">"XGB11"</span>,
+  tightness <span class="op">=</span> <span class="fl">1L</span>,
+  gap_cn <span class="op">=</span> <span class="fl">3L</span>,
+  overlap <span class="op">=</span> <span class="fl">1</span>,
+  pro_cval <span class="op">=</span> <span class="fl">100</span>,
+  only_oncogenes <span class="op">=</span> <span class="cn">FALSE</span>,
+  snp_file <span class="op">=</span> <span class="st">"path/to/genome_build_responding.vcf.gz"</span>,
+  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
+  result_file_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"gcap_"</span>, <span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
+  util_exe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extcode"</span>, <span class="st">"snp-pileup"</span>, package <span class="op">=</span> <span class="st">"facets"</span><span class="op">)</span>,
+  nthreads <span class="op">=</span> <span class="fl">1</span>,
+  skip_finished_facets <span class="op">=</span> <span class="cn">TRUE</span>,
+  skip_facets_call <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -152,12 +152,11 @@ Smaller, more amplicons.</p></dd>
 
 
 <dt>pro_cval</dt>
-<dd><p>critical value for segmentation used in <code><a href="https://rdrr.io/pkg/facets/man/procSample.html" class="external-link">facets::procSample()</a></code>.</p></dd>
+<dd><p>critical value for segmentation used in <code>facets::procSample()</code>.</p></dd>
 
 
 <dt>only_oncogenes</dt>
-<dd><p>if <code>TRUE</code>, only known oncogenes are kept for fCNA analysis
-and circular prediction.</p></dd>
+<dd><p>if <code>TRUE</code>, only known oncogenes are kept for circular prediction.</p></dd>
 
 
 <dt>snp_file</dt>
@@ -202,7 +201,7 @@ to run next steps.</p></dd>
     <h2>Details</h2>
     <p>For generating the <code>snp-pileup</code> program, reference commands given here.
 You need modify corresponding path to fit your own machine.</p>
-<p></p><div class="sourceCode sh"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /data3/wsx/R/x86_64-pc-linux-gnu-library/4.2/facets/extcode/</span>
+<p></p><div class="sourceCode sh"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /data3/wsx/R/x86_64-pc-linux-gnu-library/4.2/facets/extcode/</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">g++</span> <span class="at">-std</span><span class="op">=</span>c++11 <span class="at">-I</span>/data3/wsx/miniconda3/envs/circlemap/include snp-pileup.cpp <span class="at">-L</span>/data3/wsx/miniconda3/envs/circlemap/lib <span class="at">-lhts</span> <span class="at">-Wl,-rpath</span><span class="op">=</span>/data3/wsx/miniconda3/envs/circlemap/lib <span class="at">-o</span> snp-pileup</span></code></pre><p></p></div>
     </div>
 
@@ -218,7 +217,7 @@ You need modify corresponding path to fit your own machine.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

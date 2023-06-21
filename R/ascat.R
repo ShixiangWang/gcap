@@ -116,8 +116,10 @@ gcap.runASCAT <- function(tumourseqfile,
 
     if (is.na(normalseqfile) || is.na(normalname)) {
       lg$info("run with tumor only model, this is only supported in specified ASCAT version")
-      skip_norm = TRUE
-    } else skip_norm = FALSE
+      skip_norm <- TRUE
+    } else {
+      skip_norm <- FALSE
+    }
 
     # In some special cases, ASCAT failed after alleleCounter.
     # Maybe we should handle the ASCAT source code to fix corresponding issues
@@ -168,8 +170,10 @@ gcap.runASCAT <- function(tumourseqfile,
           #         proportionOpen = 0.04,   # ~0.03
           #         segmentLength = 100
           #       ))
-                # https://github.com/ShixiangWang/ascat/blob/v3.0/ASCAT/R/ascat.predictGermlineGenotypes.R
-        } else gg = NULL
+          # https://github.com/ShixiangWang/ascat/blob/v3.0/ASCAT/R/ascat.predictGermlineGenotypes.R
+        } else {
+          gg <- NULL
+        }
         ascat.bc <- ascat.aspcf(ascat.bc, ascat.gg = gg, penalty = penalty)
         ascat.plotSegmentedData(ascat.bc)
         ascat.output <- ascat.runAscat(ascat.bc, gamma = 1L, pdfPlot = TRUE)

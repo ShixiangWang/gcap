@@ -13,8 +13,7 @@
 #' @param gap_cn a gap copy number value.
 #' A gene with copy number above background (`ploidy + gap_cn` in general) would be treated as focal amplicon.
 #' Smaller, more amplicons.
-#' @param only_oncogenes if `TRUE`, only known oncogenes are kept for fCNA analysis
-#' and circular prediction.
+#' @param only_oncogenes if `TRUE`, only known oncogenes are kept for circular prediction.
 #' @return a list of `data.table`.
 #' @export
 #'
@@ -124,7 +123,7 @@ gcap.runScoring <- function(data,
     flag_amp2, "noncircular",
     default = "nofocal"
   )
-  #data$gene_class <- factor(data$gene_class, levels = c("nofocal", "noncircular", "circular"))
+  # data$gene_class <- factor(data$gene_class, levels = c("nofocal", "noncircular", "circular"))
 
   # Generate fCNA and output
   sel_cols <- c(
@@ -142,24 +141,12 @@ gcap.runScoring <- function(data,
     with = FALSE
   ]
 
-  if (only_oncogenes) {
-    if (startsWith(genome_build, "mm")) {
-      ids = readRDS(
-        system.file(
-          "extdata", "oncogenes_mouse.rds",
-          package = "gcap", mustWork = TRUE
-        )
-      )
-      fcna = fcna[gene_id %in% ids]
-    } else {
-      fcna = fcna[gene_id %in% na.omit(unique(oncogenes$gene_id))]
-    }
-  }
-
   data.table::setkey(data, NULL)
   data.table::setkey(fcna, NULL) # To make sure all equal to rebuild the fCNA object from file
   if (nrow(fcna) == 0) lg$info("No fCNA records detected")
-  fCNAobj <- fCNA$new(fcna, pdata, min_prob = min_prob)
+  fCNAobj <- fCNA$new(fcna, pdata, min_prob = min_prob,
+                      only_oncogenes = only_oncogenes,
+                      genome_build = genome_build)
   print(fCNAobj)
 
   lg$info("done")

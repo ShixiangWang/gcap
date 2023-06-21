@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -75,29 +75,29 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gcap.workflow.seqz</span><span class="op">(</span></span>
-<span>  <span class="va">tumourseqfile</span>,</span>
-<span>  <span class="va">normalseqfile</span>,</span>
-<span>  <span class="va">jobname</span>,</span>
-<span>  extra_info <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  include_type <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mm10"</span>, <span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span>,</span>
-<span>  model <span class="op">=</span> <span class="st">"XGB11"</span>,</span>
-<span>  tightness <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  gap_cn <span class="op">=</span> <span class="fl">3L</span>,</span>
-<span>  overlap <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  only_oncogenes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  ref_file <span class="op">=</span> <span class="st">"path/to/reference.fa"</span>,</span>
-<span>  data_tmp_dir <span class="op">=</span> <span class="st">"~/gcap_data"</span>,</span>
-<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  result_file_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"gcap_"</span>, <span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  util_exe <span class="op">=</span> <span class="st">"~/miniconda3/bin/sequenza-utils"</span>,</span>
-<span>  samtools_exe <span class="op">=</span> <span class="st">"~/miniconda3/bin/samtools"</span>,</span>
-<span>  tabix_exe <span class="op">=</span> <span class="st">"~/miniconda3/bin/tabix"</span>,</span>
-<span>  nthreads <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  skip_finished_sequenza <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  skip_sequenza_call <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gcap.workflow.seqz</span><span class="op">(</span>
+  <span class="va">tumourseqfile</span>,
+  <span class="va">normalseqfile</span>,
+  <span class="va">jobname</span>,
+  extra_info <span class="op">=</span> <span class="cn">NULL</span>,
+  include_type <span class="op">=</span> <span class="cn">FALSE</span>,
+  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mm10"</span>, <span class="st">"hg38"</span>, <span class="st">"hg19"</span><span class="op">)</span>,
+  model <span class="op">=</span> <span class="st">"XGB11"</span>,
+  tightness <span class="op">=</span> <span class="fl">1L</span>,
+  gap_cn <span class="op">=</span> <span class="fl">3L</span>,
+  overlap <span class="op">=</span> <span class="fl">1</span>,
+  only_oncogenes <span class="op">=</span> <span class="cn">FALSE</span>,
+  ref_file <span class="op">=</span> <span class="st">"path/to/reference.fa"</span>,
+  data_tmp_dir <span class="op">=</span> <span class="st">"~/gcap_data"</span>,
+  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
+  result_file_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"gcap_"</span>, <span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
+  util_exe <span class="op">=</span> <span class="st">"~/miniconda3/bin/sequenza-utils"</span>,
+  samtools_exe <span class="op">=</span> <span class="st">"~/miniconda3/bin/samtools"</span>,
+  tabix_exe <span class="op">=</span> <span class="st">"~/miniconda3/bin/tabix"</span>,
+  nthreads <span class="op">=</span> <span class="fl">1</span>,
+  skip_finished_sequenza <span class="op">=</span> <span class="cn">TRUE</span>,
+  skip_sequenza_call <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -154,8 +154,7 @@ Smaller, more amplicons.</p></dd>
 
 
 <dt>only_oncogenes</dt>
-<dd><p>if <code>TRUE</code>, only known oncogenes are kept for fCNA analysis
-and circular prediction.</p></dd>
+<dd><p>if <code>TRUE</code>, only known oncogenes are kept for circular prediction.</p></dd>
 
 
 <dt>ref_file</dt>
@@ -221,7 +220,7 @@ to run next steps.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

@@ -114,7 +114,7 @@ gcap.workflow.facets <- function(tumourseqfile, normalseqfile,
     }
 
     lg$info("creating pileup files...")
-    facets_dir = file.path(outdir, "facets")
+    facets_dir <- file.path(outdir, "facets")
     if (!dir.exists(facets_dir)) dir.create(facets_dir, recursive = TRUE)
 
     run_one <- function(i) {
@@ -128,12 +128,14 @@ gcap.workflow.facets <- function(tumourseqfile, normalseqfile,
             lg$fatal("Not all bam files exist")
             return(NULL)
           }
-          facets_file = file.path(facets_dir, paste0(id, ".facets.gz"))
+          facets_file <- file.path(facets_dir, paste0(id, ".facets.gz"))
 
 
           lg$info("Genrating snp-pileup facets.gz file from linux shell...")
-          cmd1 = sprintf("%s -g -q15 -Q20 -P100 -r20,0 %s %s %s %s",
-                         util_exe, snp_file, facets_file, nfile, tfile)
+          cmd1 <- sprintf(
+            "%s -g -q15 -Q20 -P100 -r20,0 %s %s %s %s",
+            util_exe, snp_file, facets_file, nfile, tfile
+          )
           lg$info(cmd1, "\n")
           system(cmd1)
 
@@ -143,34 +145,34 @@ gcap.workflow.facets <- function(tumourseqfile, normalseqfile,
           }
 
           lg$info("Running FACETS standard analysis...")
-          #library("pctGCdata")
-          #library("facets")
+          # library("pctGCdata")
+          # library("facets")
           eval(parse(text = "library('pctGCdata')"))
           set.seed(1234)
-          rcmat = facets::readSnpMatrix(facets_file)
-          xx = facets::preProcSample(rcmat, gbuild = genome_build)
-          oo = facets::procSample(xx, cval = pro_cval)
-          fit = facets::emcncf(oo)
+          rcmat <- facets::readSnpMatrix(facets_file)
+          xx <- facets::preProcSample(rcmat, gbuild = genome_build)
+          oo <- facets::procSample(xx, cval = pro_cval)
+          fit <- facets::emcncf(oo)
 
-          #plot
+          # plot
           pdf(file.path(outdir, paste0(id, "_facets.pdf")))
-          facets::plotSample(x=oo, emfit=fit)
+          facets::plotSample(x = oo, emfit = fit)
           facets::logRlogORspider(oo$out, oo$dipLogR)
-          while (!is.null(dev.list()))  dev.off()
+          while (!is.null(dev.list())) dev.off()
 
           # output purity and ploidy -----
-          purity = fit$purity
-          purity = round(purity, 2)
-          ploidy = fit$ploidy
-          ploidy = round(ploidy, 1)
+          purity <- fit$purity
+          purity <- round(purity, 2)
+          ploidy <- fit$ploidy
+          ploidy <- round(ploidy, 1)
 
-          data = fit$cncf[, c("chrom", "start", "end", "tcn.em", "lcn.em")]
-          colnames(data) = c("chromosome", "start", "end", "total_cn", "minor_cn")
-          data$sample = id
-          data = subset(data, subset = data$chromosome %in% if (startsWith(genome_build, "mm")) 1:19 else 1:22)
-          data$chromosome = paste0("chr", data$chromosome)
+          data <- fit$cncf[, c("chrom", "start", "end", "tcn.em", "lcn.em")]
+          colnames(data) <- c("chromosome", "start", "end", "total_cn", "minor_cn")
+          data$sample <- id
+          data <- subset(data, subset = data$chromosome %in% if (startsWith(genome_build, "mm")) 1:19 else 1:22)
+          data$chromosome <- paste0("chr", data$chromosome)
           # NOTE: I don't know why there exists data with end < start
-          dataList = list(data = data.table::as.data.table(data)[end > start], pp = data.table::data.table(
+          dataList <- list(data = data.table::as.data.table(data)[end > start], pp = data.table::data.table(
             sample = id,
             purity = purity,
             ploidy = ploidy
@@ -189,7 +191,7 @@ gcap.workflow.facets <- function(tumourseqfile, normalseqfile,
       )
     }
 
-    jobname2 = jobname
+    jobname2 <- jobname
     if (skip_finished_facets) {
       drop_idx <- sapply(file.path(outdir, paste0(jobname2, "_facets.rds")), file.exists)
       if (sum(drop_idx) > 0) {
@@ -206,7 +208,6 @@ gcap.workflow.facets <- function(tumourseqfile, normalseqfile,
 
     if (length(jobname2) > 0) parallel::mclapply(seq_along(jobname2), run_one, mc.cores = nthreads)
     lg$info("FACETS analysis done, check {outdir} for results")
-
   }
 
   lg$info("checking FACETS result files")
@@ -254,8 +255,9 @@ gcap.workflow.facets <- function(tumourseqfile, normalseqfile,
   lg$info("Step 4: Run scoring and summarizing")
   lg$info("====================================")
   out <- gcap.runScoring(model_input, genome_build,
-                         tightness = tightness, gap_cn = gap_cn,
-                         only_oncogenes = only_oncogenes)
+    tightness = tightness, gap_cn = gap_cn,
+    only_oncogenes = only_oncogenes
+  )
 
   save_file <- file.path(outdir, paste0(result_file_prefix, "_prediction_result.rds"))
   lg$info("Saving raw prediction result to {save_file}")
@@ -275,11 +277,11 @@ gcap.workflow.facets <- function(tumourseqfile, normalseqfile,
   invisible(fCNA)
 }
 
-read_copynumber_facets = function(x) {
+read_copynumber_facets <- function(x) {
   stopifnot(length(x) >= 1)
-  rv = list()
-  rv$data = purrr::map_df(x, ~readRDS(.)$data)
-  rv$purity_ploidy = purrr::map_df(x, ~readRDS(.)$pp)
+  rv <- list()
+  rv$data <- purrr::map_df(x, ~ readRDS(.)$data)
+  rv$purity_ploidy <- purrr::map_df(x, ~ readRDS(.)$pp)
 
   return(rv)
 }

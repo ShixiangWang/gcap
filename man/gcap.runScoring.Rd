@@ -33,8 +33,7 @@ instead of \code{circular}. \strong{When it is \code{NA}, we don't use TCGA soma
 A gene with copy number above background (\code{ploidy + gap_cn} in general) would be treated as focal amplicon.
 Smaller, more amplicons.}
 
-\item{only_oncogenes}{if \code{TRUE}, only known oncogenes are kept for fCNA analysis
-and circular prediction.}
+\item{only_oncogenes}{if \code{TRUE}, only known oncogenes are kept for circular prediction.}
 }
 \value{
 a list of \code{data.table}.

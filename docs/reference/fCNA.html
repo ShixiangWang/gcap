@@ -30,7 +30,7 @@ fCNA information. Examples please see gcap.ASCNworkflow()."><!-- mathjax --><scr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -136,7 +136,13 @@ a function will be called to update the sample summary.</p></dd>
 <p>Create a <code>fCNA</code> object.
 Typically, you can obtain this object from <code><a href="gcap.workflow.html">gcap.workflow()</a></code> or <code><a href="gcap.ASCNworkflow.html">gcap.ASCNworkflow()</a></code>.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/fCNA.html">fCNA</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">fcna</span>, pdata <span class="op">=</span> <span class="va">fcna</span><span class="op">[</span>, <span class="st">"sample"</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>, min_prob <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/fCNA.html">fCNA</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  <span class="va">fcna</span>,
+  pdata <span class="op">=</span> <span class="va">fcna</span><span class="op">[</span>, <span class="st">"sample"</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>,
+  min_prob <span class="op">=</span> <span class="fl">0.6</span>,
+  only_oncogenes <span class="op">=</span> <span class="cn">FALSE</span>,
+  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span>, <span class="st">"mm10"</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -153,6 +159,14 @@ Typically, you can obtain this object from <code><a href="gcap.workflow.html">gc
 <dd><p>the minimal aggregated (in cytoband level) probability to determine a circular amplicon.</p></dd>
 
 
+<dt><code>only_oncogenes</code></dt>
+<dd><p>only_oncogenes if <code>TRUE</code>, only known oncogenes are kept for circular prediction.</p></dd>
+
+
+<dt><code>genome_build</code></dt>
+<dd><p>genome version</p></dd>
+
+
 </dl><p></p></div>
 </div>
 
@@ -160,7 +174,7 @@ Typically, you can obtain this object from <code><a href="gcap.workflow.html">gc
 <h3 id="method-subset-">Method <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code><a class="anchor" aria-label="anchor" href="#method-subset-"></a></h3>
 <p>Return a subset <code>fCNA</code> object</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">fCNA</span><span class="op">$</span><span class="fu">subset</span><span class="op">(</span><span class="va">...</span>, on <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sample_summary"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">subset</span><span class="op">(</span><span class="va">...</span>, on <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"sample_summary"</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -185,9 +199,24 @@ same for "sample_summary".</p></dd>
 <h3 id="method-getsamplesummary-">Method <code>getSampleSummary()</code><a class="anchor" aria-label="anchor" href="#method-getsamplesummary-"></a></h3>
 <p>Get sample summary of fCNA</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">fCNA</span><span class="op">$</span><span class="fu">getSampleSummary</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">getSampleSummary</span><span class="op">(</span>
+  only_oncogenes <span class="op">=</span> <span class="cn">FALSE</span>,
+  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span>, <span class="st">"mm10"</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>only_oncogenes</code></dt>
+<dd><p>only_oncogenes if <code>TRUE</code>, only known oncogenes are kept for circular prediction.</p></dd>
+
+
+<dt><code>genome_build</code></dt>
+<dd><p>genome version.</p></dd>
+
+
+</dl><p></p></div>
+</div>
 <div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>a <code>data.table</code></p>
@@ -197,11 +226,11 @@ same for "sample_summary".</p></dd>
 <h3 id="method-getgenesummary-">Method <code>getGeneSummary()</code><a class="anchor" aria-label="anchor" href="#method-getgenesummary-"></a></h3>
 <p>Get gene level summary of fCNA type</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">fCNA</span><span class="op">$</span><span class="fu">getGeneSummary</span><span class="op">(</span>return_mat <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">getGeneSummary</span><span class="op">(</span>return_mat <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>return_mat</code></dt>
 <dd><p>if <code>TRUE</code>, return a cytoband by sample matrix instead of a summary.</p></dd>
 
@@ -217,11 +246,11 @@ same for "sample_summary".</p></dd>
 <h3 id="method-getcytobandsummary-">Method <code>getCytobandSummary()</code><a class="anchor" aria-label="anchor" href="#method-getcytobandsummary-"></a></h3>
 <p>Get cytoband level summary of fCNA type</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">fCNA</span><span class="op">$</span><span class="fu">getCytobandSummary</span><span class="op">(</span>unique <span class="op">=</span> <span class="cn">FALSE</span>, return_mat <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">getCytobandSummary</span><span class="op">(</span>unique <span class="op">=</span> <span class="cn">FALSE</span>, return_mat <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>unique</code></dt>
 <dd><p>if <code>TRUE</code>, count sample frequency instead of gene frequency.</p></dd>
 
@@ -241,11 +270,11 @@ same for "sample_summary".</p></dd>
 <h3 id="method-savetofiles-">Method <code>saveToFiles()</code><a class="anchor" aria-label="anchor" href="#method-savetofiles-"></a></h3>
 <p>Save the key data to local files</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">fCNA</span><span class="op">$</span><span class="fu">saveToFiles</span><span class="op">(</span><span class="va">dirpath</span>, fileprefix <span class="op">=</span> <span class="st">"fCNA"</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">saveToFiles</span><span class="op">(</span><span class="va">dirpath</span>, fileprefix <span class="op">=</span> <span class="st">"fCNA"</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>dirpath</code></dt>
 <dd><p>directory path storing output files.</p></dd>
 
@@ -261,14 +290,14 @@ same for "sample_summary".</p></dd>
 <h3 id="method-convertgeneid-">Method <code>convertGeneID()</code><a class="anchor" aria-label="anchor" href="#method-convertgeneid-"></a></h3>
 <p>Convert Gene IDs between Ensembl and Hugo Symbol System</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">fCNA</span><span class="op">$</span><span class="fu">convertGeneID</span><span class="op">(</span></span>
-<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ensembl"</span>, <span class="st">"symbol"</span><span class="op">)</span>,</span>
-<span>  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span>, <span class="st">"mm10"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">convertGeneID</span><span class="op">(</span>
+  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ensembl"</span>, <span class="st">"symbol"</span><span class="op">)</span>,
+  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg38"</span>, <span class="st">"hg19"</span>, <span class="st">"mm10"</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>type</code></dt>
 <dd><p>type of input IDs, could be 'ensembl' or 'symbol'.</p></dd>
 
@@ -284,11 +313,11 @@ same for "sample_summary".</p></dd>
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>print the fCNA object</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">fCNA</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">fCNA</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>unused.</p></dd>
 
@@ -312,7 +341,7 @@ same for "sample_summary".</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 
