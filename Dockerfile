@@ -14,11 +14,11 @@ LABEL \
     org.label-schema.vcs-url="https://github.com/ShixiangWang/gcap"
 
 RUN conda install mamba -n base -c conda-forge &&\
-    conda create -n cancerit -c bioconda cancerit-allelecount &&\
+    conda create -n cancerit -c bioconda -c conda-forge cancerit-allelecount &&\
     conda clean -yaf
 
 # Install GCAP & deploy it
-RUN mamba install -y r-base=4.3 r-remotes &&\
+RUN mamba install -y -c conda-forge r-base=4.3 r-remotes &&\
     mamba clean -yaf &&\
     R -e 'remotes::install_github("ShixiangWang/gcap@v1.1.2", dependencies = TRUE)' &&\
     R -e 'gcap::deploy()' &&\
