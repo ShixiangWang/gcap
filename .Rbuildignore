@@ -20,3 +20,6 @@ data-raw/HOM_MouseHumanSequence.rpt.txt
 data-raw/human-mouse-id-map.rds
 data-raw/human_hg38_gene_info.rds
 data-raw/mouse_mm10_gene_info.rds
+
+Dockerfile
+.github
