@@ -14,7 +14,7 @@ LABEL \
     org.label-schema.vcs-url="https://github.com/ShixiangWang/gcap"
 
 RUN apt update && apt install -y build-essential zip cmake &&\
-    apt autoremove -y && apt clean -y && apt purge -y && rm -rf /tmp/* /var/tmp/*
+    apt autoremove -y && apt clean -y && apt purge -y && rm -rf /tmp/* /var/tmp/* &&\
     conda install mamba -n base -c conda-forge &&\
     mamba create -n cancerit -c bioconda -c conda-forge cancerit-allelecount &&\
     mamba clean -yaf
