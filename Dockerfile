@@ -25,16 +25,19 @@ RUN apt update && apt install -y build-essential zip cmake libcairo2-dev &&\
 RUN mamba install -y -c conda-forge -c bioconda r-base=4.2 r-remotes r-biocmanager r-tidyverse r-sigminer sequenza-utils samtools tabix  &&\
     mamba clean -yaf &&\
     R -e 'install.packages("https://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_1.5.2.1.tar.gz", repos = NULL)' &&\
+    R -e 'BiocManager::install("jokergoo/GetoptLong", update = FALSE, force = TRUE)' &&\
     R -e 'BiocManager::install("ShixiangWang/copynumber", update = FALSE, force = TRUE)' &&\
     R -e 'BiocManager::install("ShixiangWang/facets", update = FALSE, force = TRUE)' &&\
     R -e 'BiocManager::install("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT", dependencies = TRUE, update = FALSE)' &&\
     R -e 'BiocManager::install("ShixiangWang/gcap", dependencies = TRUE, update = FALSE)' &&\
-    R -e 'gcap::deploy()' &&\
     cd /opt/conda/lib/R/library/facets/extcode/ &&\
+    ls -alh &&\
     g++ -std=c++11 -I/opt/conda/include snp-pileup.cpp -L/opt/conda/lib -lhts -Wl,-rpath=/opt/conda/lib -o snp-pileup &&\
-    rm -rf /tmp/downloaded_packages
+    R -e 'gcap::deploy()' &&\
+    rm -rf /tmp/downloaded_packages &&\
+    ls -alh ~ &&\
+    echo "Deploy success!"
 
 # Deploy
-WORKDIR $HOME
 ENTRYPOINT [ "gcap" ]
 CMD [ "--help" ]
