@@ -25,7 +25,7 @@ RUN apt update && apt install -y build-essential zip cmake &&\
 RUN mamba install -y -c conda-forge -c bioconda r-base=4.3 r-remotes r-biocmanager sequenza-utils samtools tabix  &&\
     mamba clean -yaf &&\
     R -e 'BiocManager::install("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT", dependencies = TRUE)' &&\
-    R -e 'remotes::install_github("ShixiangWang/gcap", dependencies = TRUE)' &&\
+    R -e 'BiocManager::install("ShixiangWang/gcap", dependencies = TRUE)' &&\
     R -e 'gcap::deploy()' &&\
     R -e 'install.packages("https://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_1.5.2.1.tar.gz", repos = NULL)' &&\
     cd /data3/wsx/R/x86_64-pc-linux-gnu-library/4.2/facets/extcode/ &&\
