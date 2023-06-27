@@ -20,7 +20,7 @@ RUN conda install mamba -n base -c conda-forge &&\
 # Install GCAP & deploy it
 RUN mamba install -y -c conda-forge r-base=4.3 r-remotes &&\
     mamba clean -yaf &&\
-    R -e 'remotes::install_github("ShixiangWang/gcap@v1.1.2", dependencies = TRUE)' &&\
+    R -e 'remotes::install_github("ShixiangWang/gcap", dependencies = TRUE)' &&\
     R -e 'gcap::deploy()' &&\
     rm -rf /tmp/downloaded_packages
 
@@ -28,4 +28,3 @@ RUN mamba install -y -c conda-forge r-base=4.3 r-remotes &&\
 WORKDIR $HOME
 ENTRYPOINT [ "gcap" ]
 CMD [ "--help" ]
-  

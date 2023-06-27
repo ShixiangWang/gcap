@@ -33,6 +33,7 @@ Imports:
     xgboost (< 1.6)
 Suggests: 
     BiocManager,
+    copynumber,
     facets,
     IDConverter (>= 0.3.0),
     PRROC,
@@ -43,6 +44,7 @@ LinkingTo:
     Rcpp
 Remotes: 
     bitbucket::sequenzatools/sequenza,
+    github::ShixiangWang/copynumber,
     github::ShixiangWang/facets,
     github::ShixiangWang/ascat/ASCAT@v3-for-gcap-v1,
     github::ShixiangWang/IDConverter
