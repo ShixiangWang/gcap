@@ -7,7 +7,7 @@ LABEL \
     org.label-schema.license="Non-Commercial Academic License (c) Shixiang Wang, Qi Zhao; All commercial use is strictly prohibited and requires a commercial use licence." \
     org.label-schema.vcs-url="https://github.com/ShixiangWang/gcap" \
     org.opencontainers.image.source="https://github.com/ShixiangWang/gcap" \
-    org.opencontainers.image.description="Docker Image for GCAP (Gene-level Circular Amplicon Prediction)" \
+    org.opencontainers.image.description="Docker Image for GCAP (Gene-level Circular Amplicon Prediction)"
 
 RUN apt update && apt install -y build-essential zip cmake libcairo2-dev &&\
     apt autoremove -y && apt clean -y && apt purge -y && rm -rf /tmp/* /var/tmp/* &&\
