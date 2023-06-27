@@ -1,17 +1,13 @@
-# FROM rocker/r-ver:4.3
-# https://github.com/rocker-org/rocker-versioned2
-# https://hub.docker.com/r/rocker/r-ver/tags
-
-# https://rocker-project.org/use/extending.html#conda-forge
-# https://hub.docker.com/r/continuumio/miniconda3
 FROM continuumio/miniconda3:latest
 
 LABEL \
     maintainer="Shixiang Wang" \
     email="wangsx1@sysucc.org.cn" \
     description="Docker Image for GCAP (Gene-level Circular Amplicon Prediction)" \
-    org.label-schema.license="Non-Commercial Academic License (c) Shixiang Wang" \
-    org.label-schema.vcs-url="https://github.com/ShixiangWang/gcap"
+    org.label-schema.license="Non-Commercial Academic License (c) Shixiang Wang, Qi Zhao; All commercial use is strictly prohibited and requires a commercial use licence." \
+    org.label-schema.vcs-url="https://github.com/ShixiangWang/gcap" \
+    org.opencontainers.image.source="https://github.com/ShixiangWang/gcap" \
+    org.opencontainers.image.description="Docker Image for GCAP (Gene-level Circular Amplicon Prediction)" \
 
 RUN apt update && apt install -y build-essential zip cmake libcairo2-dev &&\
     apt autoremove -y && apt clean -y && apt purge -y && rm -rf /tmp/* /var/tmp/* &&\
@@ -31,8 +27,8 @@ RUN mamba install -y -c conda-forge -c bioconda r-base=4.2 r-remotes r-biocmanag
     R -e 'BiocManager::install("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT", dependencies = TRUE, update = FALSE)' &&\
     R -e 'BiocManager::install("ShixiangWang/gcap", dependencies = TRUE, update = FALSE)' &&\
     cd /opt/conda/lib/R/library/facets/extcode/ &&\
-    ls -alh &&\
     g++ -std=c++11 -I/opt/conda/include snp-pileup.cpp -L/opt/conda/lib -lhts -Wl,-rpath=/opt/conda/lib -o snp-pileup &&\
+    ls -alh &&\
     R -e 'gcap::deploy()' &&\
     rm -rf /tmp/downloaded_packages &&\
     ls -alh ~ &&\
