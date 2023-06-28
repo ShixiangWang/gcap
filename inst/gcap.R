@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
 suppressMessages(library(GetoptLong))
+GetoptLong.options("__prefix__" = "gcap")
 VERSION = as.character(packageVersion("gcap"))
 Citation = "Wang et al. Machine learning-based extrachromosomal DNA identification in large-scale cohorts reveals its clinical implications in cancer."
 
