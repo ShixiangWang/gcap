@@ -107,7 +107,7 @@ gcap.ASCNworkflow <- function(data,
   lg$info("Step 1: Extract features and collapse features to gene level")
   lg$info("============================================================")
 
-  model_input <- gcap.runASCATBuildflow(
+  model_input <- gcap.runASCNBuildflow(
     data,
     genome_build = genome_build,
     overlap = overlap
@@ -163,7 +163,7 @@ gcap.ASCNworkflow <- function(data,
 #'
 #' @return a `data.table`.
 #' @export
-gcap.runASCATBuildflow <- function(data,
+gcap.runASCNBuildflow <- function(data,
                                    genome_build = c("hg38", "hg19"),
                                    overlap = 1) {
   genome_build <- match.arg(genome_build)
