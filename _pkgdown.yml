@@ -1,9 +1,7 @@
 url: https://shixiangwang.github.io/gcap/
 template:
-  package: preferably
   boostrap: 5
-  params:
-    toggle: manual
+  bootswatch: materia
 
 authors:
   Shixiang Wang:
