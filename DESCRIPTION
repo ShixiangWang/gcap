@@ -44,7 +44,7 @@ Suggests:
 LinkingTo: 
     Rcpp
 Remotes: 
-    bitbucket::sequenzatools/sequenza,
+    git::https://bitbucket.org/sequenzatools/sequenza.git@master,
     github::ShixiangWang/ascat/ASCAT@v3-for-gcap-v1,
     github::ShixiangWang/copynumber,
     github::ShixiangWang/facets,
