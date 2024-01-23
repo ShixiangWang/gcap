@@ -207,6 +207,14 @@ functions as they are not exported from **gcap**.
 > gcap:::cat_log_file()
 ```
 
+## Docker image
+
+A docker image is available in [ghcr](https://github.com/ShixiangWang/gcap/pkgs/container/gcap) along with its corresponding [Dockerfile](https://github.com/ShixiangWang/gcap/blob/master/Dockerfile). This image comes pre-installed with all the necessary software. However, users are responsible for mapping the required reference files and input data files on their own. The Dockerfile can be customized according to the user's specific requirements, as permitted by the license we provide.
+
+```sh
+docker pull ghcr.io/shixiangwang/gcap:latest
+```
+
 ## Related tools
 
 - [gcaputils](https://github.com/ShixiangWang/gcaputils): **gcap** utils for downstream analysis and visualization.  

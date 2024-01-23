@@ -9,7 +9,8 @@ Description: Provides data processing pipeline feeding paired bam files
     and XGBOOST model for predicting tumor circular amplicons (also known
     as ecDNA) in gene level.
 License: Non-Commercial Academic License + file LICENSE
-URL: https://github.com/ShixiangWang/gcap, https://shixiangwang.github.io/gcap/
+URL: https://github.com/ShixiangWang/gcap,
+    https://shixiangwang.github.io/gcap/
 BugReports: https://github.com/ShixiangWang/gcap/issues
 Depends: 
     ASCAT (>= 3.0.0),
@@ -44,9 +45,9 @@ LinkingTo:
     Rcpp
 Remotes: 
     bitbucket::sequenzatools/sequenza,
+    github::ShixiangWang/ascat/ASCAT@v3-for-gcap-v1,
     github::ShixiangWang/copynumber,
     github::ShixiangWang/facets,
-    github::ShixiangWang/ascat/ASCAT@v3-for-gcap-v1,
     github::ShixiangWang/IDConverter
 biocViews:
 Config/testthat/edition: 3
