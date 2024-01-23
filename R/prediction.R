@@ -18,6 +18,11 @@
 gcap.runPrediction <- function(data,
                                model = "XGB11") {
   stopifnot(data.table::is.data.table(data))
+  if (utils::packageVersion("xgboost") >= "1.6") {
+    warning("The gcap model was developed with xgboost <1.6, it is recommended to install the previous version with command:", immediate. = TRUE)
+    message('install.packages("https://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_1.5.2.1.tar.gz", repos = NULL, type = "source")')
+  }
+
   lg <- set_logger()
 
   if (is.character(model)) {

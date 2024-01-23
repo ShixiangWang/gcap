@@ -1,9 +1,9 @@
+url: https://shixiangwang.github.io/gcap/
 template:
   package: preferably
   boostrap: 5
   params:
     toggle: manual
-destination: docs
 
 authors:
   Shixiang Wang:

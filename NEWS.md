@@ -1,3 +1,8 @@
+# gcap 1.1.4
+
+- Removed the XGBOOST version limits, instead, a warning is posted.
+- Used GitHub action to render pkgdown site.
+
 # gcap 1.1.3
 
 - Updated the logic of using `only_oncogenes` for filtering.
