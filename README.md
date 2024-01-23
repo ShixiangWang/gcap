@@ -53,9 +53,13 @@ remotes::install_github("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT")
 
 ### Install GCAP (required)
 
-Install **gcap** in R console from GitHub with:
+Install **gcap** in R console:
 
 ```r
+# r-universe
+install.packages('gcap', repos = c('https://shixiangwang.r-universe.dev', 'https://cloud.r-project.org'))
+
+# or GitHub
 remotes::install_github("ShixiangWang/gcap")
 ```
 
