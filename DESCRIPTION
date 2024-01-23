@@ -30,7 +30,7 @@ Imports:
     Rcpp,
     stats,
     uuid,
-    xgboost (< 1.6)
+    xgboost
 Suggests: 
     BiocManager,
     copynumber,
