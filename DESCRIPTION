@@ -6,8 +6,8 @@ Authors@R:
     person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357"))
 Description: Provides data processing pipeline feeding paired bam files
-    and XGBOOST model for predicting tumor circular amplicons (also known
-    as ecDNA) in gene level.
+    (or allele-specific copy number data) and XGBOOST model for predicting
+    tumor circular amplicons (also known as ecDNA) in gene level.
 License: Non-Commercial Academic License + file LICENSE
 URL: https://github.com/ShixiangWang/gcap,
     https://shixiangwang.github.io/gcap/
