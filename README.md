@@ -227,7 +227,7 @@ docker pull ghcr.io/shixiangwang/gcap:latest
 
 ## Citations 
 
-Wang et al. Machine learning-based extrachromosomal DNA identification in large-scale cohorts reveals its clinical implications in cancer. _(Submitted)_
+Wang, S., Wu, C. Y., He, M. M., Yong, J. X., Chen, Y. X., Qian, L. M., ... & Zhao, Q. (2024). Machine learning-based extrachromosomal DNA identification in large-scale cohorts reveals its clinical implications in cancer. Nature Communications, 15(1), 1-17. <https://doi.org/10.1038/s41467-024-45479-6>
 
 ## LICENSE
 
