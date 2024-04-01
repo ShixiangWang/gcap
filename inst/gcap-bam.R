@@ -62,6 +62,11 @@ gcap.workflow(
   tumourname = input$tumorname,
   normalname = input$normalname,
   jobname = if (is.null(input$sample)) input$tumorname else input$sample,
+  allelecounter_exe = allelecounter,
+  g1000allelesprefix = g1000allelesprefix,
+  g1000lociprefix = g1000lociprefix,
+  GCcontentfile = GCcontentfile,
+  replictimingfile = replictimingfile,
   extra_info = extra,
   include_type = "type" %in% colnames(extra),
   genome_build = genome,
@@ -72,5 +77,6 @@ gcap.workflow(
   outdir = outdir,
   nthreads = nthreads,
   BED_file = bed,
+  result_file_prefix = "Result",
   skip_finished_ASCAT = skip
 )
