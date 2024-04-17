@@ -55,6 +55,10 @@ remotes::install_github("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT")
 > updates in processing your data, please refer to <https://github.com/VanLoo-lab/ascat> for generating the required
 > allele-specific copy number data, and refer to [`?gcap.ASCNworkflow()`](https://shixiangwang.github.io/gcap/reference/gcap.ASCNworkflow.html) for downstream analysis.
 
+### Alternatives to ASCAT
+
+For the latest version of GCAP, [sequenza](https://shixiangwang.github.io/gcap/reference/gcap.workflow.seqz.html) or [facets](https://shixiangwang.github.io/gcap/reference/gcap.workflow.facets.html) are supported for preprocessing the bam data, please refer to the provided links for usage.
+
 ### Install GCAP (required)
 
 Install **gcap** in R console:
