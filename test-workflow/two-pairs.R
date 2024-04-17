@@ -49,7 +49,6 @@ gcap::gcap.workflow(
     age = c(59, 60),
     gender = c(0, 1)
   ),
-  target = "circle",
   outdir = "~/proj/gcap/test-workflow/result",
   result_file_prefix = "test_two_cases",
   allelecounter_exe = "~/miniconda3/envs/cancerit/bin/alleleCounter",

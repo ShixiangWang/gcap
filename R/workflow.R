@@ -112,12 +112,12 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
 
   if (!skip_ascat_call) {
     gcap.runASCAT(
-      tumourseqfile,
-      normalseqfile,
+      path.expand(tumourseqfile),
+      path.expand(normalseqfile),
       tumourname,
       normalname,
       jobname,
-      outdir = outdir,
+      outdir = path.expand(outdir),
       allelecounter_exe = allelecounter_exe,
       g1000allelesprefix = g1000allelesprefix,
       g1000lociprefix = g1000lociprefix,
