@@ -14,18 +14,6 @@ sources are preferred as input of **gcap** .
 
 ## Installation
 
-### Download reference files (WES bam data only)
-
-For advanced users, you can prepare the reference files by following the instructions
-from <https://github.com/shixiangwang/ascat/tree/v3.0>.
-
-We recommend all users directly download the reference files from the links below:
-
-- [Curated reference files for GCAP (WES)](https://zenodo.org/records/6364977)
-
-> The prediction model was built with data on the top of hg38 genome build, so 
-hg38-based BAM file input is more recommended.
-
 ### Install alleleCount (WES bam data only)
 
 [**alleleCount**](https://github.com/cancerit/alleleCount) is required to run **ASCAT** on WES bam data,
@@ -41,7 +29,7 @@ if you use **conda** or other approaches, please set the path when you use corre
 
 ### Install ASCAT (required)
 
-#### Latest ASCAT
+#### Latest ASCAT v3
 
 From v1.2, GCAP uses the latest version of ASCAT. Install **ASCAT** v3 in R console from GitHub with:
 
@@ -52,7 +40,17 @@ remotes::install_github('VanLoo-lab/ascat/ASCAT')
 
 We have provided generated reference files above, but sometimes you may want to generate the reference data for yourself, in such case, please refer to <https://github.com/VanLoo-lab/ascat> for generating the required allele-specific copy number data.
 
-#### A fixed version of ASCAT
+**Reference files**:
+
+The reference files are required in ASCAT for copy number calling.
+
+- [Curated reference files for WES](https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WES)
+
+> The prediction model was built with data on the top of hg38 genome build, so 
+hg38-based BAM file input is more recommended.
+
+
+#### A fixed version of ASCAT v3
 
 In our manuscript, we used a fixed version of ASCAT for the GCAP data pre-processing (modified and adapted for GCAP workflow in HPC). It does not fit the R version `>=4.3`.
 
@@ -63,6 +61,10 @@ remotes::install_github("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT")
 # remotes::install_github("ShixiangWang/ascat@v3-f1", subdir = "ASCAT")
 # See https://github.com/ShixiangWang/gcap/issues/27
 ```
+
+**Reference files**:
+
+- [Curated reference files for WES](https://zenodo.org/records/6364977)
 
 ### Alternatives to ASCAT
 
@@ -79,6 +81,9 @@ install.packages('gcap', repos = c('https://shixiangwang.r-universe.dev', 'https
 # or GitHub
 remotes::install_github("ShixiangWang/gcap")
 ```
+
+> To work with the **fixed version of ASCAT**, you have to install version commits no more newer than `42f216d` (tag `v1.1.5`),
+> i.e., please use `remotes::install_github("ShixiangWang/gcap@v1.1.5")` and the R version should below v4.3.
 
 If you would like to use CLI program in Shell terminal, run the following code in your R console after installation:
 

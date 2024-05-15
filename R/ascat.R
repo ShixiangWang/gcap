@@ -148,6 +148,7 @@ gcap.runASCAT <- function(tumourseqfile,
             BED_file = BED_file,
             probloci_file = probloci_file,
             gender = gd,
+            genomeVersion = genome_build,
             chrom_names = chrom_names,
             min_base_qual = min_base_qual,
             min_map_qual = min_map_qual,
@@ -164,7 +165,7 @@ gcap.runASCAT <- function(tumourseqfile,
             genomeVersion = genome_build
           )
 
-          ascat.bc <- ASCAT::ascat.correctLogR(ascat.bc, GCcontentfile, replictimingfile, genomeVersion = genome_build)
+          ascat.bc <- ASCAT::ascat.correctLogR(ascat.bc, GCcontentfile, replictimingfile)
 
         } else {
           ascat.prepareHTS(
@@ -221,6 +222,12 @@ gcap.runASCAT <- function(tumourseqfile,
         if (packageVersion("ASCAT") > "3.1.0") {
           QC = ASCAT::ascat.metrics(ascat.bc, ascat.output)
           ascat.output = c(ascat.output, list(QC = QC))
+        }
+
+        # Clean unnecessary files
+        fls = list.files(pattern = "alleleFrequencies", full.names = TRUE)
+        if (length(fls) > 0) {
+          file.remove(fls)
         }
 
         saveRDS(ascat.output, file = paste0(id, ".ASCAT.rds"))

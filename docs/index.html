@@ -75,18 +75,6 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="section level3">
-<h3 id="download-reference-files-wes-bam-data-only">Download reference files (WES bam data only)<a class="anchor" aria-label="anchor" href="#download-reference-files-wes-bam-data-only"></a>
-</h3>
-<p>For advanced users, you can prepare the reference files by following the instructions from <a href="https://github.com/shixiangwang/ascat/tree/v3.0" class="external-link uri">https://github.com/shixiangwang/ascat/tree/v3.0</a>.</p>
-<p>We recommend all users directly download the reference files from the links below:</p>
-<ul>
-<li><a href="https://zenodo.org/records/6364977" class="external-link">Curated reference files for GCAP (WES)</a></li>
-</ul>
-<blockquote>
-<p>The prediction model was built with data on the top of hg38 genome build, so hg38-based BAM file input is more recommended.</p>
-</blockquote>
-</div>
-<div class="section level3">
 <h3 id="install-allelecount-wes-bam-data-only">Install alleleCount (WES bam data only)<a class="anchor" aria-label="anchor" href="#install-allelecount-wes-bam-data-only"></a>
 </h3>
 <p><a href="https://github.com/cancerit/alleleCount" class="external-link"><strong>alleleCount</strong></a> is required to run <strong>ASCAT</strong> on WES bam data, if you haven’t installed <a href="https://docs.conda.io/en/latest/" class="external-link"><strong>conda</strong></a> or <a href="https://docs.conda.io/en/latest/miniconda.html" class="external-link"><strong>miniconda</strong></a>, please install firstly, then install the <strong>alleleCount</strong> in terminal with:</p>
@@ -99,16 +87,24 @@
 <h3 id="install-ascat-required">Install ASCAT (required)<a class="anchor" aria-label="anchor" href="#install-ascat-required"></a>
 </h3>
 <div class="section level4">
-<h4 id="latest-ascat">Latest ASCAT<a class="anchor" aria-label="anchor" href="#latest-ascat"></a>
+<h4 id="latest-ascat-v3">Latest ASCAT v3<a class="anchor" aria-label="anchor" href="#latest-ascat-v3"></a>
 </h4>
 <p>From v1.2, GCAP uses the latest version of ASCAT. Install <strong>ASCAT</strong> v3 in R console from GitHub with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'VanLoo-lab/ascat/ASCAT'</span><span class="op">)</span></span></code></pre></div>
 <p>We have provided generated reference files above, but sometimes you may want to generate the reference data for yourself, in such case, please refer to <a href="https://github.com/VanLoo-lab/ascat" class="external-link uri">https://github.com/VanLoo-lab/ascat</a> for generating the required allele-specific copy number data.</p>
+<p><strong>Reference files</strong>:</p>
+<p>The reference files are required in ASCAT for copy number calling.</p>
+<ul>
+<li><a href="https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WES" class="external-link">Curated reference files for WES</a></li>
+</ul>
+<blockquote>
+<p>The prediction model was built with data on the top of hg38 genome build, so hg38-based BAM file input is more recommended.</p>
+</blockquote>
 </div>
 <div class="section level4">
-<h4 id="a-fixed-version-of-ascat">A fixed version of ASCAT<a class="anchor" aria-label="anchor" href="#a-fixed-version-of-ascat"></a>
+<h4 id="a-fixed-version-of-ascat-v3">A fixed version of ASCAT v3<a class="anchor" aria-label="anchor" href="#a-fixed-version-of-ascat-v3"></a>
 </h4>
 <p>In our manuscript, we used a fixed version of ASCAT for the GCAP data pre-processing (modified and adapted for GCAP workflow in HPC). It does not fit the R version <code>&gt;=4.3</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -117,6 +113,10 @@
 <span><span class="co"># A ASCAT version with loose SAM flag, useful sometimes</span></span>
 <span><span class="co"># remotes::install_github("ShixiangWang/ascat@v3-f1", subdir = "ASCAT")</span></span>
 <span><span class="co"># See https://github.com/ShixiangWang/gcap/issues/27</span></span></code></pre></div>
+<p><strong>Reference files</strong>:</p>
+<ul>
+<li><a href="https://zenodo.org/records/6364977" class="external-link">Curated reference files for WES</a></li>
+</ul>
 </div>
 </div>
 <div class="section level3">
@@ -134,6 +134,9 @@
 <span></span>
 <span><span class="co"># or GitHub</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/gcap"</span><span class="op">)</span></span></code></pre></div>
+<blockquote>
+<p>To work with the <strong>fixed version of ASCAT</strong>, you have to install version commits no more newer than <code>42f216d</code> (tag <code>v1.1.5</code>), i.e., please use <code>remotes::install_github("ShixiangWang/gcap@v1.1.5")</code> and the R version should below v4.3.</p>
+</blockquote>
 <p>If you would like to use CLI program in Shell terminal, run the following code in your R console after installation:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">gcap</span><span class="fu">::</span><span class="fu"><a href="reference/deploy.html">deploy</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
