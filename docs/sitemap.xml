@@ -4,13 +4,13 @@
     <loc>https://shixiangwang.github.io/gcap/404.html</loc>
   </url>
   <url>
+    <loc>https://shixiangwang.github.io/gcap/LICENSE-text.html</loc>
+  </url>
+  <url>
     <loc>https://shixiangwang.github.io/gcap/authors.html</loc>
   </url>
   <url>
     <loc>https://shixiangwang.github.io/gcap/index.html</loc>
-  </url>
-  <url>
-    <loc>https://shixiangwang.github.io/gcap/LICENSE-text.html</loc>
   </url>
   <url>
     <loc>https://shixiangwang.github.io/gcap/news/index.html</loc>
@@ -44,6 +44,9 @@
   </url>
   <url>
     <loc>https://shixiangwang.github.io/gcap/reference/gcap.runASCATBuildflow.html</loc>
+  </url>
+  <url>
+    <loc>https://shixiangwang.github.io/gcap/reference/gcap.runASCNBuildflow.html</loc>
   </url>
   <url>
     <loc>https://shixiangwang.github.io/gcap/reference/gcap.runBuildflow.html</loc>

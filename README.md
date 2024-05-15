@@ -132,7 +132,7 @@ rv
 
 ### Pipeline (WES bam data only)
 
-- for one tumor-normal pair, you can refer to [one-pair.R](https://github.com/ShixiangWang/gcap/blob/master/test-workflow/one-pair.R). [test-workflow/debug](test-workflow/debug) contains a full workflow for data obtained from SRA.
+- for one tumor-normal pair, you can refer to [one-pair.R](https://github.com/ShixiangWang/gcap/blob/master/test-workflow/one-pair.R). [test-workflow/debug](https://github.com/ShixiangWang/gcap/tree/master/test-workflow/debug) contains a full workflow for data obtained from SRA.
 - for multiple tumor-normal pairs, you can refer to [two-pair.R](https://github.com/ShixiangWang/gcap/blob/master/test-workflow/two-pairs.R).
 
 To run **gcap** from bam files, a machine with **at least 80GB RAM** is required for

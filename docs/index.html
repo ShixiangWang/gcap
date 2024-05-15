@@ -6,15 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gene-level Circular Amplicon Prediction • gcap</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Gene-level Circular Amplicon Prediction">
-<meta property="og:description" content="Provides data processing pipeline feeding paired bam files
-    (or allele-specific copy number data) and XGBOOST model for predicting
-    tumor circular amplicons (also known as ecDNA) in gene level.">
+<meta property="og:description" content="Provides data processing pipeline feeding paired bam files (or allele-specific copy number data) and XGBOOST model for predicting tumor circular amplicons (also known as ecDNA) in gene level.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -35,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gcap</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -72,7 +70,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>In a nutshell, <strong>gcap</strong> provides an end-to-end workflow for predicting circular amplicon (also known as ecDNA, extra-chromosomal DNA ) in gene level with machine learning approach, then classifying cancer samples into different focal amplification (fCNA) types, based on input from WES (tumor-normal paired BAM) data, allele specific copy number data (e.g., results from <a href="https://github.com/VanLoo-lab/ascat" class="external-link">ASCAT</a> or <a href="https://cran.r-project.org/package=sequenza" class="external-link">Sequenza</a>), or even absolute integer copy number data (e.g., results from <a href="https://software.broadinstitute.org/cancer/cga/absolute" class="external-link">ABSOLUTE</a>). The former two data sources are preferred as input of <strong>gcap</strong> .</p>
+<p>In a nutshell, <strong>gcap</strong> provides an end-to-end workflow for predicting circular amplicon (also known as ecDNA, extra-chromosomal DNA ) in gene level with machine learning approach, then classifying cancer samples into different focal amplification (fCNA) types, based on input from WES (tumor-normal paired BAM, with corresponding <code>.bai</code> index files) data, allele specific copy number data (e.g., results from <a href="https://github.com/VanLoo-lab/ascat" class="external-link">ASCAT</a> or <a href="https://cran.r-project.org/package=sequenza" class="external-link">Sequenza</a>), or even absolute integer copy number data (e.g., results from <a href="https://software.broadinstitute.org/cancer/cga/absolute" class="external-link">ABSOLUTE</a>). The former two data sources are preferred as input of <strong>gcap</strong> .</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -82,7 +80,7 @@
 <p>For advanced users, you can prepare the reference files by following the instructions from <a href="https://github.com/shixiangwang/ascat/tree/v3.0" class="external-link uri">https://github.com/shixiangwang/ascat/tree/v3.0</a>.</p>
 <p>We recommend all users directly download the reference files from the links below:</p>
 <ul>
-<li><a href="https://zenodo.org/record/5533065" class="external-link">Curated reference files for GCAP (WES)</a></li>
+<li><a href="https://zenodo.org/records/6364977" class="external-link">Curated reference files for GCAP (WES)</a></li>
 </ul>
 <blockquote>
 <p>The prediction model was built with data on the top of hg38 genome build, so hg38-based BAM file input is more recommended.</p>
@@ -100,45 +98,63 @@
 <div class="section level3">
 <h3 id="install-ascat-required">Install ASCAT (required)<a class="anchor" aria-label="anchor" href="#install-ascat-required"></a>
 </h3>
-<p>Install <strong>ASCAT</strong> v3.0 (modified and adapted for GCAP workflow in HPC) in R console from GitHub with:</p>
+<div class="section level4">
+<h4 id="latest-ascat">Latest ASCAT<a class="anchor" aria-label="anchor" href="#latest-ascat"></a>
+</h4>
+<p>From v1.2, GCAP uses the latest version of ASCAT. Install <strong>ASCAT</strong> v3 in R console from GitHub with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'VanLoo-lab/ascat/ASCAT'</span><span class="op">)</span></span></code></pre></div>
+<p>We have provided generated reference files above, but sometimes you may want to generate the reference data for yourself, in such case, please refer to <a href="https://github.com/VanLoo-lab/ascat" class="external-link uri">https://github.com/VanLoo-lab/ascat</a> for generating the required allele-specific copy number data.</p>
+</div>
+<div class="section level4">
+<h4 id="a-fixed-version-of-ascat">A fixed version of ASCAT<a class="anchor" aria-label="anchor" href="#a-fixed-version-of-ascat"></a>
+</h4>
+<p>In our manuscript, we used a fixed version of ASCAT for the GCAP data pre-processing (modified and adapted for GCAP workflow in HPC). It does not fit the R version <code>&gt;=4.3</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This is a forked version ASCAT</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/ascat@v3-for-gcap-v1"</span>, subdir <span class="op">=</span> <span class="st">"ASCAT"</span><span class="op">)</span></span>
 <span><span class="co"># A ASCAT version with loose SAM flag, useful sometimes</span></span>
 <span><span class="co"># remotes::install_github("ShixiangWang/ascat@v3-f1", subdir = "ASCAT")</span></span>
 <span><span class="co"># See https://github.com/ShixiangWang/gcap/issues/27</span></span></code></pre></div>
 </div>
+</div>
+<div class="section level3">
+<h3 id="alternatives-to-ascat">Alternatives to ASCAT<a class="anchor" aria-label="anchor" href="#alternatives-to-ascat"></a>
+</h3>
+<p>For the latest version of GCAP, <a href="https://shixiangwang.github.io/gcap/reference/gcap.workflow.seqz.html">sequenza</a> or <a href="https://shixiangwang.github.io/gcap/reference/gcap.workflow.facets.html">facets</a> are supported for preprocessing the bam data, please refer to the provided links for usage.</p>
+</div>
 <div class="section level3">
 <h3 id="install-gcap-required">Install GCAP (required)<a class="anchor" aria-label="anchor" href="#install-gcap-required"></a>
 </h3>
 <p>Install <strong>gcap</strong> in R console:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># r-universe</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'gcap'</span>, repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'https://shixiangwang.r-universe.dev'</span>, <span class="st">'https://cloud.r-project.org'</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># or GitHub</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/gcap"</span><span class="op">)</span></span></code></pre></div>
 <p>If you would like to use CLI program in Shell terminal, run the following code in your R console after installation:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">gcap</span><span class="fu">::</span><span class="fu"><a href="reference/deploy.html">deploy</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Two scripts <code>gcap-bam.R</code> and <code>gcap-ascn.R</code> shall be linked to your path <code>/usr/local/bin/</code>. You can use one of them based on you input data.</p>
 <p><strong>NOTE</strong></p>
 <p>For users with package <strong>GetoptLong</strong> version <code>&gt;= 1.1.0</code>, a main command is implemented and also linked to <code>/usr/local/bin/</code> when calling <code><a href="reference/deploy.html">deploy()</a></code>. So you can type <code>gcap</code> as a unified interface.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">$</span> gcap</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">gcap</span> <span class="er">(</span><span class="ex">v1.0.0</span><span class="kw">)</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="ex">Usage:</span> gcap <span class="pp">[</span><span class="ss">command</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="ex">Commands:</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="ex">bam</span>     Run GCAP workflow with tumor-normal paired BAM files</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="ex">ascn</span>    Run GCAP workflow with curated allele-specific copy number data</span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="ex">----------</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="ex">Citation:</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="ex">GCAP</span></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="ex">URL:</span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  <span class="ex">https://github.com/ShixiangWang/gcap</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">$</span> gcap</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="ex">gcap</span> <span class="er">(</span><span class="ex">v1.0.0</span><span class="kw">)</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="ex">Usage:</span> gcap <span class="pp">[</span><span class="ss">command</span><span class="pp">]</span> <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="ex">Commands:</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="ex">bam</span>     Run GCAP workflow with tumor-normal paired BAM files</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  <span class="ex">ascn</span>    Run GCAP workflow with curated allele-specific copy number data</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="ex">----------</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="ex">Citation:</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="ex">GCAP</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="ex">URL:</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  <span class="ex">https://github.com/ShixiangWang/gcap</span></span></code></pre></div>
 <p>NOTE: <strong>gcap</strong> use XGBOOST &lt; 1.6, if you have installed a latest version, you can install the specified version with:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"https://cran.r-project.org/src/contrib/Archive/xgboost/xgboost_1.5.2.1.tar.gz"</span>, repos <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -146,7 +162,7 @@
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <p>Run the following code to see a quick example:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ShixiangWang/gcap" class="external-link">gcap</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ascn"</span><span class="op">)</span></span>
@@ -156,20 +172,20 @@
 <h3 id="pipeline-wes-bam-data-only">Pipeline (WES bam data only)<a class="anchor" aria-label="anchor" href="#pipeline-wes-bam-data-only"></a>
 </h3>
 <ul>
-<li>for one tumor-normal pair, you can refer to <a href="https://github.com/ShixiangWang/gcap/blob/master/test-workflow/one-pair.R" class="external-link">one-pair.R</a>.</li>
+<li>for one tumor-normal pair, you can refer to <a href="https://github.com/ShixiangWang/gcap/blob/master/test-workflow/one-pair.R" class="external-link">one-pair.R</a>. <a href="https://github.com/ShixiangWang/gcap/tree/master/test-workflow/debug" class="external-link">test-workflow/debug</a> contains a full workflow for data obtained from SRA.</li>
 <li>for multiple tumor-normal pairs, you can refer to <a href="https://github.com/ShixiangWang/gcap/blob/master/test-workflow/two-pairs.R" class="external-link">two-pair.R</a>.</li>
 </ul>
 <p>To run <strong>gcap</strong> from bam files, a machine with <strong>at least 80GB RAM</strong> is required for the <code>allelecount</code> process. If you set multiple threads, please note the parallel computation is used in part of the workflow. You should balance the <code>nthread</code> setting and the computing power your machine provides by yourself.</p>
 <p>It generally takes <code>~0.5h</code> to finish one case (tumor-normal pair).</p>
 <p>In our practice, when we want to process multiple cases, set <code>nthread = 22</code> and directly let <strong>gcap</strong> handle multiple cases (instead of writing a loop yourself) is good enough.</p>
 <p>A recommended setting for Slurm is given as:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#SBATCH -N 1</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#SBATCH -o output-%J.o</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#SBATCH -n 22</span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#SBATCH --mem=102400</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#SBATCH -N 1</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#SBATCH -o output-%J.o</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#SBATCH -n 22</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#SBATCH --mem=102400</span></span></code></pre></div>
 <p>Templates of practical calling command with provided hg38 and hg19 annotations are given below:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># hg38 ----------------</span></span>
 <span><span class="fu"><a href="reference/gcap.workflow.html">gcap.workflow</a></span><span class="op">(</span></span>
 <span>  tumourseqfile <span class="op">=</span> <span class="va">tfile</span>, normalseqfile <span class="op">=</span> <span class="va">nfile</span>, tumourname <span class="op">=</span> <span class="va">tn</span>, normalname <span class="op">=</span> <span class="va">nn</span>, jobname <span class="op">=</span> <span class="va">id</span>,</span>
@@ -226,15 +242,15 @@
 <h2 id="logging">Logging<a class="anchor" aria-label="anchor" href="#logging"></a>
 </h2>
 <p>For better debugging and rechecking. The logging information of your operation with <strong>gcap</strong> would be saved into an independent file. You can use the following commands to get the file path and print logging message. Please note you have to use <code>:::</code> to access these functions as they are not exported from <strong>gcap</strong>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">get_log_file</span>()</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"~/Library/Logs/gcap/gcap.log"</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">cat_log_file</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">get_log_file</span>()</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"~/Library/Logs/gcap/gcap.log"</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="sc">&gt;</span> gcap<span class="sc">:::</span><span class="fu">cat_log_file</span>()</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="docker-image">Docker image<a class="anchor" aria-label="anchor" href="#docker-image"></a>
 </h2>
 <p>A docker image is available in <a href="https://github.com/ShixiangWang/gcap/pkgs/container/gcap" class="external-link">ghcr</a> along with its corresponding <a href="https://github.com/ShixiangWang/gcap/blob/master/Dockerfile" class="external-link">Dockerfile</a>. This image comes pre-installed with all the necessary software. However, users are responsible for mapping the required reference files and input data files on their own. The Dockerfile can be customized according to the user’s specific requirements, as permitted by the license we provide.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/shixiangwang/gcap:latest</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/shixiangwang/gcap:latest</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="related-tools">Related tools<a class="anchor" aria-label="anchor" href="#related-tools"></a>
@@ -257,7 +273,7 @@
 <div class="section level2">
 <h2 id="citations">Citations<a class="anchor" aria-label="anchor" href="#citations"></a>
 </h2>
-<p>Wang et al. Machine learning-based extrachromosomal DNA identification in large-scale cohorts reveals its clinical implications in cancer. <em>(Submitted)</em></p>
+<p>Wang, S., Wu, C. Y., He, M. M., Yong, J. X., Chen, Y. X., Qian, L. M., … &amp; Zhao, Q. (2024). Machine learning-based extrachromosomal DNA identification in large-scale cohorts reveals its clinical implications in cancer. Nature Communications, 15(1), 1-17. <a href="https://doi.org/10.1038/s41467-024-45479-6" class="external-link uri">https://doi.org/10.1038/s41467-024-45479-6</a></p>
 </div>
 <div class="section level2">
 <h2 id="license">LICENSE<a class="anchor" aria-label="anchor" href="#license"></a>
@@ -319,7 +335,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>
