@@ -27,6 +27,7 @@ gcap.runASCAT(
   min_base_qual = 20,
   min_map_qual = 35,
   penalty = 70,
+  genome_build = "hg38",
   skip_finished_ASCAT = FALSE
 )
 }
@@ -45,13 +46,13 @@ gcap.runASCAT(
 
 \item{allelecounter_exe}{Path to the allele counter executable.}
 
-\item{g1000allelesprefix}{Prefix path to the 1000 Genomes alleles reference files.}
+\item{g1000allelesprefix}{Prefix path to the allele data (e.g. "G1000_alleles_chr").}
 
-\item{g1000lociprefix}{Prefix path to the 1000 Genomes SNP reference files.}
+\item{g1000lociprefix}{Prefix path to the loci data (e.g. "G1000_loci_chr").}
 
-\item{GCcontentfile}{File containing the GC content around every SNP for increasing window sizes}
+\item{GCcontentfile}{File containing the GC content around every SNP for increasing window sizes.}
 
-\item{replictimingfile}{File containing replication timing at every SNP for various cell lines (optional)}
+\item{replictimingfile}{File containing replication timing at every SNP for various cell lines.}
 
 \item{nthreads}{The number of parallel processes for getting allele counts (optional, default=1).}
 
@@ -73,6 +74,8 @@ chromosomes.}
 \item{min_map_qual}{Minimum mapping quality required for a read to be counted (optional, default=35).}
 
 \item{penalty}{penalty of introducing an additional ASPCF breakpoint (expert parameter, don't adapt unless you know what you're doing)}
+
+\item{genome_build}{"hg38" or "hg19".}
 
 \item{skip_finished_ASCAT}{if \code{TRUE}, skipped finished ASCAT calls
 to save time.}

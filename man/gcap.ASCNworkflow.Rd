@@ -37,8 +37,7 @@ This info is only used in 'XGB56' model. If you don't use this model, you
 don't need to set it.
 }}
 
-\item{genome_build}{genome build version, should be
-one of 'hg38', 'hg19'.}
+\item{genome_build}{"hg38" or "hg19".}
 
 \item{model}{model name ("XGB11", "XGB32", "XGB56") or a custom model
 from input. 'toy' can be used for test.}

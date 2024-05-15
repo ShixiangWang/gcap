@@ -1,3 +1,11 @@
+# gcap 1.2.0
+
+- Utilized the latest ASCAT version from [VanLoo-lab/ascat](https://github.com/VanLoo-lab/ascat) for default copy number calling. This help address issue mentioned at #43.
+- Updated documentation.
+- Added a whole workflow for debugging purpose.
+- Enhanced path parsing like `~`.
+- Fixed bug in `gcap-bam.R`.
+
 # gcap 1.1.4
 
 - Removed the XGBOOST version limits, instead, a warning is posted.

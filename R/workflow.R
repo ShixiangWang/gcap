@@ -139,6 +139,7 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
       },
       min_base_qual = min_base_qual,
       min_map_qual = min_map_qual,
+      genome_build = genome_build,
       penalty = penalty,
       skip_finished_ASCAT
     )

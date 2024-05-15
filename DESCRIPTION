@@ -1,7 +1,7 @@
 Type: Package
 Package: gcap
 Title: Gene-level Circular Amplicon Prediction
-Version: 1.1.4
+Version: 1.2.0
 Authors@R: 
     person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357"))
@@ -45,7 +45,7 @@ LinkingTo:
     Rcpp
 Remotes: 
     git::https://bitbucket.org/sequenzatools/sequenza.git@master,
-    github::ShixiangWang/ascat/ASCAT@v3-for-gcap-v1,
+    github::VanLoo-lab/ascat/ASCAT,
     github::ShixiangWang/copynumber,
     github::ShixiangWang/facets,
     github::ShixiangWang/IDConverter
@@ -55,4 +55,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxytest::testthat_roclet"))
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1

@@ -41,7 +41,20 @@ if you use **conda** or other approaches, please set the path when you use corre
 
 ### Install ASCAT (required)
 
-Install **ASCAT** v3.0 (modified and adapted for GCAP workflow in HPC) in R console from GitHub with:
+#### Latest ASCAT
+
+From v1.2, GCAP uses the latest version of ASCAT. Install **ASCAT** v3 in R console from GitHub with:
+
+```r
+# install.packages("remotes")
+remotes::install_github('VanLoo-lab/ascat/ASCAT')
+```
+
+We have provided generated reference files above, but sometimes you may want to generate the reference data for yourself, in such case, please refer to <https://github.com/VanLoo-lab/ascat> for generating the required allele-specific copy number data.
+
+#### A fixed version of ASCAT
+
+In our manuscript, we used a fixed version of ASCAT for the GCAP data pre-processing (modified and adapted for GCAP workflow in HPC). It does not fit the R version `>=4.3`.
 
 ```r
 # This is a forked version ASCAT
@@ -50,10 +63,6 @@ remotes::install_github("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT")
 # remotes::install_github("ShixiangWang/ascat@v3-f1", subdir = "ASCAT")
 # See https://github.com/ShixiangWang/gcap/issues/27
 ```
-
-> Here we used a fixed version of ASCAT for the GCAP data pre-processing, if you want to adopted the latest
-> updates in processing your data, please refer to <https://github.com/VanLoo-lab/ascat> for generating the required
-> allele-specific copy number data, and refer to [`?gcap.ASCNworkflow()`](https://shixiangwang.github.io/gcap/reference/gcap.ASCNworkflow.html) for downstream analysis.
 
 ### Alternatives to ASCAT
 

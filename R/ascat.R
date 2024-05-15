@@ -11,9 +11,12 @@
 #' Note, for multiple tumor-normal pairs, the first 5 arguments should
 #' be a vector with same length.
 #'
+#' @param g1000allelesprefix Prefix path to the allele data (e.g. "G1000_alleles_chr").
+#' @param g1000lociprefix Prefix path to the loci data (e.g. "G1000_loci_chr").
 #' @inheritParams ASCAT::ascat.prepareHTS
 #' @inheritParams ASCAT::ascat.aspcf
-#' @inheritParams ASCAT::ascat.GCcorrect
+#' @param GCcontentfile File containing the GC content around every SNP for increasing window sizes.
+#' @param replictimingfile File containing replication timing at every SNP for various cell lines.
 #' @param tumourseqfile Full path to the tumour BAM file.
 #' @param normalseqfile Full path to the normal BAM file.
 #' @param jobname job name, typically an unique name for a tumor-normal pair.
@@ -25,6 +28,7 @@
 #' considered (optional, default=1:22).
 #' @param skip_finished_ASCAT if `TRUE`, skipped finished ASCAT calls
 #' to save time.
+#' @param genome_build "hg38" or "hg19".
 #'
 #' @importFrom ASCAT ascat.prepareHTS ascat.loadData ascat.GCcorrect
 #' ascat.plotRawData ascat.aspcf ascat.plotSegmentedData ascat.predictGermlineGenotypes
@@ -57,6 +61,7 @@ gcap.runASCAT <- function(tumourseqfile,
                           min_base_qual = 20,
                           min_map_qual = 35,
                           penalty = 70,
+                          genome_build = "hg38",
                           skip_finished_ASCAT = FALSE) {
   stopifnot(all(gender %in% c("XX", "XY")))
   if (!dir.exists(outdir)) dir.create(outdir, recursive = TRUE)
@@ -128,34 +133,70 @@ gcap.runASCAT <- function(tumourseqfile,
         if (!all(file.exists(tfile, nfile))) {
           lg$fatal("Not all bam files exist")
         }
-        ascat.prepareHTS(
-          tumourseqfile = tfile,
-          normalseqfile = nfile,
-          tumourname = tn,
-          normalname = nn,
-          allelecounter_exe = allelecounter_exe,
-          g1000allelesprefix = g1000allelesprefix,
-          g1000lociprefix = g1000lociprefix,
-          nthreads = nthreads,
-          minCounts = minCounts,
-          BED_file = BED_file,
-          probloci_file = probloci_file,
-          gender = gd,
-          chrom_names = chrom_names,
-          min_base_qual = min_base_qual,
-          min_map_qual = min_map_qual,
-          skip_allele_counting_tumour = FALSE,
-          skip_allele_counting_normal = skip_norm
-        )
 
-        ascat.bc <- ascat.loadData(
-          paste0(tn, "_tumourLogR.txt"), paste0(tn, "_tumourBAF.txt"),
-          if (skip_norm) NULL else paste0(tn, "_normalLogR.txt"),
-          if (skip_norm) NULL else paste0(tn, "_normalBAF.txt"),
-          chrs = chrom_names,
-          gender = gender
-        ) # New parameter genomeVersion in the latest version of ASCAT
-        ascat.bc <- ascat.GCcorrect(ascat.bc, GCcontentfile, replictimingfile)
+        if (packageVersion("ASCAT") > "3.1.0") {
+          ascat.prepareHTS(
+            tumourseqfile = tfile,
+            normalseqfile = nfile,
+            tumourname = tn,
+            normalname = nn,
+            allelecounter_exe = allelecounter_exe,
+            alleles.prefix = g1000allelesprefix,
+            loci.prefix = g1000lociprefix,
+            nthreads = nthreads,
+            minCounts = minCounts,
+            BED_file = BED_file,
+            probloci_file = probloci_file,
+            gender = gd,
+            chrom_names = chrom_names,
+            min_base_qual = min_base_qual,
+            min_map_qual = min_map_qual,
+            skip_allele_counting_tumour = FALSE,
+            skip_allele_counting_normal = skip_norm
+          )
+
+          ascat.bc <- ascat.loadData(
+            paste0(tn, "_tumourLogR.txt"), paste0(tn, "_tumourBAF.txt"),
+            if (skip_norm) NULL else paste0(tn, "_normalLogR.txt"),
+            if (skip_norm) NULL else paste0(tn, "_normalBAF.txt"),
+            chrs = chrom_names,
+            gender = gender,
+            genomeVersion = genome_build
+          )
+
+          ascat.bc <- ASCAT::ascat.correctLogR(ascat.bc, GCcontentfile, replictimingfile)
+
+        } else {
+          ascat.prepareHTS(
+            tumourseqfile = tfile,
+            normalseqfile = nfile,
+            tumourname = tn,
+            normalname = nn,
+            allelecounter_exe = allelecounter_exe,
+            g1000allelesprefix = g1000allelesprefix,
+            g1000lociprefix = g1000lociprefix,
+            nthreads = nthreads,
+            minCounts = minCounts,
+            BED_file = BED_file,
+            probloci_file = probloci_file,
+            gender = gd,
+            chrom_names = chrom_names,
+            min_base_qual = min_base_qual,
+            min_map_qual = min_map_qual,
+            skip_allele_counting_tumour = FALSE,
+            skip_allele_counting_normal = skip_norm
+          )
+
+          ascat.bc <- ascat.loadData(
+            paste0(tn, "_tumourLogR.txt"), paste0(tn, "_tumourBAF.txt"),
+            if (skip_norm) NULL else paste0(tn, "_normalLogR.txt"),
+            if (skip_norm) NULL else paste0(tn, "_normalBAF.txt"),
+            chrs = chrom_names,
+            gender = gender
+          )
+          ascat.bc <- ascat.GCcorrect(ascat.bc, GCcontentfile, replictimingfile)
+        }
+
         ascat.plotRawData(ascat.bc)
         if (skip_norm) {
           # https://github.com/VanLoo-lab/ascat/issues/73
@@ -177,6 +218,11 @@ gcap.runASCAT <- function(tumourseqfile,
         ascat.bc <- ascat.aspcf(ascat.bc, ascat.gg = gg, penalty = penalty)
         ascat.plotSegmentedData(ascat.bc)
         ascat.output <- ascat.runAscat(ascat.bc, gamma = 1L, pdfPlot = TRUE)
+        if (packageVersion("ASCAT") > "3.1.0") {
+          QC = ASCAT::ascat.metrics(ascat.bc, ascat.output)
+          ascat.output = c(ascat.output, list(QC = QC))
+        }
+
         saveRDS(ascat.output, file = paste0(id, ".ASCAT.rds"))
 
         lg$info("job {id} done")
