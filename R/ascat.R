@@ -164,7 +164,7 @@ gcap.runASCAT <- function(tumourseqfile,
             genomeVersion = genome_build
           )
 
-          ascat.bc <- ASCAT::ascat.correctLogR(ascat.bc, GCcontentfile, replictimingfile)
+          ascat.bc <- ASCAT::ascat.correctLogR(ascat.bc, GCcontentfile, replictimingfile, genomeVersion = genome_build)
 
         } else {
           ascat.prepareHTS(
