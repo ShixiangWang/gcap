@@ -44,7 +44,7 @@ We have provided generated reference files above, but sometimes you may want to 
 
 The reference files are required in ASCAT for copy number calling.
 
-- [Curated reference files for WES](https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WES)
+- [Curated reference files used by the latest ASCAT v3 for WES](https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WES)
 
 > The prediction model was built with data on the top of hg38 genome build, so 
 hg38-based BAM file input is more recommended.
@@ -64,7 +64,7 @@ remotes::install_github("ShixiangWang/ascat@v3-for-gcap-v1", subdir = "ASCAT")
 
 **Reference files**:
 
-- [Curated reference files for WES](https://zenodo.org/records/6364977)
+- [Curated reference files used by the fixed version of ASCAT v3 for WES](https://zenodo.org/records/11219112)
 
 ### Alternatives to ASCAT
 
