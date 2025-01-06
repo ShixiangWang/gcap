@@ -119,7 +119,7 @@ gcap.runASCAT <- function(tumourseqfile,
     lg$info("   tumor sample name: {tn}")
     lg$info("  normal sample name: {nn}")
 
-    if (is.na(normalseqfile) || is.na(normalname)) {
+    iif (is.na(nfile) || is.na(nn)) {
       lg$info("run with tumor only model, this is only supported in specified ASCAT version")
       skip_norm <- TRUE
     } else {
