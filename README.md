@@ -1,7 +1,8 @@
 # GCAP: Gene-level Circular Amplicon Prediction
 
 <!-- badges: start -->
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fshixiangwang%2Fgcap&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html) 
+![Badge](https://hitscounter.dev/api/hit?url=https%3A%2F%2Fgithub.com%2FShixiangWang%2Fgcap&label=Hits&icon=github&color=%23198754&message=&style=flat&tz=UTC)
 <!-- badges: end -->
 
 In a nutshell, **gcap** provides an end-to-end workflow for predicting
