@@ -1,6 +1,7 @@
 # GCAP: Gene-level Circular Amplicon Prediction
 
 <!-- badges: start -->
+[![gcap status badge](https://shixiangwang.r-universe.dev/gcap/badges/version)](https://shixiangwang.r-universe.dev/gcap)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html) 
 ![Badge](https://hitscounter.dev/api/hit?url=https%3A%2F%2Fgithub.com%2FShixiangWang%2Fgcap&label=Hits&icon=github&color=%23198754&message=&style=flat&tz=UTC)
 <!-- badges: end -->
