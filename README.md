@@ -233,11 +233,22 @@ functions as they are not exported from **gcap**.
 
 ## Docker image
 
-A docker image is available in [ghcr](https://github.com/ShixiangWang/gcap/pkgs/container/gcap) along with its corresponding [Dockerfile](https://github.com/ShixiangWang/gcap/blob/master/Dockerfile). This image comes pre-installed with all the necessary software. However, users are responsible for mapping the required reference files and input data files on their own. The Dockerfile can be customized according to the user's specific requirements, as permitted by the license we provide.
+A docker image is available in [ghcr](https://github.com/ShixiangWang/gcap/pkgs/container/gcap) along with its corresponding [Dockerfile](https://github.com/ShixiangWang/gcap/blob/master/Dockerfile). This image comes pre-installed with all the necessary software (including R, alleleCounter, ASCAT, sequenza-utils, samtools, etc.) with conda environment pre-configured — just `docker run` and the `gcap` command works out of the box. 
+
+However, users are responsible for mapping the required reference files and input data files on their own. The Dockerfile can be customized according to the user's specific requirements, as permitted by the license we provide.
 
 ```sh
 docker pull ghcr.io/shixiangwang/gcap:latest
+
+# Quick test
+docker run ghcr.io/shixiangwang/gcap:latest --help
+
+# Run with mounted data
+docker run -v /path/to/data:/data ghcr.io/shixiangwang/gcap:latest bam [options]
 ```
+
+> **Note:** In the Docker container, `alleleCounter` is installed at `/opt/conda/bin/alleleCounter`.
+> Set `allelecounter_exe = "/opt/conda/bin/alleleCounter"` when using `gcap.workflow()` inside the container.
 
 ## Related tools
 
