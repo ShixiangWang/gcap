@@ -4,6 +4,15 @@ ACADEMIC NON-COMMERCIAL SOFTWARE LICENSE – Terms and Conditions of Use
 
 (Patent Pending: [P. R. China patent 202211067952.6](https://www.patentguru.com/cn/search?q=202211067952.6))
 
+**PATENT PROTECTION NOTICE:** The following intellectual property embodied in this Software is protected under the above-referenced patent and any related patents, and is NOT licensed under this Agreement (requires a separate commercial license):
+
+- Modeling methods, including but not limited to the machine learning pipeline for gene-level circular amplicon (ecDNA) prediction, feature engineering strategies, and focal amplification (fCNA) classification algorithms;
+- Modeling features and feature construction approaches, including but not limited to the derived genomic features, copy number variation metrics, and their computational extraction methods;
+- Model construction techniques, including but not limited to the XGBoost-based model architecture, training methodology, hyperparameter configurations, and ensemble strategies;
+- Model files, including but not limited to pre-trained model objects, serialized model binaries, model parameters, and any derivative works thereof.
+
+Any use, reproduction, modification, or distribution of the above patented subject matter outside the scope of personal academic non-commercial research requires a separate written commercial license from the patent holder(s).
+
 1. Copyright notice
 
 This software and associated documentation files (the “Software”) is protected by copyright.

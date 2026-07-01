@@ -257,5 +257,16 @@ Wang, S., Wu, C. Y., He, M. M., Yong, J. X., Chen, Y. X., Qian, L. M., ... & Zha
 
 This software and associated documentation files (the “Software”) are protected by copyright. This Software is provided “as is” (at your own risk) for internal non-commercial academic research purposes only. Please read the [Non-Commercial Academic License](LICENSE) in detail before downloading a copy. By installing or using this Software, you agree to be bound by the terms and conditions of the Non-Commercial Academic License.
 
-All commercial use of the Software or any modification, manipulation or derivative of the Software, including but not limited to transfer, sale or licence to a commercial third party or use on behalf of a commercial third party (including but not limited to use as part of a service supplied to any third party for financial reward) is strictly prohibited and requires a commercial use licence. **This software is protected by the P. R. China patent [202211067952.6](https://www.patentguru.com/cn/search?q=202211067952.6)** For further information please email <wangshx@csu.edu.cn> or <zhaoqi@sysucc.org.cn>.
+All commercial use of the Software or any modification, manipulation or derivative of the Software, including but not limited to transfer, sale or licence to a commercial third party or use on behalf of a commercial third party (including but not limited to use as part of a service supplied to any third party for financial reward) is strictly prohibited and requires a commercial use licence.
+
+### Patent Protection
+
+**This software is protected by the P. R. China patent [202211067952.6](https://www.patentguru.com/cn/search?q=202211067952.6).** The following intellectual property is protected under patent law and is NOT covered by the academic non-commercial license — a separate commercial license is required for any use beyond personal academic research:
+
+- **Modeling methods**: the machine learning pipeline for gene-level circular amplicon (ecDNA) prediction, feature engineering strategies, and focal amplification (fCNA) classification algorithms.
+- **Modeling features and approaches**: derived genomic features, copy number variation metrics, and their computational extraction methods.
+- **Model construction**: XGBoost-based model architecture, training methodology, hyperparameter configurations, and ensemble strategies.
+- **Model files**: pre-trained model objects, serialized model binaries, model parameters, and any derivative works thereof.
+
+For further information or to obtain a commercial license, please email <wangshx@csu.edu.cn> or <zhaoqi@sysucc.org.cn>.
 

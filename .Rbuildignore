@@ -24,3 +24,4 @@ data-raw/mouse_mm10_gene_info.rds
 Dockerfile
 .github
 ^\.github$
+^packages\.json$
