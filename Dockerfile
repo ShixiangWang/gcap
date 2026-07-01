@@ -1,4 +1,9 @@
-FROM continuumio/miniconda3:24.1.2-0
+FROM continuumio/miniconda3:latest
+
+# Avoid Docker overlay2 hardlink issues with conda package extraction.
+# Without this, mamba produces "Cannot find a valid extracted directory cache"
+# for random packages during install. See: conda/conda#12156, conda/conda#11314
+ENV CONDA_ALWAYS_COPY=true
 
 LABEL \
     maintainer="Shixiang Wang" \
