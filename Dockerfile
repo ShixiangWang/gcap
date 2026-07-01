@@ -13,6 +13,7 @@ RUN apt update && apt install -y build-essential zip cmake libcairo2-dev &&\
     apt autoremove -y && apt clean -y && apt purge -y && rm -rf /tmp/* /var/tmp/* &&\
     rm -f /opt/conda/conda-meta/pinned &&\
     conda install mamba -n base -c conda-forge -y &&\
+    conda remove anaconda-anon-usage --force -y 2>/dev/null || true &&\
     mamba clean -yaf
 
 # Install GCAP & deploy it
