@@ -17,9 +17,9 @@ RUN apt update && apt install -y build-essential zip cmake libcairo2-dev &&\
 
 # Install GCAP & deploy it
 # XGBOOST should be <1.6
-# The default path for conda in the container is /opt/conda
-RUN conda config --set use_only_tar_bz2 true &&\
-    mamba install -y -c conda-forge -c bioconda \
+# --override-channels: avoid defaults channel to prevent mamba from touching
+# packages with corrupted .conda extracted caches (anaconda-anon-usage etc.)
+RUN mamba install -y --override-channels -c conda-forge -c bioconda \
         r-base=4.3 python=3.10 r-remotes r-biocmanager r-tidyverse \
         r-sigminer sequenza-utils samtools tabix cancerit-allelecount &&\
     mamba clean -yaf &&\
