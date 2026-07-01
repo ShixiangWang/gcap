@@ -163,24 +163,42 @@ fCNA <- R6::R6Class(
     #' @param ... unused.
     print = function(...) {
       ss <- self$sample_summary
-      cat("======================\nA <")
-      cat(cli::col_br_cyan("fCNA"))
-      cat("> object\n")
-      cat(sprintf("%8s: %s\n", "record", cli::col_green(nrow(self$data))))
-      cat(sprintf("%8s: %s\n", "case", cli::col_cyan(nrow(ss))))
-      cat("     |__ ",
-        "(", cli::col_cyan(sum(ss$class == "noncircular", na.rm = TRUE)), ") ",
-        cli::col_green(nrow(self$data[gene_class %in% "noncircular"])),
-        " noncircular\n",
-        sep = ""
-      )
-      cat("     |__ ",
-        "(", cli::col_cyan(sum(ss$class == "circular", na.rm = TRUE)), ") ",
-        cli::col_green(nrow(self$data[gene_class %in% "circular"])),
-        " circular\n",
-        sep = ""
-      )
-      cat("======================\n")
+      dd <- self$data
+      n_circular_samples <- sum(ss$class == "circular", na.rm = TRUE)
+      n_noncircular_samples <- sum(ss$class == "noncircular", na.rm = TRUE)
+      n_nofocal_samples <- sum(ss$class == "nofocal", na.rm = TRUE)
+      n_circular_genes <- nrow(dd[gene_class %in% "circular"])
+      n_noncircular_genes <- nrow(dd[gene_class %in% "noncircular"])
+
+      cat("============================\n")
+      cat(cli::col_br_cyan("  GCAP fCNA Result Object\n"))
+      cat("============================\n")
+      cat(sprintf("%8s: %s (%s genes, %s cytobands)\n",
+        "cases", cli::col_cyan(nrow(ss)),
+        cli::col_green(length(unique(dd$gene_id))),
+        cli::col_green(length(unique(dd$band)))))
+      cat("  --- Sample-level classification ---\n")
+      cat(sprintf("    * %s: %s\n",
+        cli::col_red("circular"), cli::col_cyan(n_circular_samples)))
+      cat(sprintf("    * %s: %s\n",
+        cli::col_blue("noncircular"), cli::col_cyan(n_noncircular_samples)))
+      if (n_nofocal_samples > 0) {
+        cat(sprintf("    * %s: %s (no focal CNA detected)\n",
+          cli::col_silver("nofocal"), n_nofocal_samples))
+      }
+      cat("  --- Gene-level predictions  ---\n")
+      cat(sprintf("    * %s: %s genes\n",
+        cli::col_red("circular"), cli::col_green(n_circular_genes)))
+      cat(sprintf("    * %s: %s genes\n",
+        cli::col_blue("noncircular"), cli::col_green(n_noncircular_genes)))
+      cat("------------------------------------\n")
+      cat("To explore results:\n")
+      cat("  $data            — gene-level predictions table\n")
+      cat("  $sample_summary   — sample-level classification\n")
+      cat("  $getGeneSummary()      — gene frequency summary\n")
+      cat("  $getCytobandSummary()  — cytoband frequency summary\n")
+      cat("  $subset(sample = 'X')  — filter by sample\n")
+      cat("============================\n")
     }
   ),
   private = list(

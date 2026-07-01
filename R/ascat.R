@@ -105,6 +105,17 @@ gcap.runASCAT <- function(tumourseqfile,
 
   lg$info("{length(jobname)} jobs detected")
 
+  # Pre-flight BAM validation for all jobs
+  lg$info("")
+  lg$info("--- Pre-flight BAM validation ---")
+  all_bams <- stats::na.omit(c(tumourseqfile, normalseqfile))
+  validate_bam_inputs(all_bams,
+    chrom_names = chrom_names,
+    genome_build = genome_build
+  )
+  lg$info("--- Pre-flight complete ---")
+  lg$info("")
+
   run_one <- function(i) {
     tfile <- tumourseqfile[i]
     nfile <- normalseqfile[i]
@@ -131,7 +142,26 @@ gcap.runASCAT <- function(tumourseqfile,
     tryCatch(
       {
         if (!all(file.exists(tfile, nfile))) {
-          lg$fatal("Not all bam files exist")
+          lg$fatal("Not all bam files exist! Please check:")
+          lg$fatal("  tumor:  {tfile} [{'EXISTS' if file.exists(tfile) else 'MISSING'}]")
+          if (!is.na(nfile)) lg$fatal("  normal: {nfile} [{'EXISTS' if file.exists(nfile) else 'MISSING'}]")
+          stop("BAM file(s) missing — cannot proceed")
+        }
+
+        # Per-job BAI index checks
+        bai_t <- paste0(tfile, ".bai")
+        if (!file.exists(bai_t)) {
+          lg$warn("  Tumor BAI index file NOT FOUND: {bai_t}")
+          lg$warn("    Missing BAI index will cause alleleCounter to crash with errors like:")
+          lg$warn("    'Null iterator', 'Error scanning through bam', or memory corruption.")
+          lg$warn("    Fix: run 'samtools index {tfile}' before running GCAP.")
+        }
+        if (!is.na(nfile) && nchar(nfile) > 0) {
+          bai_n <- paste0(nfile, ".bai")
+          if (!file.exists(bai_n)) {
+            lg$warn("  Normal BAI index file NOT FOUND: {bai_n}")
+            lg$warn("    Fix: run 'samtools index {nfile}' before running GCAP.")
+          }
         }
 
         if (packageVersion("ASCAT") > "3.1.0") {
@@ -235,11 +265,31 @@ gcap.runASCAT <- function(tumourseqfile,
         lg$info("job {id} done")
       },
       error = function(e) {
-        lg$fatal("job {id} failed in ASCAT due to following error")
-        lg$info(e$message)
-        lg$info("=====")
-        lg$info("Please check your input bam files (if missing bam index? if its alignment quality is lower?)")
-        lg$info("=====")
+        lg$fatal("=============== ASCAT JOB FAILURE ===============")
+        lg$fatal("job '{id}' failed during ASCAT/alleleCounter run")
+        lg$fatal("")
+        lg$fatal("Error message: {e$message}")
+        lg$fatal("")
+        lg$fatal("=== DIAGNOSTIC CHECKLIST ===")
+        lg$fatal("1. BAI index files (MUST exist alongside BAMs):")
+        lg$fatal("     tumor:  {tfile}.bai [{'EXISTS' if file.exists(paste0(tfile, '.bai')) else 'MISSING — run: samtools index ' %+% tfile}]")
+        if (!is.na(nfile) && nchar(nfile) > 0)
+          lg$fatal("     normal: {nfile}.bai [{'EXISTS' if file.exists(paste0(nfile, '.bai')) else 'MISSING — run: samtools index ' %+% nfile}]")
+        lg$fatal("2. BAI index freshness (BAI mtime should be >= BAM mtime):")
+        lg$fatal("     If BAI is older than BAM, regenerate with: samtools index <bam>")
+        lg$fatal("3. BAM file integrity:")
+        lg$fatal("     If samtools is installed, run: samtools quickcheck {tfile}")
+        lg$fatal("4. Chromosome naming:")
+        lg$fatal("     Check if BAM uses 'chr1' or '1' format.")
+        lg$fatal("     genome_build='{genome_build}' — reference files must match BAM naming.")
+        lg$fatal("     Run: samtools view -H {tfile} | grep '^@SQ' | head -5")
+        lg$fatal("5. BAM alignment quality:")
+        lg$fatal("     Low-quality or unsorted BAM files can cause ASCAT to fail.")
+        lg$fatal("     Ensure BAMs are coordinate-sorted and duplicate-marked.")
+        lg$fatal("6. Read depth and sample purity:")
+        lg$fatal("     ASCAT may fail to find optimal ploidy/cellularity for low-purity")
+        lg$fatal("     or low-coverage samples. Check BAM depth with: samtools depth {tfile}")
+        lg$fatal("==================================================")
       }
     )
   }

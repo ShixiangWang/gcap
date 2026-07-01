@@ -149,9 +149,23 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
   ascat_files <- file.path(outdir, paste0(jobname, ".ASCAT.rds"))
   keep_idx <- sapply(ascat_files, function(x) {
     keep <- if (file.exists(x)) {
-      file.info(x)$size > 2000
+      fsize <- file.info(x)$size
+      if (fsize <= 2000) {
+        lg$warn("result file {x} exists but is too small ({fsize} bytes), indicating a failed ASCAT run (e.g., could not find optimal ploidy/cellularity)")
+        FALSE
+      } else {
+        lg$info("  {x}: {fsize} bytes (looks OK)")
+        TRUE
+      }
     } else {
-      lg$warn("result file {x} does not exist, the corresponding ASCAT calling has error occurred ")
+      lg$warn("result file {x} does not exist")
+      lg$warn("  This means ASCAT (or alleleCounter) failed for this sample.")
+      lg$warn("  Common causes:")
+      lg$warn("    - Missing BAI index file (run: samtools index <bam>)")
+      lg$warn("    - BAM/BAI chromosome naming mismatch with reference files")
+      lg$warn("    - AlleleCounter crashed due to memory corruption (check BAM integrity)")
+      lg$warn("    - ASCAT could not find optimal ploidy/cellularity (low purity/coverage)")
+      lg$warn("  See the ASCAT log messages above for specific error details.")
       FALSE
     }
     if (!keep) {
@@ -160,10 +174,33 @@ gcap.workflow <- function(tumourseqfile, normalseqfile,
     keep
   })
   ascat_files <- ascat_files[keep_idx]
+
   if (length(ascat_files) < 1) {
-    lg$fatal("no sucessful ASCAT result file to proceed!")
-    lg$fatal("check your ASCAT setting before make sure this case could not be used!")
-    stop()
+    n_failed <- length(jobname) - length(ascat_files)
+    lg$fatal("")
+    lg$fatal("============================================")
+    lg$fatal("  ALL {length(jobname)} ASCAT JOB(S) FAILED")
+    lg$fatal("  No successful ASCAT results to proceed.")
+    lg$fatal("============================================")
+    lg$fatal("")
+    lg$fatal("Troubleshooting steps:")
+    lg$fatal("  1. Check BAI index files exist for all BAM files")
+    lg$fatal("  2. Run 'samtools quickcheck' on each BAM to verify integrity")
+    lg$fatal("  3. Verify chromosome naming consistency:")
+    lg$fatal("     BAM header vs reference files (both should use 'chr1' or '1' format)")
+    lg$fatal("  4. Check sample purity and coverage — ASCAT may fail on")
+    lg$fatal("     low-purity (<20%) or very shallow WES data")
+    lg$fatal("  5. Check the gcap log file for per-job error details:")
+    lg$fatal("     gcap:::cat_log_file()")
+    lg$fatal("")
+    lg$fatal("If problems persist, try alternative backends:")
+    lg$fatal("  ?gcap.workflow.seqz (Sequenza)")
+    lg$fatal("  ?gcap.workflow.facets (FACETS)")
+    stop("No successful ASCAT results — all jobs failed")
+  }
+
+  if (length(ascat_files) < length(jobname)) {
+    lg$warn("{length(jobname) - length(ascat_files)} of {length(jobname)} jobs failed, proceeding with {length(ascat_files)} successful ones")
   }
 
   lg$info("============================================================")

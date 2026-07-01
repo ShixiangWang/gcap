@@ -256,9 +256,59 @@ docker run -v /path/to/data:/data ghcr.io/shixiangwang/gcap:latest bam [options]
 - [DoAbsolute](https://github.com/ShixiangWang/DoAbsolute): Automate Absolute Copy Number Calling using 'ABSOLUTE' package.
 - [sigminer](https://github.com/ShixiangWang/sigminer): An easy-to-use and scalable toolkit for genomic alteration signature (a.k.a. mutational signature) analysis and visualization in R.
 
-## Output 
+## Output
 
- **gcap** outputs two data tables including feature table and prediction result.
+**gcap** workflows (`gcap.workflow()`, `gcap.ASCNworkflow()`) return an **fCNA R6 object** containing prediction results at both gene and sample level. Two CSV files are also saved to disk.
+
+### Understanding the Results
+
+The fCNA object provides two views of your data:
+
+| Field | Description |
+|-------|-------------|
+| `$data` | **Gene-level predictions**: one row per gene per sample. Key columns: `sample`, `gene_id`, `band` (cytoband), `total_cn`, `minor_cn`, `prob` (ecDNA probability), `gene_class` (`"circular"` or `"noncircular"`) |
+| `$sample_summary` | **Sample-level classification**: one row per sample. Key columns: `sample`, `purity`, `ploidy`, `class` (`"circular"`, `"noncircular"`, or `"nofocal"`), `ec_genes` (count of circular genes), `ec_cytobands` |
+
+**Sample classification logic:** A sample is classified as `"circular"` if at least one cytoband has a high-confidence circular amplicon (default probability threshold ≥ 0.6). Multiple genes within the same cytoband are aggregated — the sample is circular if _any_ cytoband passes the threshold. `"nofocal"` means no focal amplification was detected at all.
+
+### Exploring Results
+
+```r
+rv <- gcap.ASCNworkflow(ascn, outdir = tempdir(), model = "XGB11")
+
+# Print summary
+rv                    # shows sample & gene counts, sample classification breakdown
+
+# Get gene-level data
+head(rv$data)         # all predicted genes with probabilities and classifications
+table(rv$data$gene_class)  # count of circular vs noncircular genes
+
+# Get sample-level summary
+head(rv$sample_summary)    # one row per sample
+table(rv$sample_summary$class)  # count of circular/noncircular/nofocal samples
+
+# Which samples have ecDNA (circular)?
+rv$sample_summary[sample_summary$class == "circular", ]
+
+# What genes are predicted circular across all samples?
+rv$getGeneSummary()         # frequency table of gene classifications
+rv$getCytobandSummary()     # frequency table of cytoband classifications
+
+# Filter to specific samples
+subset_rv <- rv$subset(sample %in% c("TCGA-02-2485-01", "TCGA-05-4395-01"))
+subset_rv  # re-prints summary for subset
+
+# Filter to high-confidence circular genes only
+high_conf <- rv$subset(total_cn > 10)  # genes with high-level amplification
+```
+
+### Saved Files
+
+| File | Content |
+|------|---------|
+| `{prefix}_prediction_result.rds` | Raw prediction data (RDS format) |
+| `{prefix}_fCNA_records.csv` | Gene-level predictions table |
+| `{prefix}_sample_info.csv` | Sample-level classification summary |
 
 ## Citations 
 
