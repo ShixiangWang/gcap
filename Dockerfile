@@ -1,4 +1,4 @@
-FROM conda-forge/miniforge3:latest
+FROM continuumio/miniconda3:24.1.2-0
 
 LABEL \
     maintainer="Shixiang Wang" \
@@ -10,11 +10,13 @@ LABEL \
     org.opencontainers.image.description="Docker Image for GCAP (Gene-level Circular Amplicon Prediction)"
 
 RUN apt update && apt install -y build-essential zip cmake libcairo2-dev &&\
-    apt autoremove -y && apt clean -y && apt purge -y && rm -rf /tmp/* /var/tmp/*
+    apt autoremove -y && apt clean -y && apt purge -y && rm -rf /tmp/* /var/tmp/* &&\
+    conda install mamba -n base -c conda-forge -y &&\
+    mamba clean -yaf
 
 # Install GCAP & deploy it
 # XGBOOST should be <1.6
-# miniforge3 already has mamba, conda-forge is the default channel
+# The default path for conda in the container is /opt/conda
 RUN mamba install -y -c conda-forge -c bioconda \
         r-base=4.3 python=3.10 \
         r-remotes r-biocmanager r-tidyverse r-sigminer \
