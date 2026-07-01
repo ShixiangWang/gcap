@@ -1,8 +1,9 @@
 FROM continuumio/miniconda3:latest
 
-# Avoid Docker overlay2 hardlink issues with conda package extraction.
-# Without this, mamba produces "Cannot find a valid extracted directory cache"
-# for random packages during install. See: conda/conda#12156, conda/conda#11314
+# Docker overlay2 does not support conda hardlinks reliably.
+# Corrupted extracted package caches in the base image also cause
+# "Cannot find a valid extracted directory cache" during linking.
+# CONDA_ALWAYS_COPY + clean pkgs/ forces fresh copy-based installs.
 ENV CONDA_ALWAYS_COPY=true
 
 LABEL \
@@ -16,13 +17,14 @@ LABEL \
 
 RUN apt update && apt install -y build-essential zip cmake libcairo2-dev &&\
     apt autoremove -y && apt clean -y && apt purge -y && rm -rf /tmp/* /var/tmp/* &&\
-    conda install mamba -n base -c conda-forge -y &&\
+    conda install mamba -n base -c conda-forge &&\
     mamba clean -yaf
 
 # Install GCAP & deploy it
 # XGBOOST should be <1.6
 # The default path for conda in the container is /opt/conda
-RUN mamba install -y -c conda-forge -c bioconda \
+RUN rm -rf /opt/conda/pkgs/* &&\
+    mamba install -y -c conda-forge -c bioconda \
         r-base=4.3 python=3.10 \
         r-remotes r-biocmanager r-tidyverse r-sigminer \
         sequenza-utils samtools tabix cancerit-allelecount &&\
